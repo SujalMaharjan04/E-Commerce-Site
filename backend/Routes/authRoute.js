@@ -1,5 +1,5 @@
 const authController = require('../controllers/authController')
-const authRouter = require('../controllers/authController')
+const authRouter = require('express').Router()
 
 
 //Route for signing user
