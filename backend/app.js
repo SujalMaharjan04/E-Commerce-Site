@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const logger = require('./utils/loggers')
 const userRouter = require('./Routes/userRoute')
 const productRouter = require('./Routes/productRoute')
+const authRouter = require('./Routes/authRoute')
 
 const app = express()
 app.use(express.json())
@@ -18,8 +19,9 @@ mongoose
 })
 
 
-app.use('/users', userRouter)
-app.use('/products', productRouter)
+app.use('/api/users', userRouter)
+app.use('/api/products', productRouter)
+app.use('/api/auth', authRouter)
 
 
 module.exports = app
