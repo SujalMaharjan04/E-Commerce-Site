@@ -1,16 +1,16 @@
-require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const logger = require('./utils/loggers')
 const userRouter = require('./Routes/userRoute')
-const productRouter = require('./Routes/productRoute')
+// const productRouter = require('./Routes/productRoute')
 const authRouter = require('./Routes/authRoute')
+const config = require('./utils/config')
 
 const app = express()
 app.use(express.json())
 
 mongoose
-    .connect(process.env.MONGODB_URL)
+    .connect(config.MONGODB_URL)
     .then(() => {
        logger.info('Connected to the database')
     })
@@ -20,8 +20,13 @@ mongoose
 
 
 app.use('/api/users', userRouter)
-app.use('/api/products', productRouter)
+// app.use('/api/products', productRouter)
 app.use('/api/auth', authRouter)
+
+if (process.env.NODE_ENV === 'test') {
+    const testingRoute = require('./Routes/testRoute')
+    app.use('/api/testing', testingRoute)
+}
 
 
 module.exports = app
