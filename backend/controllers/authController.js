@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 //Sign Up
 const signUp = async(request, response) => {
-    const {username, name, password} = request.body
+    const {username, name, password, email, address, phone} = request.body
     const passwordHash = await bcrypt.hash(password, 10)
 
     const user = new User({username, name, passwordHash})
