@@ -126,6 +126,96 @@ describe('test for User Controller', () => {
         assert(response.body.token)
         assert.strictEqual(response.body.username, user.username)
     })
+
+    test ('loggin in with wrong credentials', async () => {
+        const newUser = {
+            username: 'test3',
+            name: 'test3',
+            password: '12345',
+            email: 'test3@gmail.com',
+            phone: '9800000003',
+            address: [
+                {
+                    street: 'Imadol',
+                    city: 'Lalitpur',
+                    state: 'Bagmati',
+                    country: 'Nepal'
+                }
+            ]
+        }
+
+        await api  
+            .post('/api/auth/signup')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-type', /application\/json/)
+
+        const user = {
+            username: 'test3',
+            password: '1234'
+        }
+
+        await api
+            .post('/api/auth/login')
+            .send(user)
+            .expect(401)
+    })
+
+    test ('updating user credentials', async() => {
+        const newUser = {
+            username: 'test3',
+            name: 'test3',
+            password: '12345',
+            email: 'test3@gmail.com',
+            phone: '9800000003',
+            address: [
+                {
+                    street: 'Imadol',
+                    city: 'Lalitpur',
+                    state: 'Bagmati',
+                    country: 'Nepal'
+                }
+            ]
+        }
+
+        await api  
+            .post('/api/auth/signup')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-type', /application\/json/)
+
+        const user = {
+            username: 'test3',
+            password: '12345'
+        }
+
+        const response = await api  
+                            .post('/api/auth/login')
+                            .send(user)
+                            .expect(200)
+                            .expect('Content-type', /application\/json/)
+
+        const token = response.body.token
+        
+        const userList = await helper.usersInDb()
+        const currUser = userList[2]
+        
+
+        const userChange = {
+            username: 'test4',
+            name: 'test4',
+        }
+
+        const result = await api
+                        .put(`/api/users/${currUser.id}`)
+                        .set('Authorization', `Bearer ${token}`)
+                        .send(userChange)
+                        .expect(200)
+                        .expect('Content-type', /application\/json/)
+
+        assert.strictEqual(result.body.username, 'test4')
+        assert.strictEqual(result.body.name, 'test4')
+    })
 })
 
 
