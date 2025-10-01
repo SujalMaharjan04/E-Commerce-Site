@@ -8,7 +8,7 @@ const signUp = async(request, response) => {
     const {username, name, password, email, address, phone} = request.body
     const passwordHash = await bcrypt.hash(password, 10)
 
-    const user = new User({username, name, passwordHash})
+    const user = new User({username, name, passwordHash, email, address, phone})
     const savedUser = await user.save()
 
     response.status(201).json({message: 'SignUp Successful', userId: savedUser.id})
