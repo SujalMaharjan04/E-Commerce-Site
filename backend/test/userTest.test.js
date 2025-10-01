@@ -39,8 +39,92 @@ describe('test for User Controller', () => {
                         .get(`/api/users/${userToFind.id}`)
                         .expect(200)
                         .expect('Content-type', /application\/json/)
-        console.log(JSON.stringify(response.body, null, 2))
-        assert.strictEqual(response.body, userToFind)
+        
+        assert.strictEqual(response.body.username, userToFind.username)
+    })
+
+    test ('deleting user info ', async () => {
+        const userAtStart = await helper.usersInDb()
+        const userToDelete = userAtStart[0]
+        await api
+                .delete(`/api/users/${userToDelete.id}`)
+                .expect(200)
+        
+        const newUser = await helper.usersInDb()
+        const username = newUser.map(u => u.username)
+        assert(!username.includes(userToDelete.username))
+        assert.strictEqual(newUser.length, userAtStart.length - 1 )
+    })
+
+    test ('signing up ', async () => {
+        const userAtStart = await helper.usersInDb()
+        const newUser = {
+            username: 'test3',
+            name: 'test3',
+            password: '12345',
+            email: 'test3@gmail.com',
+            phone: '9800000003',
+            address: [
+                {
+                    street: 'Imadol',
+                    city: 'Lalitpur',
+                    state: 'Bagmati',
+                    country: 'Nepal'
+                }
+            ]
+        }
+
+        await api  
+            .post('/api/auth/signup')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-type', /application\/json/)
+        
+        const users = await helper.usersInDb()
+
+        assert.strictEqual(users.length, userAtStart.length + 1)
+
+        const username = users.map(u => u.username)
+
+        assert(username.includes(newUser.username))
+    })
+
+    test('logging in', async() => {
+        const newUser = {
+            username: 'test3',
+            name: 'test3',
+            password: '12345',
+            email: 'test3@gmail.com',
+            phone: '9800000003',
+            address: [
+                {
+                    street: 'Imadol',
+                    city: 'Lalitpur',
+                    state: 'Bagmati',
+                    country: 'Nepal'
+                }
+            ]
+        }
+
+        await api  
+            .post('/api/auth/signup')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-type', /application\/json/)
+
+        const user = {
+            username: 'test3',
+            password: '12345'
+        }
+
+        const response = await api
+                .post('/api/auth/login')
+                .send(user)
+                .expect(200)
+                .expect('Content-type', /application\/json/)
+
+        assert(response.body.token)
+        assert.strictEqual(response.body.username, user.username)
     })
 })
 
