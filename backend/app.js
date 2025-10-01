@@ -5,6 +5,7 @@ const userRouter = require('./Routes/userRoute')
 // const productRouter = require('./Routes/productRoute')
 const authRouter = require('./Routes/authRoute')
 const config = require('./utils/config')
+const middleware = require('./utils/middleware')
 
 const app = express()
 app.use(express.json())
@@ -27,6 +28,8 @@ if (process.env.NODE_ENV === 'test') {
     const testingRoute = require('./Routes/testRoute')
     app.use('/api/testing', testingRoute)
 }
+
+app.use(middleware.errorHandler)
 
 
 module.exports = app
