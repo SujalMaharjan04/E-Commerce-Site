@@ -1,4 +1,14 @@
 const User = require('../models/User')
+const jwt = require('jsonwebtoken')
+
+const getToken = request => {
+    const authorization = request.get('authorization')
+
+    if (authorization && authorization.includes('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    return null
+}
 
 
 const getUser = async(req, res) => {
@@ -20,6 +30,12 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
+        const decodedToken = jwt.verify(getToken(req), process.env.SECRET)
+
+        if (!decodedToken) {
+            return res.status(401).json({error: 'Invalid token'})
+        }
+        
         const {username, name} = req.body
         const user = await User.findByIdAndUpdate(req.params.id, {username, name}, {new: true})
         if (!user) return res.status(404).json({error: 'User Not Found'})
