@@ -2,10 +2,11 @@ const express = require('express')
 const mongoose = require('mongoose')
 const logger = require('./utils/loggers')
 const userRouter = require('./Routes/userRoute')
-// const productRouter = require('./Routes/productRoute')
+const productRouter = require('./Routes/productRoute')
 const authRouter = require('./Routes/authRoute')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
+
 
 const app = express()
 app.use(express.json())
@@ -23,6 +24,7 @@ mongoose
 app.use('/api/users', userRouter)
 // app.use('/api/products', productRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/products', productRouter)
 
 if (process.env.NODE_ENV === 'test') {
     const testingRoute = require('./Routes/testRoute')
