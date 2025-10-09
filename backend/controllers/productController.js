@@ -1,4 +1,5 @@
 const Product = require('../models/Product')
+const {tokenExtractor, userExtractor} = require('../utils/middleware')
 
 const getProduct = async (req, res, next) => {
     try {
@@ -57,6 +58,27 @@ const getProductByBrand = async (req, res) => {
     }
 }
 
-module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand}
+const deleteProduct = async (req, res, next) => {
+    try {
+
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({error: 'Unauthorized: You can\'t delete accounts'})
+        }
+        
+        const product = await Product.findByIdAndDelete(req.params.id)
+        if (!product) {
+            return res.status(404).json({error: 'Product Not Found'})
+        }
+
+        return res.status(200).json({message: 'Product deleted successfully'})
+
+    }
+    catch (error) {
+        next(error)
+    }
+
+}
+
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct}
 
 
