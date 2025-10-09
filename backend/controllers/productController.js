@@ -1,29 +1,62 @@
 const Product = require('../models/Product')
 
-const getProduct = async (req, res) => {
-    const products = await Product.find({})
-    res.status(200).json(products)
+const getProduct = async (req, res, next) => {
+    try {
+        const products = await Product.find({}).populate('brand', 'name').populate('category', 'name')
+        res.status(200).json(products)
+    }
+    catch (error) {
+        next(error)
+    }
 }
 
 
 const getProductById = async (req, res) => {
-    const product = await Product.findById(req.params.id)
+    try {
+        const product = await Product.findById(req.params.id).populate('brand', 'name').populate('category', 'name')
 
-    if (!product) {
-        return res.status(404).json({error: "Product Not Found!"})
+        if (!product) {
+            return res.status(404).json({error: "Product Not Found!"})
+        }
+        res.status(200).json(product)
     }
-    res.status(200).json(product)
+    catch (error) {
+        next(error)
+    }
 }
 
 const getProductByCategory = async (req, res) => {
-    const {category} = req.body
-    const product = await Product.find({category})
+    try {
+        const {category} = req.params
+        const products = await Product.find({category}).populate('brand', 'name').populate('category', 'name')
 
-    if (!product) {
-        return res.status(404).json({error: 'Product Not Found'})
+        if (!products) {
+            return res.status(404).json({error: 'Product Not Found'})
+        }
+
+        return res.status(200).json(products)
     }
-
-    return res.status(200).json(product)
+    catch (error) {
+        next(error)
+    }
 }
+
+const getProductByBrand = async (req, res) => {
+    try {
+        const {brand} = req.params
+        const products = await Product.find({brand}).populate('brand', 'name').populate('category', 'name')
+
+        if (!products) {
+            return res.status(404).json({error: 'Product Not Found'})
+        }
+
+        return res.status(200).json(products)
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand}
 
 
