@@ -58,6 +58,23 @@ const getProductByBrand = async (req, res) => {
     }
 }
 
+const addProduct = async (req, res, next) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({error: 'Unauthorized: You can\'t add products'})
+        }
+
+        const {name, description, price, stock, category, brand, image, ratings} = req.body
+
+        const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings})
+        const savedProduct = await newProduct.save()
+        return res.status(200).json(savedProduct)
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
 const deleteProduct = async (req, res, next) => {
     try {
 
@@ -79,6 +96,6 @@ const deleteProduct = async (req, res, next) => {
 
 }
 
-module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct}
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct}
 
 
