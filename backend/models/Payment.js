@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const paymentSchema = new mongoose.Schema({
-    order: {type: mongoose.Schema.Types.ObjectId, Ref: 'Order'},
+    order: {type: mongoose.Schema.Types.ObjectId, ref: 'Order'},
     method: {type: String, enum: ['esewa', 'khalti', 'cod']},
     transactionId: String,
     amount: Number,

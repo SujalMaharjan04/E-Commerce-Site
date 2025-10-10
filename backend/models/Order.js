@@ -2,11 +2,13 @@ const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    items: {
-        product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
-        quantity: Number,
-        price: Number
-    },
+    items: [
+        {
+            product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
+            quantity: {type: Number, required: true},
+            price: {type: Number, required: true}
+        }
+    ],
     totalAmount: Number,
     shippingAddress: {
         street: String,
@@ -18,6 +20,7 @@ const orderSchema = new mongoose.Schema({
     paymentStatus: {type: String, enum: ['pending', 'paid', 'failed'], default: 'pending'},
     orderStatus: {type: String, enum: ['processing', 'shipped', 'delivered', 'cancelled'], default: 'processing'},
     createdAt: {type: Date, default: Date.now}
+    
 })
 
 orderSchema.set('toJSON', {
