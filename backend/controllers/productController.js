@@ -1,5 +1,5 @@
 const Product = require('../models/Product')
-const {tokenExtractor, userExtractor} = require('../utils/middleware')
+
 
 const getProduct = async (req, res, next) => {
     try {
@@ -12,7 +12,7 @@ const getProduct = async (req, res, next) => {
 }
 
 
-const getProductById = async (req, res) => {
+const getProductById = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id).populate('brand', 'name').populate('category', 'name')
 
@@ -26,7 +26,7 @@ const getProductById = async (req, res) => {
     }
 }
 
-const getProductByCategory = async (req, res) => {
+const getProductByCategory = async (req, res, next) => {
     try {
         const {category} = req.params
         const products = await Product.find({category}).populate('brand', 'name').populate('category', 'name')
@@ -42,7 +42,7 @@ const getProductByCategory = async (req, res) => {
     }
 }
 
-const getProductByBrand = async (req, res) => {
+const getProductByBrand = async (req, res, next) => {
     try {
         const {brand} = req.params
         const products = await Product.find({brand}).populate('brand', 'name').populate('category', 'name')
@@ -61,7 +61,7 @@ const getProductByBrand = async (req, res) => {
 const addProduct = async (req, res, next) => {
     try {
         if (req.user.role !== 'admin') {
-            return res.status(403).json({error: 'Unauthorized: You can\'t add products'})
+            return res.status(403).json({error: "Unauthorized: You can't add products"})
         }
 
         const {name, description, price, stock, category, brand, image, ratings} = req.body
@@ -75,11 +75,38 @@ const addProduct = async (req, res, next) => {
     }
 }
 
+const updateProduct = async (req, res, next) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({error: "Unauthorized: You can't updates products"})
+        }
+
+        const product = await Product.findById(req.params.id)
+        const updates = {}
+
+        for (const key in req.body) {
+            if (req.body[key] !== product[key]) {
+                updates[key] = req.body[key]
+            }
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updates, {
+            new: true,
+            runValidators: true
+        })
+
+        return res.status(201).json(updatedProduct)
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
 const deleteProduct = async (req, res, next) => {
     try {
 
         if (req.user.role !== 'admin') {
-            return res.status(403).json({error: 'Unauthorized: You can\'t delete accounts'})
+            return res.status(403).json({error: "Unauthorized: You can't delete accounts"})
         }
         
         const product = await Product.findByIdAndDelete(req.params.id)
@@ -96,6 +123,6 @@ const deleteProduct = async (req, res, next) => {
 
 }
 
-module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct}
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct}
 
 
