@@ -17,3 +17,5 @@ brandRouter.put('/:id', tokenExtractor, userExtractor, updateBrand)
 
 //Route to delete Brand
 brandRouter.delete('/:id', tokenExtractor, userExtractor, deleteBrand)
+
+module.exports = brandRouter
