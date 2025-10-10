@@ -14,6 +14,12 @@ productRouter.get('/categories/:category', productController.getProductByCategor
 //Route to get individual Product
 productRouter.get('/:id', productController.getProductById)
 
+//Route to add individual Product
+productRouter.post('/', tokenExtractor, userExtractor, productController.addProduct)
+
+//Route to update product
+productRouter.put('/:id', tokenExtractor, userExtractor, productController.updateProduct)
+
 //Route to delete Products
 productRouter.delete('/:id', tokenExtractor, userExtractor, productController.deleteProduct)
 
