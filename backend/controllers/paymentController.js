@@ -2,6 +2,7 @@ const Payment = require('../models/Payment')
 const Order = require('../models/Order')
 const axios = require('axios')
 const config = require('../utils/config')
+const crypto = require('crypto')
 
 let paymentData
 
@@ -49,6 +50,11 @@ const initiatePayment = async(req, res, next) => {
             const successUrl = "http://localhost:3001/payment/verify"
             const failureUrl = "http://localhost:3001/payment/failure"
 
+            const message = `${amount}|0|0|${order._id}|${config.ESEWA_MERCHANT_CODE}`
+            const hmac = crypto.createHmac('sha1', config.ESEWA_MERCHANT_CODE)
+            hmac.update(message)
+            const signed_field_name = hmac.digest('base64')
+
             paymentData = {
                 provider: 'esewa',
                 paymentId: payment._id,
@@ -62,7 +68,8 @@ const initiatePayment = async(req, res, next) => {
                     tax_amount: 0,
                     total_amount: order.totalAmount,
                     product_id: order._id,
-                    scd: config.ESEWA_MERCHANT_CODE
+                    scd: config.ESEWA_MERCHANT_CODE,
+                    signed_field_name
                 },
             };
         }
@@ -105,8 +112,21 @@ const verifyPayment = async(req, res, next) => {
             await payment.save()
             return res.status(400).json({error: 'Khalti Payment Failed'})
         } else if (method === 'esewa') {
-            const {oid, amt, refId} = req.body
+            const {oid, amt, refId, signed_field_name} = req.body
             const url = "https://uat.esewa.com.np/epay/transrec"
+            const order = await Order.findById(oid)
+            if (!order) {
+                return res.status(404).json({error: "No Order  Found"})
+            }
+
+            const message = `${order.totalAmount}|0|0|${order._id}|${config.ESEWA_MERCHANT_CODE}`
+            const hmac = crypto.createHmac('sha1', config.ESEWA_MERCHANT_CODE)
+            hmac.update(message)
+            const expectedSignature = hmac.digest('base64')
+
+            if (signed_field_name !== expectedSignature) {
+                return res.status(400).json({error: 'Payment Verification Failed'})
+            }
 
             const params = new URLSearchParams({
                 amt, 
@@ -119,10 +139,9 @@ const verifyPayment = async(req, res, next) => {
 
             if (response.data.includes("<response_code>Success</response_code>")) {
                 const payment = await Payment.findOne({order: oid})
-                const order = await Order.findById(oid)
-
-                if (!payment || !order) {
-                    return res.status(404).json({error: "No Order or Payment Found"})
+                
+                if (!payment ) {
+                    return res.status(404).json({error: "No Payment Found"})
                 }
 
                 if (amt === order.totalAmount) {
