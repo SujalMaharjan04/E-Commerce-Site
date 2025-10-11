@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema({
         zip: String,
         country: String
     },
+    paymentMethod: {type: String, enum: ['esewa', 'khalti', 'cod']},
     paymentStatus: {type: String, enum: ['pending', 'paid', 'failed'], default: 'pending'},
     orderStatus: {type: String, enum: ['processing', 'shipped', 'delivered', 'cancelled'], default: 'processing'},
     createdAt: {type: Date, default: Date.now}
