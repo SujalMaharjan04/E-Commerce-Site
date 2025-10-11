@@ -66,6 +66,10 @@ const addProduct = async (req, res, next) => {
 
         const {name, description, price, stock, category, brand, image, ratings} = req.body
 
+        if (!name || !price) {
+            return res.status(400).json({error: "Name and Price should be given"})
+        }
+
         const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings})
         const savedProduct = await newProduct.save()
         return res.status(200).json(savedProduct)

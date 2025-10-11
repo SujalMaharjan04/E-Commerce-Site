@@ -1,9 +1,5 @@
-const { useReducer } = require('react')
+
 const User = require('../models/User')
-const jwt = require('jsonwebtoken')
-
-
-
 
 const getUser = async(req, res) => {
     const users = await User.find({})
@@ -33,7 +29,7 @@ const updateUser = async (req, res) => {
         const updates = {}
 
         for (const key in user) {
-            if (req.body[key] !== user[key])
+            if (req.body[key] !== undefined && req.body[key] !== user[key])
                 updates[key] = req.body[key]
         }
 

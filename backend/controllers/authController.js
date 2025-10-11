@@ -6,6 +6,10 @@ const jwt = require('jsonwebtoken')
 //Sign Up
 const signUp = async(request, response) => {
     const {username, name, password, email, address, phone} = request.body
+
+    if (!username || !name || !email || !address ||phone) {
+        return res.status(400).json({error: 'Field should not be left empty'})
+    }
     const passwordHash = await bcrypt.hash(password, 10)
 
     const user = new User({username, name, passwordHash, email, address, phone})
