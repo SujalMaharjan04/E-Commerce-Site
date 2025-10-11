@@ -7,6 +7,7 @@ const authRouter = require('./Routes/authRoute')
 const brandRouter = require('./Routes/brandRoute')
 const orderRouter = require('./Routes/orderRoute')
 const categoryRouter = require('./Routes/categoryRoute')
+const paymentRouter = require('./Routes/paymentRoute')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
 
@@ -31,6 +32,7 @@ app.use('/api/products', productRouter)
 app.use('/api/brand', brandRouter)
 app.use('/api/order', orderRouter)
 app.use('/api/category', categoryRouter)
+app.use('/api/payment', paymentRouter)
 
 if (process.env.NODE_ENV === 'test') {
     const testingRoute = require('./Routes/testRoute')
