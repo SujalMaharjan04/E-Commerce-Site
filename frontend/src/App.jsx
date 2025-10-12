@@ -3,6 +3,7 @@ import AdminLogin from './page/AdminLogin'
 import {Routes, Route, useNavigate} from "react-router-dom"
 import { useState } from "react"
 import loginService from './services/login'
+import AdminLayout from './layout/AdminLayout'
 
 const App = () => {
   const navigate = useNavigate()
@@ -54,9 +55,9 @@ const App = () => {
         <Route path = "/admin" element = {
           <AdminLogin username = {username} password = {password} handleUserChange = {handleUserChange} handlePasswordChange = {handlePasswordChange} handleLogin = {handleLogin}/>
         } />
-
+      
         <Route path = "/admin/dashboard" element = {
-          <h1>Hello</h1>
+          <AdminLayout />
         } />
       </Routes>
 
