@@ -36,7 +36,7 @@ const login = async(req, res) => {
         username: user.username
     }, process.env.SECRET, {expiresIn: '1d'})
 
-    return res.status(200).json({token, username: user.username, id: user.id})
+    return res.status(200).json({token, username: user.username, id: user.id, role: user.role})
 }
 
 module.exports = {signUp, login}
