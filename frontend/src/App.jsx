@@ -1,9 +1,9 @@
-import Navbar from "./components/navbar"
+import UserLayout from "./layout/UserLayout"
 
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <UserLayout />
     </div>
   )
 }
