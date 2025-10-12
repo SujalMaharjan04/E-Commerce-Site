@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const logger = require('./utils/loggers')
 const userRouter = require('./Routes/userRoute')
@@ -8,17 +9,20 @@ const brandRouter = require('./Routes/brandRoute')
 const orderRouter = require('./Routes/orderRoute')
 const categoryRouter = require('./Routes/categoryRoute')
 const paymentRouter = require('./Routes/paymentRoute')
+const newAdmin = require('./controllers/seedAdmin')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
 
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 mongoose
     .connect(config.MONGODB_URL)
-    .then(() => {
+    .then(async() => {
        logger.info('Connected to the database')
+       await newAdmin()
     })
     .catch((error) => {
         logger.error('Error connecting to the database', error.message)
@@ -26,7 +30,6 @@ mongoose
 
 
 app.use('/api/users', userRouter)
-// app.use('/api/products', productRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/products', productRouter)
 app.use('/api/brand', brandRouter)
