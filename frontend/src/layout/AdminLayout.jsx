@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom"
 
 const AdminLayout = () => {
     return (
-        <div className = "flex flex-row bg-gray-300">
+        <div className = "flex flex-row bg-gray-300 gap-10">
             <SideBar />
             <div className = "flex flex-col flex-1">
                 <AdminNavBar />
