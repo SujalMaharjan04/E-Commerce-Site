@@ -1,9 +1,16 @@
-import DashBoard from '../components/DashBoard'
+import SideBar from "../components/SideBar"
+import AdminNavBar from "../components/AdminNavbar"
+import { Outlet } from "react-router-dom"
 
 const AdminLayout = () => {
     return (
-        <div>
-            <DashBoard />
+        <div className = "flex flex-row bg-gray-300">
+            <SideBar />
+            <div className = "flex flex-col flex-1">
+                <AdminNavBar />
+                <main className = "flex-1 "><Outlet /></main>
+            </div>
+           
         </div>
     )
 }

@@ -1,9 +1,13 @@
 import UserLayout from "./layout/UserLayout"
-import AdminLogin from './page/AdminLogin'
+import AdminLogin from './page/admin/AdminLogin'
 import {Routes, Route, useNavigate} from "react-router-dom"
 import { useState } from "react"
 import loginService from './services/login'
 import AdminLayout from './layout/AdminLayout'
+import DashBoard from "./components/DashBoard"
+import AdminProducts from './page/admin/AdminProducts'
+import AdminOrders from "./page/admin/AdminOrders"
+import AdminUsers from "./page/admin/AdminUsers"
 
 const App = () => {
   const navigate = useNavigate()
@@ -56,9 +60,14 @@ const App = () => {
           <AdminLogin username = {username} password = {password} handleUserChange = {handleUserChange} handlePasswordChange = {handlePasswordChange} handleLogin = {handleLogin}/>
         } />
       
-        <Route path = "/admin/dashboard" element = {
+        <Route path = "/admin" element = {
           <AdminLayout />
-        } />
+        }>
+          <Route path = "dashboard" element = {<DashBoard />} />
+          <Route path = "products" element = {<AdminProducts />}/>
+          <Route path = "orders" element = {<AdminOrders />} />
+          <Route path = "users" element = {<AdminUsers />} />
+        </Route>
       </Routes>
 
 
