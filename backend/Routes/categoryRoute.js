@@ -1,5 +1,7 @@
 const categoryController = require('../controllers/categoryController')
 const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const multer = require('multer')
+const upload =multer({dest: 'uploads/'})
 
 const categoryRouter = require('express').Router()
 
@@ -7,7 +9,7 @@ const categoryRouter = require('express').Router()
 categoryRouter.get('/',  categoryController.getCategory)
 
 //Route to add category
-categoryRouter.post('/', tokenExtractor, userExtractor, categoryController.addCategory)
+categoryRouter.post('/', tokenExtractor, userExtractor, upload.single('image'), categoryController.addCategory)
 
 //Route to get Single category
 categoryRouter.get('/:id', categoryController.getOneCategory)

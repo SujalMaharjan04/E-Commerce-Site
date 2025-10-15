@@ -2,7 +2,7 @@ const Category = require('../models/Category')
 
 const getCategory = async(req, res, next) => {
     try {
-        const categorys = await Category.find({}).populate('product, name, description, price, stock, ratings')
+        const categorys = await Category.find({})
 
         if (categorys.length === 0) {
             return res.status(404).json({error: 'No Data to retrieve'})
@@ -32,15 +32,15 @@ const getOneCategory = async(req, res, next) => {
 
 const addCategory = async(req, res, next) => {
     try {
-        const {name, description, logo} = req.body
+        const {name, description} = req.body
 
         const category = await Category.findOne({name})
 
-        if (category.length >= 1) {
+        if (category) {
             return res.status(401).json({error: "Category with name already present"})
         }
-
-        const newCategory = new Category({name, description, logo})
+        const imagePath = req.file ? req.file.path : ''
+        const newCategory = new Category({name, description, image: imagePath})
 
         const saved = await newCategory.save()
 
@@ -72,7 +72,7 @@ const updateCategory = async(req, res, next) => {
         const updates = {}
 
         for (const key in req.body) {
-            if (req.body[key] !== Categorys[key]) {
+            if (req.body[key] !== categorys[key]) {
                 updates[key] = req.body[key]
             }
         }
