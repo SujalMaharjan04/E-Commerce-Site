@@ -3,6 +3,7 @@ import AdminCategoryModalForm from "../../components/AdminCategoryModalForm"
 import AdminProductModalForm from "../../components/AdminProductModalForm"
 import Togglable from "../../components/Togglable"
 import categoryService from '../../services/category'
+import brandService from '../../services/brand'
 
 const AdminProducts = () => {
     const [name, setName] = useState('')
@@ -46,15 +47,33 @@ const AdminProducts = () => {
 
         try {
             const category = await categoryService.create(newCategory)
+            setName('')
+            setDescription('')
+            setImage('')
         }
         catch(error) {
             console.log(error.message)
         }
     }
 
-    const addBrand = (event) => {
+    const addBrand = async(event) => {
         event.preventDefault()
+        brandToggle.current.toggleVisibility()
+        const newBrand = {
+            name, 
+            description, 
+            image
+        }
 
+        try {
+            const brand = await brandService.create(newBrand)
+            setName('')
+            setDescription('')
+            setImage('')
+        }
+        catch (error) {
+            console.log(error.message)
+        }
     }
     return (
         <div className = "text-[#090F13] ml-4">
