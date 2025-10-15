@@ -1,8 +1,6 @@
 import categoryService from '../services/category'
 
 const AdminProductModalForm = (props) => {
-    const categories = categoryService.getAll()
-    console.log(categories)
 
     return (
         <div>

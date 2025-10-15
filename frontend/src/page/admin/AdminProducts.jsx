@@ -4,6 +4,7 @@ import AdminProductModalForm from "../../components/AdminProductModalForm"
 import Togglable from "../../components/Togglable"
 import categoryService from '../../services/category'
 import brandService from '../../services/brand'
+import { useQuery } from "@tanstack/react-query"
 
 const AdminProducts = () => {
     const [name, setName] = useState('')
@@ -75,6 +76,19 @@ const AdminProducts = () => {
             console.log(error.message)
         }
     }
+
+    const brands = useQuery({
+        queryKey: ['brand'],
+        queryFn: brandService.getAll
+    })
+
+    if (brands.isLoading) {
+        return (
+            <h2>Loading</h2>
+        )
+    }
+
+    console.log(JSON.stringify(brands.data))
     return (
         <div className = "text-[#090F13] ml-4">
                 <h2 className = "text-xl font-bold ">Admin Product Page</h2>

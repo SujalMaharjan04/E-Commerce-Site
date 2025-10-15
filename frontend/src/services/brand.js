@@ -1,6 +1,12 @@
 import api from './api'
 const baseUrl = '/brand'
 
+
+const getAll = async() => {
+    const response = await api.get(baseUrl)
+    return response.data
+}
+
 const create = async (newBrand) => {
     const formData = new FormData()
     formData.append('name', newBrand.name)
@@ -15,4 +21,4 @@ const create = async (newBrand) => {
     return response.data
 }
 
-export default {create}
+export default {getAll, create}
