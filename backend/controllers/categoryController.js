@@ -77,6 +77,10 @@ const updateCategory = async(req, res, next) => {
             }
         }
 
+        if (req.file) {
+            updates.logo = req.file.path
+        }
+        
         const updatedCategory = await Category.findByIdAndUpdate(req.params.id, updates, {new: true, runValidators: true})
         return res.status(200).json(updatedCategory)
     }

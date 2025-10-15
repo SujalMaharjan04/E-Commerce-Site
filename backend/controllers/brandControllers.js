@@ -2,7 +2,7 @@ const Brand = require('../models/Brand')
 
 const getBrand = async(req, res, next) => {
     try {
-        const brands = await Brand.find({}).populate('product, name, description, price, stock, ratings')
+        const brands = await Brand.find({})
 
         if (brands.lenght === 0) {
             return res.status(404).json({error: 'No Data to retrieve'})
@@ -36,11 +36,11 @@ const addBrand = async(req, res, next) => {
 
         const brand = await Brand.findOne({name})
 
-        if (brand.length >= 1) {
+        if (brand) {
             return res.status(401).json({error: "Brand with name already present"})
         }
-
-        const newBrand = new Brand({name, description, logo})
+        const imagePath = req.file ? req.file.path : ''
+        const newBrand = new Brand({name, description, logo: imagePath})
 
         const saved = await newBrand.save()
 
@@ -76,6 +76,10 @@ const updateBrand = async(req, res, next) => {
                 updates[key] = req.body[key]
             }
         }
+
+        if (req.file) {
+            updates.logo = req.file.path
+        } 
 
         const updatedBrand = await Brand.findByIdAndUpdate(req.params.id, updates, {new: true, runValidators: true})
         return res.status(200).json(updatedBrand)
