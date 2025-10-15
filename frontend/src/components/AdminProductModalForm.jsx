@@ -9,24 +9,24 @@ const AdminProductModalForm = (props) => {
             <form className = "text-[#090F13]">
                 <div className = "flex flex-col">
                     <label className = "">Product Name</label>
-                    <input type = "name" placeholder = "Enter Name Here" className = "border border-solid border-2 rounded-xl pl-2" />
+                    <input type = "name" placeholder = "Enter Name Here" className = "border border-solid border-2 rounded-xl pl-2" value = {props.name} onChange={props.handleName} />
                 </div>
                 <div className = "flex flex-col">
                     <label>Product description</label>
-                    <input type = "name" placeholder = "Enter description Here" className = "border border-solid border-2 rounded-xl pl-2"/>
+                    <input type = "name" placeholder = "Enter description Here" className = "border border-solid border-2 rounded-xl pl-2" value = {props.description} onChange={props.handleDescription} />
                 </div>
                 <div className = "flex flex-col">
                     <label>Price</label>
-                    <input type = "number" placeholder = "Enter Price Here" className = "border border-solid border-2 rounded-xl pl-2"/>
+                    <input type = "number" placeholder = "Enter Price Here" className = "border border-solid border-2 rounded-xl pl-2" value = {props.price} onChange = {props.handlePrice} />
                 </div>
                 <div className = "flex flex-col">
                     <label>Stock</label>
-                    <input type = "number" placeholder = "Enter Stock Here" className = "border border-solid border-2 rounded-xl pl-2"/>
+                    <input type = "number" placeholder = "Enter Stock Here" className = "border border-solid border-2 rounded-xl pl-2" value = {props.stock} onChange = {props.handleStock} />
                 </div>
                 
                 <div className = "flex flex-col">
                     <label>Product Image</label>
-                    <input type = "file" placeholder = "Enter image Here" className = "border border-solid border-2 rounded-xl pl-2" />
+                    <input type = "file" placeholder = "Enter image Here" className = "border border-solid border-2 rounded-xl pl-2"  onChange = {props.handleImage} />
                 </div>
 
                 <div className = "flex gap-4 mt-2">

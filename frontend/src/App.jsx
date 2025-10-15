@@ -37,7 +37,7 @@ const App = () => {
     setUsername("")
     setPassword("")
 
-    if (user.token) {
+    if (user.token && user.role === 'Admin') {
       navigate('/admin/dashboard')
     } else {
       alert('Invalid Credentials')
