@@ -7,7 +7,6 @@ const getBrand = async(req, res, next) => {
         if (brands.length === 0) {
             return res.status(404).json({error: 'No Data to retrieve'})
         }
-        console.log(brands)
         return res.status(200).json(brands)
     }
     catch (error) {

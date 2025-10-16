@@ -1,9 +1,14 @@
 const productRouter = require('express').Router()
 const productController = require('../controllers/productController')
 const {tokenExtractor, userExtractor} = require('../utils/middleware')
+const multer = require('multer')
+const uploads = multer({dest: 'uploads/'})
 
 //Route to get all Products
 productRouter.get('/', productController.getProduct)
+
+//Route to add individual Product
+productRouter.post('/', tokenExtractor, userExtractor, uploads.single('image'), productController.addProduct)
 
 //Route to get Products of same brand
 productRouter.get('/brand/:brand', productController.getProductByBrand)
@@ -14,11 +19,10 @@ productRouter.get('/categories/:category', productController.getProductByCategor
 //Route to get individual Product
 productRouter.get('/:id', productController.getProductById)
 
-//Route to add individual Product
-productRouter.post('/', tokenExtractor, userExtractor, productController.addProduct)
+
 
 //Route to update product
-productRouter.put('/:id', tokenExtractor, userExtractor, productController.updateProduct)
+productRouter.put('/:id', tokenExtractor, userExtractor, uploads.single('image'), productController.updateProduct)
 
 //Route to delete Products
 productRouter.delete('/:id', tokenExtractor, userExtractor, productController.deleteProduct)

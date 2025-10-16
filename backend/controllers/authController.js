@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken')
 
 //Sign Up
 const signUp = async(req, res) => {
-    const {username, name, password, email, address, phone} = request.body
+    const {username, name, password, email, address, phone} = req.body
 
-    if (!username || !name || !email || !address ||phone) {
+    if (!username || !name || !email || !address || !phone) {
         return res.status(400).json({error: 'Field should not be left empty'})
     }
     const passwordHash = await bcrypt.hash(password, 10)
@@ -15,7 +15,7 @@ const signUp = async(req, res) => {
     const user = new User({username, name, passwordHash, email, address, phone})
     const savedUser = await user.save()
 
-    response.status(201).json({message: 'SignUp Successful', userId: savedUser.id})
+    res.status(201).json({message: 'SignUp Successful', userId: savedUser.id})
 }
 
 
@@ -33,7 +33,8 @@ const login = async(req, res) => {
     
     const token = jwt.sign({
         id: user.id,
-        username: user.username
+        username: user.username,
+        role: user.role
     }, process.env.SECRET, {expiresIn: '1d'})
 
     return res.status(200).json({token, username: user.username, id: user.id, role: user.role})
