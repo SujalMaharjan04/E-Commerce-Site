@@ -50,4 +50,28 @@ const BrandContextProvider = (props) =>{
     )
 }
 
-export {UserContextProvider, BrandContextProvider, UserContext, BrandContext}
+const categoryReducer = (state, action) => {
+    switch(action.type) {
+        case "SET_CATEGORY":
+            return action.payload
+
+        case "ADD_CATEGORY":
+            return [...state, action.payload]
+
+        default: 
+            return state
+    }
+}
+
+const CategoryContext = createContext()
+
+const CategoryContextProvider = (props) => {
+    const [category, dispatchCategory] = useReducer(categoryReducer, [])
+
+    return (
+        <CategoryContext.Provider value = {[category, dispatchCategory]}>
+            {props.children}
+        </CategoryContext.Provider>
+    )
+}
+export {UserContextProvider, BrandContextProvider, CategoryContextProvider, UserContext, BrandContext, CategoryContext}

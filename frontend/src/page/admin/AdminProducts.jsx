@@ -5,7 +5,7 @@ import Togglable from "../../components/Togglable"
 import categoryService from '../../services/category'
 import brandService from '../../services/brand'
 import { useQuery } from "@tanstack/react-query"
-import {BrandContext} from '../../context/adminContext'
+import {BrandContext, CategoryContext} from '../../context/adminContext'
 
 const AdminProducts = () => {
     const [name, setName] = useState('')
@@ -14,11 +14,19 @@ const AdminProducts = () => {
     const [price, setPrice] = useState(0)
     const [stock, setStock] = useState(0)
     const [brands, dispatchBrand] = useContext(BrandContext)
+    const [category, dispatchCategory] = useContext(CategoryContext)
 
     const setBrand = (brands) => {
         dispatchBrand({
             type: 'SET_BRAND',
             payload: brands
+        })
+    }
+
+    const setCategory = (categories) => {
+        dispatchCategory({
+            type: 'SET_CATEGORY',
+            payload: categories
         })
     }
 
@@ -91,17 +99,22 @@ const AdminProducts = () => {
         queryFn: brandService.getAll,
     })
 
+    const categories = useQuery({
+        queryKey: ['category'],
+        queryFn: categoryService.getAll,
+    })
+
     useEffect(() => {
        if (brandsResult.data) {
         setBrand(brandsResult.data)
        }
-    }, [brandsResult.data])
+    }, [brandsResult.data])    
 
-    if (brandsResult.isLoading) {
-        return (
-            <h2>Loading</h2>
-        )
-    }
+    useEffect(() => {
+        if (categories.data) {
+            setCategory(categories.data)
+        }
+    }, [categories.data])
 
     
     return (
@@ -109,7 +122,7 @@ const AdminProducts = () => {
                 <h2 className = "text-xl font-bold ">Admin Product Page</h2>
                 <div className = "flex gap-4 mt-4 text-2xl">
                     <Togglable ref = {productToggle} buttonLabel = "+ Add Product" className = "border border-solid border-black border-2 w-48 h-14 bg-blue-900 text-white rounded-2xl hover:cursor-pointer hover:bg-blue-700 transition-all duration-150">
-                        <AdminProductModalForm name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} addItem = {addCategory} onCancel = {() => productToggle.current.toggleVisibility()} />
+                        <AdminProductModalForm name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} categories = {category} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} addItem = {addCategory} onCancel = {() => productToggle.current.toggleVisibility()} />
                     </Togglable>
                     
                     <Togglable ref = {categoryToggle} buttonLabel = "+ Add Category" className = "border border-solid border-black border-2 w-48 h-14 bg-green-900 text-white rounded-2xl hover:cursor-pointer hover:bg-green-700 transition-all duration-150">

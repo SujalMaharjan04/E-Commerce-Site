@@ -1,6 +1,7 @@
-import categoryService from '../services/category'
+
 
 const AdminProductModalForm = (props) => {
+    console.log(props.categories)
     return (
         <div>
             <form className = "text-[#090F13]">
@@ -24,9 +25,19 @@ const AdminProductModalForm = (props) => {
                 <div className = "flex flex-col">
                     <label>Brand</label>
                     <select  onChange = {(e) => e.target.value} className = "border border-solid border-2 rounded-xl pl-2">
-                        <option>Choose a Brand</option>
+                        <option>--Choose a Brand--</option>
                         {props.brands.map(brand => (
                             <option key = {brand.id} value = {brand.id}>{brand.name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className = "flex flex-col">
+                    <label>Category</label>
+                    <select  onChange = {(e) => e.target.value} className = "border border-solid border-2 rounded-xl pl-2">
+                        <option>--Choose a Category--</option>
+                        {props.categories.map(category => (
+                            <option key = {category.id} value = {category.id}>{category.name}</option>
                         ))}
                     </select>
                 </div>
