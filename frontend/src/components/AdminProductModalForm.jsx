@@ -1,10 +1,9 @@
 
 
 const AdminProductModalForm = (props) => {
-    console.log(props.categories)
     return (
         <div>
-            <form className = "text-[#090F13]" onSubmit={props.handleProducts}>
+            <form className = "text-[#090F13]" onSubmit={props.addItem}>
                 <div className = "flex flex-col">
                     <label className = "">Product Name</label>
                     <input type = "name" placeholder = "Enter Name Here" className = "border border-solid border-2 rounded-xl pl-2" value = {props.name} onChange={props.handleName} />
@@ -24,7 +23,7 @@ const AdminProductModalForm = (props) => {
 
                 <div className = "flex flex-col">
                     <label>Brand</label>
-                    <select  onChange = {(e) => e.target.value} className = "border border-solid border-2 rounded-xl pl-2">
+                    <select  value = {props.selectedBrand} onChange = {props.handleBrand} className = "border border-solid border-2 rounded-xl pl-2">
                         <option>--Choose a Brand--</option>
                         {props.brands.map(brand => (
                             <option key = {brand.id} value = {brand.id}>{brand.name}</option>
@@ -34,7 +33,7 @@ const AdminProductModalForm = (props) => {
 
                 <div className = "flex flex-col">
                     <label>Category</label>
-                    <select  onChange = {(e) => e.target.value} className = "border border-solid border-2 rounded-xl pl-2">
+                    <select value = {props.selectedCategory} onChange = {props.handleCategory} className = "border border-solid border-2 rounded-xl pl-2">
                         <option>--Choose a Category--</option>
                         {props.categories.map(category => (
                             <option key = {category.id} value = {category.id}>{category.name}</option>

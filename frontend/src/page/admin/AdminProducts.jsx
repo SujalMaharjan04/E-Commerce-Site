@@ -7,6 +7,7 @@ import brandService from '../../services/brand'
 import { useQuery } from "@tanstack/react-query"
 import {BrandContext, CategoryContext} from '../../context/adminContext'
 import {NotificationContext} from "../../context/NotificationContext"
+import productService from '../../services/product'
 
 const AdminProducts = () => {
     const [name, setName] = useState('')
@@ -14,6 +15,8 @@ const AdminProducts = () => {
     const [image, setImage] = useState('')
     const [price, setPrice] = useState(0)
     const [stock, setStock] = useState(0)
+    const [selectedBrand, setSelectedBrand] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('')
     const [brands, dispatchBrand] = useContext(BrandContext)
     const [category, dispatchCategory] = useContext(CategoryContext)
     const [notification, dispatch] = useContext(NotificationContext)
@@ -66,6 +69,14 @@ const AdminProducts = () => {
 
     const handleStock = (event) => {
         setStock(event.target.value)
+    }
+
+    const handleBrand = (event) => {
+        setSelectedBrand(event.target.value)
+    }
+
+    const handleCategory = (event) => {
+        setSelectedCategory(event.target.value)
     }
 
     const addCategory = async(event) => {
@@ -126,9 +137,22 @@ const AdminProducts = () => {
             price,
             stock,
             image,
-            brand,
-            category,
-            
+            brand: selectedBrand,
+            category: selectedCategory,
+        }
+        try {
+            const product = await productService.create(newProduct)
+            setName('')
+            setDescription('')
+            setImage('')
+            setPrice('')
+            setStock('')
+            setSelectedBrand('')
+            setSelectedCategory('')
+            notify({text: `${product.name} has been added`, type: 'success'})
+        }
+        catch(error) {
+            notify({text: ` has not been added`, type: 'error'})
         }
     }
 
@@ -160,7 +184,7 @@ const AdminProducts = () => {
                 <h2 className = "text-xl font-bold ">Admin Product Page</h2>
                 <div className = "flex gap-4 mt-4 text-2xl">
                     <Togglable ref = {productToggle} buttonLabel = "+ Add Product" className = "border border-solid border-black border-2 w-48 h-14 bg-blue-900 text-white rounded-2xl hover:cursor-pointer hover:bg-blue-700 transition-all duration-150">
-                        <AdminProductModalForm name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} categories = {category} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} addItem = {addCategory} onCancel = {() => productToggle.current.toggleVisibility()} />
+                        <AdminProductModalForm name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} selectedBrand = {selectedBrand} categories = {category} selectedCategory = {selectedCategory} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} addItem = {addProduct} onCancel = {() => productToggle.current.toggleVisibility()} />
                     </Togglable>
                     
                     <Togglable ref = {categoryToggle} buttonLabel = "+ Add Category" className = "border border-solid border-black border-2 w-48 h-14 bg-green-900 text-white rounded-2xl hover:cursor-pointer hover:bg-green-700 transition-all duration-150">
