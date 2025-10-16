@@ -4,7 +4,7 @@ const AdminProductModalForm = (props) => {
     console.log(props.categories)
     return (
         <div>
-            <form className = "text-[#090F13]">
+            <form className = "text-[#090F13]" onSubmit={props.handleProducts}>
                 <div className = "flex flex-col">
                     <label className = "">Product Name</label>
                     <input type = "name" placeholder = "Enter Name Here" className = "border border-solid border-2 rounded-xl pl-2" value = {props.name} onChange={props.handleName} />

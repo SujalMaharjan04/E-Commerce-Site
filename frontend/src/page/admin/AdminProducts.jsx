@@ -6,6 +6,7 @@ import categoryService from '../../services/category'
 import brandService from '../../services/brand'
 import { useQuery } from "@tanstack/react-query"
 import {BrandContext, CategoryContext} from '../../context/adminContext'
+import {NotificationContext} from "../../context/NotificationContext"
 
 const AdminProducts = () => {
     const [name, setName] = useState('')
@@ -15,6 +16,19 @@ const AdminProducts = () => {
     const [stock, setStock] = useState(0)
     const [brands, dispatchBrand] = useContext(BrandContext)
     const [category, dispatchCategory] = useContext(CategoryContext)
+    const [notification, dispatch] = useContext(NotificationContext)
+
+    const notify = (message) => {
+        dispatch({
+            type: 'SET_NOTIFICATION',
+            payload: message
+        })
+        setTimeout(() => {
+            dispatch({
+                type: 'CLEAR_NOTIFICATION'
+            })
+        }, 2000)
+    }
 
     const setBrand = (brands) => {
         dispatchBrand({
@@ -65,12 +79,17 @@ const AdminProducts = () => {
 
         try {
             const category = await categoryService.create(newCategory)
+            dispatchCategory({
+                type: 'ADD_CATEGORY',
+                payload: category
+            })
             setName('')
             setDescription('')
             setImage('')
+            notify({text: `${category.name} has been added`, type: 'success'})
         }
         catch(error) {
-            console.log(error.message)
+            notify({text: `${category.name} has not been added`, type: 'error'})
         }
     }
 
@@ -85,12 +104,31 @@ const AdminProducts = () => {
 
         try {
             const brand = await brandService.create(newBrand)
+            dispatchBrand({
+                type: 'ADD_BRAND',
+                payload: brand
+            })
             setName('')
             setDescription('')
             setImage('')
+            notify({text: `${brand.name} has been added`, type: 'success'})
         }
         catch (error) {
-            console.log(error.message)
+            notify({text: ` has not been added`, type: 'error'})
+        }
+    }
+
+    const addProduct = async(event) => {
+        event.preventDefault()
+        const newProduct = {
+            name,
+            description,
+            price,
+            stock,
+            image,
+            brand,
+            category,
+            
         }
     }
 
