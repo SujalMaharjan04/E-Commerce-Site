@@ -1,19 +1,27 @@
 import UserLayout from "./layout/UserLayout"
 import AdminLogin from './page/admin/AdminLogin'
 import {Routes, Route, useNavigate} from "react-router-dom"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import loginService from './services/login'
 import AdminLayout from './layout/AdminLayout'
 import DashBoard from "./components/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
 import AdminUsers from "./page/admin/AdminUsers"
+import { UserContext} from "./context/adminContext"
 
 const App = () => {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
+  const [user, dispatchUser] = useContext(UserContext)
+
+  const setUser = (user) => {
+    dispatchUser({
+      type: 'SET_USER',
+      payload: user
+    })
+  }
 
   const handleUserChange = (event) => {
     setUsername(event.target.value)

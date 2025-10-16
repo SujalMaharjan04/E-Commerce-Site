@@ -14,7 +14,7 @@ const create = async (newBrand) => {
     if (newBrand.image) {
         formData.append('image', newBrand.image)
     }
-    const response = await api.post(baseUrl, newBrand, {
+    const response = await api.post(baseUrl, formData, {
         headers: {'Content-Type': 'multipart/form-data'}
     })
 
