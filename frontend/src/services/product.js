@@ -11,6 +11,24 @@ const create = async(newProduct) => {
     const formData = new FormData()
     formData.append('name', newProduct.name)
     formData.append('description', newProduct.description)
+    formData.append('price', (newProduct.price))
+    formData.append('stock', newProduct.stock)
+    formData.append('brand', newProduct.brand)
+    formData.append('category', newProduct.category)
+
+    if (newProduct.image) {
+        formData.append('image', newProduct.image)
+    }
+
+    const response = await api.post(baseUrl, formData)
+
+    return response.data
+}
+
+const edit  = async(id, newProduct) => {
+    const formData = new FormData()
+    formData.append('name', newProduct.name)
+    formData.append('description', newProduct.description)
     formData.append('price', newProduct.price)
     formData.append('stock', newProduct.stock)
     formData.append('brand', newProduct.brand)
@@ -20,11 +38,14 @@ const create = async(newProduct) => {
         formData.append('image', newProduct.image)
     }
 
-    const response = await api.post(baseUrl, formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-    })
+    const response = await api.put(`${baseUrl}/${id}`, formData)
 
     return response.data
 }
 
-export default {getAll, create}
+const deleteProduct = async(id) => {
+    const response = await api.delete(`${baseUrl}/${id}`)
+    return response
+}
+
+export default {getAll, create, edit, deleteProduct}

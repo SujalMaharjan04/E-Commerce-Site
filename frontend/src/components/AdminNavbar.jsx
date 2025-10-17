@@ -19,7 +19,7 @@ const AdminNavBar = () => {
                 <img src = {Calendar} alt = "calendar" className = "h-8 w-auto" />
                 <span>{currentDate}</span>
                 <div className = "flex justify-center items-center mx-4 text-xs">
-                    <button><img src = {User} alt = "user" className = "border border-solid border-2 rounded-full h-8 w-auto row-span-2"/></button>
+                    <button><img src = {User} alt = "user" className = "border border-solid border-2 rounded-full h-8 w-auto" /></button>
                 </div>
             </div>
             
