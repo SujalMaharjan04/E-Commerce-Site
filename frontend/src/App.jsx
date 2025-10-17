@@ -9,12 +9,20 @@ import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
 import AdminUsers from "./page/admin/AdminUsers"
 import { UserContext} from "./context/adminContext"
+import { NotificationContext } from "./context/NotificationContext"
 
 const App = () => {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, dispatchUser] = useContext(UserContext)
+  const [notification, dispatch] = useContext(NotificationContext)
+
+   const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500";
+    const typeStyles = {
+        success: "bg-green-500",
+        error: "bg-red-500",
+    };
 
   const setUser = (user) => {
     dispatchUser({
@@ -59,6 +67,11 @@ const App = () => {
 
   return (
     <div>
+      {notification && (
+        <div className = {`${baseStyle} ${typeStyles[notification.type]}`}>
+            {notification.text}
+        </div>)
+      }
       <Routes>
         <Route path = "/" element = {
           <UserLayout /> 
