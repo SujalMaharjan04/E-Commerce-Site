@@ -59,7 +59,7 @@ const getProductByBrand = async (req, res, next) => {
 }
 
 const addProduct = async (req, res, next) => {
-    console.log(req.user)
+
     try {
         if (req.user.role !== 'Admin') {
             return res.status(403).json({error: "Unauthorized: You can't add products"})
@@ -83,8 +83,9 @@ const addProduct = async (req, res, next) => {
 }
 
 const updateProduct = async (req, res, next) => {
+    console.log(req.params.id, req.body)
     try {
-        if (req.user.role !== 'admin') {
+        if (req.user.role !== 'Admin') {
             return res.status(403).json({error: "Unauthorized: You can't updates products"})
         }
 
@@ -98,7 +99,7 @@ const updateProduct = async (req, res, next) => {
         }
 
         if (req.file) {
-            updates[image] = req.file.path
+            updates.image = req.file.path
         }
 
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updates, {
@@ -116,7 +117,7 @@ const updateProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     try {
 
-        if (req.user.role !== 'admin') {
+        if (req.user.role !== 'Admin') {
             return res.status(403).json({error: "Unauthorized: You can't delete accounts"})
         }
         
