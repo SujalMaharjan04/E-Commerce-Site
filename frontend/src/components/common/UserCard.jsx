@@ -1,4 +1,4 @@
-import User from '../assets/icons/User.svg'
+import User from '../../assets/icons/User.svg'
 
 const UserCard = ({handleLogout}) => {
   return (

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
-import Esewa from "../assets/icons/image 1.svg"
-import Khalti from "../assets/icons/image 2.svg"
-import Facebook from "../assets/icons/Facebook.svg"
-import Instagram from "../assets/icons/Instagram.svg"
+import Esewa from "../../assets/icons/image 1.svg"
+import Khalti from "../../assets/icons/image 2.svg"
+import Facebook from "../../assets/icons/Facebook.svg"
+import Instagram from "../../assets/icons/Instagram.svg"
 
 const Footer = () => {
     return (

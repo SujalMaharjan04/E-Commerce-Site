@@ -1,7 +1,7 @@
 import { useState, useRef, useContext, useEffect } from "react"
-import AdminCategoryModalForm from "../../components/AdminCategoryModalForm"
-import AdminProductModalForm from "../../components/AdminProductModalForm"
-import Togglable from "../../components/Togglable"
+import AdminCategoryModalForm from "../../components/admin/AdminCategoryModalForm"
+import AdminProductModalForm from "../../components/admin/AdminProductModalForm"
+import Togglable from "../../components/common/Togglable"
 import categoryService from '../../services/category'
 import brandService from '../../services/brand'
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"

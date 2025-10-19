@@ -1,7 +1,7 @@
-import Logo from "../assets/image/SMwhite.png"
-import Home from '../assets/icons/Home.svg'
-import Icon from '../assets/icons/Icon.svg'
-import User from '../assets/icons/User.svg'
+import Logo from "../../assets/image/SMwhite.png"
+import Home from '../../assets/icons/Home.svg'
+import Icon from '../../assets/icons/Icon.svg'
+import User from '../../assets/icons/User.svg'
 import { Link } from "react-router-dom"
 
 const SideBar = () => {

@@ -1,5 +1,5 @@
-import SideBar from "../components/SideBar"
-import AdminNavBar from "../components/AdminNavbar"
+import SideBar from "../components/admin/SideBar"
+import AdminNavBar from "../components/admin/AdminNavbar"
 import { Outlet } from "react-router-dom"
 import { useContext } from "react"
 import {NotificationContext} from "../context/NotificationContext"

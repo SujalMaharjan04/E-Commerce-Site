@@ -1,9 +1,9 @@
-import Calendar from '../assets/icons/Calendar.svg'
+import Calendar from '../../assets/icons/Calendar.svg'
 import { useContext, useEffect, useState } from 'react'
-import User from '../assets/icons/User.svg'
-import UserCard from './UserCard'
-import { UserContext } from '../context/adminContext'
-import { NotificationContext } from '../context/NotificationContext'
+import User from '../../assets/icons/User.svg'
+import UserCard from '../common/UserCard'
+import { UserContext } from '../../context/adminContext'
+import { NotificationContext } from '../../context/NotificationContext'
 import { useNavigate } from 'react-router-dom'
 
 

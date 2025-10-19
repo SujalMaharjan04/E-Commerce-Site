@@ -1,15 +1,16 @@
 import UserLayout from "./layout/UserLayout"
+import AdminLayout from './layout/AdminLayout'
 import AdminLogin from './page/admin/AdminLogin'
-import {Routes, Route, useNavigate} from "react-router-dom"
+import {Routes, Route, useNavigate, Navigate} from "react-router-dom"
 import { useContext, useState } from "react"
 import loginService from './services/login'
-import AdminLayout from './layout/AdminLayout'
-import DashBoard from "./components/DashBoard"
+import DashBoard from "./components/admin/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
 import AdminUsers from "./page/admin/AdminUsers"
 import { UserContext} from "./context/adminContext"
 import { NotificationContext } from "./context/NotificationContext"
+import Home from "./page/user/Home"
 
 const App = () => {
   const navigate = useNavigate()
@@ -60,7 +61,19 @@ const App = () => {
     }
     }
     catch {
+      dispatch({
+        type: 'SET_NOTIFICATION',
+        payload: {
+          text: 'Login Credentials failed',
+          type: 'error'
+        }
+      })
 
+      setTimeout(() => {
+        dispatch({
+          type: 'CLEAR_NOTIFICATION'
+        })
+      }, 2000)
     }
   }
 
@@ -75,7 +88,11 @@ const App = () => {
       <Routes>
         <Route path = "/" element = {
           <UserLayout /> 
-        } />
+        }>
+          <Route path = "/" element = {
+            <Home />
+          } />
+        </Route>
 
         <Route path = "/admin" element = {
           <AdminLogin username = {username} password = {password} handleUserChange = {handleUserChange} handlePasswordChange = {handlePasswordChange} handleLogin = {handleLogin}/>
@@ -84,11 +101,17 @@ const App = () => {
         <Route path = "/admin" element = {
           <AdminLayout />
         }>
-          <Route path = "dashboard" element = {<DashBoard />} />
-          <Route path = "products" element = {<AdminProducts />}/>
-          <Route path = "orders" element = {<AdminOrders />} />
-          <Route path = "users" element = {<AdminUsers />} />
+          {user && user.role === 'Admin'
+          ? <>
+            <Route path = "dashboard" element = {<DashBoard />} />
+            <Route path = "products" element = {<AdminProducts />}/>
+            <Route path = "orders" element = {<AdminOrders />} />
+            <Route path = "users" element = {<AdminUsers />} />
+          </>
+          : <Route to = "*" element = {<Navigate to = "/invalid" replace/>} />}
         </Route>
+
+        <Route path = "/invalid" element = {<h1>Hello</h1>} />
       </Routes>
 
 

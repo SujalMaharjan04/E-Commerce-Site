@@ -1,8 +1,8 @@
 import {Link} from 'react-router-dom'
-import Logo from '../assets/image/SMwhite.png'
-import Cart from '../assets/icons/Shopping cart.svg'
-import Search from '../assets/icons/Search.svg'
-import User from '../assets/icons/User.svg'
+import Logo from '../../assets/image/SMwhite.png'
+import Cart from '../../assets/icons/Shopping cart.svg'
+import Search from '../../assets/icons/Search.svg'
+import User from '../../assets/icons/User.svg'
 import { useState } from 'react'
 
 const Navbar = () => {
