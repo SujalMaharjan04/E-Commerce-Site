@@ -8,9 +8,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {BrandContext, CategoryContext, ProductContext} from '../../context/adminContext'
 import {NotificationContext} from "../../context/NotificationContext"
 import productService from '../../services/product'
+import ProductTable from '../../components/admin/ProductTable'
+import CategoryTable from "../../components/admin/CategoryTable"
+import BrandTable from "../../components/admin/BrandTable"
 
 
 const AdminProducts = () => {
+    const [selected, setSelected] = useState('Product')
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [image, setImage] = useState('')
@@ -284,43 +288,25 @@ const AdminProducts = () => {
                         <AdminCategoryModalForm label = "Brand" name = {name} description = {description} image = {image} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} addItem = {addBrand} onCancel = {() => brandToggle.current.toggleVisibility()} buttonLabel = "+ Add Brand" />
                     </Togglable>
                 </div>
-
-                <div className = "mt-4">
-                    <table className = "w-full table-auto border-collapse border border-solid border-2 text-[#090F13]">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Sales</th>
-                                <th>Ratings</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className = "text-center">
-                            {products.map((p, index) => {
-                                return (
-                                <tr key = {p.id}>
-                                    <td>{p.name}</td>
-                                    <td>{p.category.name}</td>
-                                    <td>{p.brand.name}</td>
-                                    <td>{p.price}</td>
-                                    <td>{p.stock}</td>
-                                    <td>sales</td>
-                                    <td>ratings</td>
-                                    <td className = " text-white">
-                                        <Togglable ref = {(el) => localEditRef.current[index] = el } buttonLabel = "Edit" className = "border border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
-                                            <AdminProductModalForm buttonLabel = "Edit Product" id = {p.id} name = {p.name} description = {p.description} image = {p.image} price = {p.price} stock = {p.stock} brands = {brands} selectedBrand = {p.brand.id} categories = {category} selectedCategory = {p.category.id} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} addItem = {editItem} onCancel = {() => localEditRef.current[index]?.toggleVisibility()} />
-                                        </Togglable>
-                                        <button onClick = {() => removeProduct(p.id)} className = "border border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
-                                    </td>
-                                </tr>
-                            )})}
-                        </tbody>
-                    </table>
+                <div className = "flex justify-end items-start mr-4">
+                    <select className = "bg-white w-24" value = {selected} onChange = {(e) => setSelected(e.target.value)}>
+                        <option>Product</option>
+                        <option>Category</option>
+                        <option>Brand</option>
+                    </select>
                 </div>
+
+                {selected === 'Product' && (
+                    <ProductTable handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} />
+                )}
+
+                {selected === 'Category' && (
+                    <CategoryTable />
+                )}
+
+                {selected === 'Brand' && (
+                    <BrandTable />
+                )}
         </div>
     )
 }
