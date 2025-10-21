@@ -15,7 +15,7 @@ brandRouter.post('/', tokenExtractor, userExtractor, uploads.single('image'), ad
 brandRouter.get('/:id', tokenExtractor, userExtractor, getOneBrand)
 
 //Route to update Brand
-brandRouter.put('/:id', tokenExtractor, userExtractor, updateBrand)
+brandRouter.put('/:id', tokenExtractor, userExtractor, uploads.single('image'), updateBrand)
 
 //Route to delete Brand
 brandRouter.delete('/:id', tokenExtractor, userExtractor, deleteBrand)
