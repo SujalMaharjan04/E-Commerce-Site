@@ -72,7 +72,6 @@ const AdminProducts = () => {
     const brandToggle = useRef()
     const categoryToggle = useRef()
     const productToggle = useRef()
-    const localEditRef = useRef([])
     
 
     //Set Function for useState
@@ -140,25 +139,7 @@ const AdminProducts = () => {
         }
     })
 
-    //Mutation Function for Product Edit
-    const editProduct = useMutation({
-        mutationFn: ({id, newProduct}) => productService.edit(id, newProduct),
-        onSuccess: (updatedProduct) => {
-            dispatchProducts({
-                type: "UPDATE_PRODUCTS",
-                payload: {
-                    id: updatedProduct.id,
-                    newProduct: updatedProduct
-                }
-            })
-            notify({text: `${updatedProduct.name} has been edited`, type: 'success'})
-            query.invalidateQueries({queryKey: ['product']})
-            
-        },
-        onError: (updateProduct) => {
-            notify({text: `${updatedProduct.name} update failed`, type: 'error'})
-        }
-    })
+
 
     //Function to add Category
     const addCategory = async(event) => {
@@ -220,35 +201,7 @@ const AdminProducts = () => {
             
     }
 
-    //Function to edit Product
-    const editItem = async(id, newProduct) => {
-        await editProduct.mutateAsync({id, newProduct})
-        localEditRef.current.toggleVisibility()
-    }
 
-    //Mutation to delete Product
-    const remove = useMutation({
-        mutationFn: (id) => productService.deleteProduct(id),
-        onSuccess: (id) => {
-            dispatchProducts({
-                type: 'DELETE_PRODUCT',
-                payload: id
-            })
-            notify({text: `Deletion Successful`, type: 'success'})
-            query.invalidateQueries({queryKey: ['product']})
-        },
-        onError: () => {
-            notify({text: `Delete Unsuccessful`, type: 'error'})
-        }
-    })
-   
-    //Function to delete Product
-    const removeProduct = async(id) => {
-        if (window.confirm('Do you want to delete this product?'))  {
-            await remove.mutateAsync(id)
-        }
-        
-    }
 
     //Setting the brand, category and product data to state
     useEffect(() => {
@@ -305,7 +258,7 @@ const AdminProducts = () => {
                 )}
 
                 {selected === 'Brand' && (
-                    <BrandTable />
+                    <BrandTable handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage}/>
                 )}
         </div>
     )
