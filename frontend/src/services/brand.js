@@ -21,4 +21,22 @@ const create = async (newBrand) => {
     return response.data
 }
 
-export default {getAll, create}
+const edit = async(id, newProduct) => {
+    const formData = new FormData()
+    formData.append('name', newProduct.name)
+    formData.append('description', newProduct.description)
+    
+    if (newProduct.image) {
+        formData.append('image', newProduct.image)
+    }
+
+    const response = await api.put(`${baseUrl}/${id}`, formData)
+    return response.data
+}
+
+const deleteBrand = async(id) => {
+    const response = await api.delete(`${baseUrl}/${id}`)
+    return response.data
+}
+
+export default {getAll, create, edit, deleteBrand}
