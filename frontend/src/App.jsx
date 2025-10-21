@@ -2,7 +2,7 @@ import UserLayout from "./layout/UserLayout"
 import AdminLayout from './layout/AdminLayout'
 import AdminLogin from './page/admin/AdminLogin'
 import {Routes, Route, useNavigate, Navigate} from "react-router-dom"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import loginService from './services/login'
 import DashBoard from "./components/admin/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
@@ -18,6 +18,14 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [user, dispatchUser] = useContext(UserContext)
   const [notification, dispatch] = useContext(NotificationContext)
+
+  useEffect(() => {
+    const loggedAppAdmin = window.localStorage.getItem('loggedAppAdmin')
+    if (loggedAppAdmin) {
+      const user = JSON.parse(loggedAppAdmin)
+      dispatchUser({type: 'SET_USER', payload: user})
+    }
+  }, [dispatchUser])
 
    const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500";
     const typeStyles = {
