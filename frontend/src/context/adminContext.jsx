@@ -33,6 +33,13 @@ const brandReducer = (state, action) => {
         case "ADD_BRAND":
             return [...state, action.payload]
 
+        case "UPDATE_PRODUCT":
+            return state.map(p => p.id === action.payload.id ? action.payload.updatedBrand : p)
+
+        case "DELETE_PRODUCT":
+            return state.filter(p => p.id !== action.payload.id)
+
+
         default: 
             return state
     }
