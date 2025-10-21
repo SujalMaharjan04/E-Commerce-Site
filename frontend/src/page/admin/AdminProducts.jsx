@@ -142,14 +142,8 @@ const AdminProducts = () => {
 
 
     //Function to add Category
-    const addCategory = async(event) => {
-        event.preventDefault()
+    const addCategory = async(newCategory) => {
         categoryToggle.current.toggleVisibility()
-        const newCategory = {
-            name,
-            description,
-            image
-        }
 
         try {
             const category = await categoryService.create(newCategory)
@@ -168,14 +162,8 @@ const AdminProducts = () => {
     }
 
     //Function to add Brand
-    const addBrand = async(event) => {
-        event.preventDefault()
+    const addBrand = async(newBrand) => {
         brandToggle.current.toggleVisibility()
-        const newBrand = {
-            name, 
-            description, 
-            image
-        }
 
         try {
             const brand = await brandService.create(newBrand)

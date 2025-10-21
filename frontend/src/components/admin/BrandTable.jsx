@@ -48,7 +48,7 @@ const  BrandTable = (props) => {
 
     const remove = useMutation({
         mutationFn: (id) => brandService.deleteBrand(id),
-        onSuccess: (id) => {
+        onSuccess: (_,id) => {
             setBrand({
                 type: "DELETE_BRAND",
                 payload: id
@@ -92,6 +92,7 @@ const  BrandTable = (props) => {
                         <th>Name</th>
                         <th>description</th>
                         <th>Image</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody className = "text-center">

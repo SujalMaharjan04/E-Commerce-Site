@@ -39,17 +39,13 @@ const AdminCategoryModalForm = (props) => {
         const newProduct = {
             name: formData.name,
             description: formData.description,
-            price: Number(formData.price),
-            stock: Number(formData.stock),
             image: formData.image,
-            brand: formData.selectedBrand,
-            category: formData.selectedCategory,
         }
 
         if (props.id) {
             props.addItem(props.id, newProduct)
         } else {
-            props.addItem(event, newProduct)
+            props.addItem(newProduct)
         }
     }
     

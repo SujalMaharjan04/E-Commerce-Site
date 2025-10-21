@@ -22,4 +22,22 @@ const create = async(newCategory) => {
     return response.data
 }
 
-export default {getAll, create}
+const edit = async(id, newCategory) => {
+    const formData = new FormData()
+    formData.append('name', newCategory.name)
+    formData.append('description', newCategory.description)
+
+    if (newCategory.image) {
+        formData.append('image', newCategory.image)
+    }
+
+    const response = await api.put(`${baseUrl}/${id}`, formData)
+    return response.data
+}
+
+const deleteCategory = async(id) => {
+    const response = await api.delete(`${baseUrl}/${id}`)
+    return response.data
+}
+
+export default {getAll, create, edit, deleteCategory}
