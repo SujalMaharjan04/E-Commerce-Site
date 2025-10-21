@@ -98,15 +98,15 @@ const ProductTable = (props) => {
                         return (
                         <tr key = {p.id}>
                             <td>{p.name}</td>
-                            <td>{p.category.name}</td>
-                            <td>{p.brand.name}</td>
+                            <td>{p.category?.name || '-'}</td>
+                            <td>{p.brand?.name || '-'}</td>
                             <td>{p.price}</td>
                             <td>{p.stock}</td>
                             <td>sales</td>
                             <td>ratings</td>
                             <td className = " text-white">
                                 <Togglable ref = {(el) => localEditRef.current[index] = el } buttonLabel = "Edit" className = "border border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
-                                    <AdminProductModalForm buttonLabel = "Edit Product" id = {p.id} name = {p.name} description = {p.description} image = {p.image} price = {p.price} stock = {p.stock} brands = {brands} selectedBrand = {p.brand.id} categories = {category} selectedCategory = {p.category.id} handleName = {props.handleName} handleDescription = {props.handleDescription} handleImage = {props.handleImage} handlePrice = {props.handlePrice} handleStock = {props.handleStock} handleBrand = {props.handleBrand} handleCategory = {props.handleCategory} addItem = {editItem} onCancel = {() => localEditRef.current[index]?.toggleVisibility()} />
+                                    <AdminProductModalForm buttonLabel = "Edit Product" id = {p.id} name = {p.name} description = {p.description} image = {p.image} price = {p.price} stock = {p.stock} brands = {brands} selectedBrand = {p.brand?.id || ''} categories = {category} selectedCategory = {p.category?.id || ''} handleName = {props.handleName} handleDescription = {props.handleDescription} handleImage = {props.handleImage} handlePrice = {props.handlePrice} handleStock = {props.handleStock} handleBrand = {props.handleBrand} handleCategory = {props.handleCategory} addItem = {editItem} onCancel = {() => localEditRef.current[index]?.toggleVisibility()} />
                                 </Togglable>
                                 <button onClick = {() => removeProduct(p.id)} className = "border border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
                             </td>
