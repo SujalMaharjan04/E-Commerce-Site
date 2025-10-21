@@ -15,7 +15,7 @@ categoryRouter.post('/', tokenExtractor, userExtractor, upload.single('image'), 
 categoryRouter.get('/:id', categoryController.getOneCategory)
 
 //Route to update category
-categoryRouter.put('/:id', tokenExtractor, userExtractor, categoryController.updateCategory)
+categoryRouter.put('/:id', tokenExtractor, userExtractor, upload.single('image'), categoryController.updateCategory)
 
 //Route to delete category
 categoryRouter.delete('/:id', tokenExtractor, userExtractor, categoryController.deleteCategory)

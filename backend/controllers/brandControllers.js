@@ -57,7 +57,7 @@ const deleteBrand = async(req, res, next) => {
             return res.status(404).json({error: 'Brand not Found'})
         }
 
-        return res.status(203).json({message: 'Brand Deleted'})
+        return res.status(200).json({message: 'Brand Deleted'})
     }
 
     catch(error) {

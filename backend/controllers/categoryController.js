@@ -58,7 +58,7 @@ const deleteCategory = async(req, res, next) => {
             return res.status(404).json({error: 'Category not Found'})
         }
 
-        return res.status(203).json({message: 'Category Deleted'})
+        return res.status(200).json({message: 'Category Deleted'})
     }
 
     catch(error) {
