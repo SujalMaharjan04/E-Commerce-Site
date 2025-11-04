@@ -3,7 +3,7 @@ import {Star} from 'lucide-react'
 const ProductCard = (props) => {
     const maxStar = 5
     return (
-        <div className = "flex flex-col w-[20%] shadow-xl/50">
+        <div className = "flex flex-col w-[20%] shadow-xl/50 mb-10 ">
             <div className = "flex justify-center">
                 <img src = {laptop} alt = "laptop" className = "h-60 w-auto" />
             </div>
