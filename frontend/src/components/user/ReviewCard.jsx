@@ -15,7 +15,7 @@ const ReviewCard = () => {
                         <img
                             src={Laptop}
                             alt="Laptop"
-                            className="h-60 w-auto object-contain rounded-lg"
+                            className="h-60 w-auto object-contain rounded-lg shadow-xl/50"
                         />
                     </div>
 
