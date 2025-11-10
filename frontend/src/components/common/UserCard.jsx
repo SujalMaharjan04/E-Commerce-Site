@@ -1,6 +1,8 @@
 import User from '../../assets/icons/User.svg'
+import { useLogout } from '../../hooks/useLogout'
 
-const UserCard = ({handleLogout}) => {
+const UserCard = () => {
+  const {handleLogout} = useLogout()
   return (
     <div className="fixed top-12 right-8 z-30 border border-solid border-2 flex flex-col items-center justify-between h-48 w-48 bg-white hidden group-hover:flex rounded-xl shadow-lg">
       <div className="grid grid-cols-2 gap-2 p-4 text-center">

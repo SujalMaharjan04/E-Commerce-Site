@@ -19,27 +19,7 @@ const AdminNavBar = () => {
         setCurrenDate(now.toLocaleDateString('en-IN', options))
     }, [])
 
-    const handleLogout = () => {
-        dispatchUser({
-            type: 'CLEAR_USER'
-        })
-
-        window.localStorage.removeItem('loggedAppAdmin')
-        navigate('/admin')
-        dispatch({
-            type: "SET_NOTIFICATION",
-            payload: {
-                text: 'You have logged out',
-                type: 'success'
-            }
-        })
-
-        setTimeout(() => {
-            dispatch({
-                type: 'CLEAR_NOTIFICATION'
-            })
-        }, 2000)
-    }
+    
 
     return (
         <div className = "bg-gray flex justify-between items-center text-[#090F13] min-h-14">
@@ -49,7 +29,7 @@ const AdminNavBar = () => {
                 <span>{currentDate}</span>
                 <div className = "group">
                     <button><img src = {User} alt = "user" className = " border border-solid border-2 rounded-full h-8 w-auto m-4" /></button>
-                    <UserCard handleLogout = {handleLogout} />
+                    <UserCard/>
                 </div>
             </div>
             

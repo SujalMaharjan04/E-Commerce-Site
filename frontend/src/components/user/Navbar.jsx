@@ -3,12 +3,14 @@ import Logo from '../../assets/image/SMwhite.png'
 import Cart from '../../assets/icons/Shopping cart.svg'
 import Search from '../../assets/icons/Search.svg'
 import User from '../../assets/icons/User.svg'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Togglable from '../common/Togglable'
 import UserLoginForm from './UserLoginForm'
+import { UserContext } from '../../context/adminContext'
 
 const Navbar = () => {
     const [view, setView] = useState(false)
+    const [user, dispatchUser] = useContext(UserContext) 
     const toggleSearchBar = () => {
         setView(!view)
     }
@@ -27,9 +29,11 @@ const Navbar = () => {
                 {view ? <input type = "text" name = "search" placeholder = "Search" className = "absolute right-32 z-10 bg-white lg:h-8 lg:w-64 lg:rounded-lg lg:px-4 placeholder-[#090F13] placeholder:font-bold text-[#090F13] lg:2xl" /> : ""}
                 <button onClick={toggleSearchBar}><img src = {Search} alt = "search" className = "h-6 w-auto" /> </button>
                 <Link to = "/cart"><img src = {Cart} alt = "cart" className = "h-6 w-auto" /> </Link>
-                <Togglable trigger = {<img src = {User} alt = "user" className = "h-6 w-auto" />}>
-                    <UserLoginForm />
-                </Togglable> 
+                {user 
+                    ? <button><img src = {User} alt = "user" className = "h-6 w-auto" /></button>
+                    : <Togglable trigger = {<img src = {User} alt = "user" className = "h-6 w-auto" />}>
+                        <UserLoginForm />
+                    </Togglable>}
             </div>
         </div>
     )

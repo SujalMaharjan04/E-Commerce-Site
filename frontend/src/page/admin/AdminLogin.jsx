@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
+import { useLogin } from "../../hooks/useLogin"
 
 
-const AdminLogin = ({username, password, handleUserChange, handlePasswordChange, handleLogin}) => {
-    
+const AdminLogin = () => {
+    const {username, password, handleUserChange, handlePasswordChange, handleLogin} = useLogin('/admin/dashboard')
     return (
         <div className = "flex flex-col items-center justify-center min-h-screen bg-[#EFEBCE] text-xl text-[#090F13]">
             <form onSubmit = {handleLogin} className = "lg:border border-solid rounded-2xl shadow-xl/30 flex flex-col justify-center items-center h-80 w-80  bg-[#BFC7E2] transform -translate-y-20">
