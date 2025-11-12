@@ -11,23 +11,21 @@ import AdminUsers from "./page/admin/AdminUsers"
 import { UserContext} from "./context/adminContext"
 import { NotificationContext } from "./context/NotificationContext"
 import Home from "./page/user/Home"
+import Product from "./services/product"
 
 const App = () => {
-  const navigate = useNavigate()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const [user, dispatchUser] = useContext(UserContext)
   const [notification, dispatch] = useContext(NotificationContext)
 
   useEffect(() => {
-    const loggedAppAdmin = window.localStorage.getItem('loggedAppAdmin')
+    const loggedAppAdmin = window.localStorage.getItem('loggedApp')
     if (loggedAppAdmin) {
       const user = JSON.parse(loggedAppAdmin)
       dispatchUser({type: 'SET_USER', payload: user})
     }
   }, [dispatchUser])
 
-   const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500";
+  const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500";
     const typeStyles = {
         success: "bg-green-500",
         error: "bg-red-500",
@@ -40,50 +38,7 @@ const App = () => {
     })
   }
 
-  const handleUserChange = (event) => {
-    setUsername(event.target.value)
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
-
-  const handleLogin = async(event) => {
-    event.preventDefault()
-    try {
-    if (!username || !password) {
-        console.log('Username and Password Required')
-    }
-    const user = await loginService.login({username, password})
-    window.localStorage.setItem(
-        'loggedAppAdmin', JSON.stringify(user)
-    )
-    setUser(user)
-    setUsername("")
-    setPassword("")
-
-    if (user.token && user.role === 'Admin') {
-      navigate('/admin/dashboard')
-    } else {
-      alert('Invalid Credentials')
-    }
-    }
-    catch {
-      dispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
-          text: 'Login Credentials failed',
-          type: 'error'
-        }
-      })
-
-      setTimeout(() => {
-        dispatch({
-          type: 'CLEAR_NOTIFICATION'
-        })
-      }, 2000)
-    }
-  }
+  
 
 
   return (
@@ -100,10 +55,13 @@ const App = () => {
           <Route path = "/" element = {
             <Home />
           } />
+          <Route path = "/product" element = {
+            <Product />
+          } />
         </Route>
 
         <Route path = "/admin" element = {
-          <AdminLogin username = {username} password = {password} handleUserChange = {handleUserChange} handlePasswordChange = {handlePasswordChange} handleLogin = {handleLogin}/>
+          <AdminLogin />
         } />
       
         <Route path = "/admin" element = {
