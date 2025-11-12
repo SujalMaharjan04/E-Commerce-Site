@@ -24,10 +24,7 @@ const Togglable = forwardRef((props, ref) => {
             </div>
 
             {visible && (
-                <div
-                    className="fixed inset-0 bg-black/40 flex justify-center items-center z-50"
-                    onClick={toggleVisibility} // click outside to close
-                >
+                <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
                     <div
                         className="bg-white w-[90%] md:w-[60%] lg:w-[40%] max-h-[90vh] overflow-y-auto rounded-2xl p-6 shadow-lg relative"
                         onClick={(e) => e.stopPropagation()} // prevent close on modal click
