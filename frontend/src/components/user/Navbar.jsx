@@ -5,8 +5,8 @@ import Search from '../../assets/icons/Search.svg'
 import User from '../../assets/icons/User.svg'
 import { useState, useContext } from 'react'
 import Togglable from '../common/Togglable'
-import UserLoginForm from './UserLoginForm'
 import { UserContext } from '../../context/adminContext'
+import AuthPage from './AuthPage'
 
 const Navbar = () => {
     const [view, setView] = useState(false)
@@ -32,7 +32,7 @@ const Navbar = () => {
                 {user 
                     ? <button><img src = {User} alt = "user" className = "h-6 w-auto" /></button>
                     : <Togglable trigger = {<img src = {User} alt = "user" className = "h-6 w-auto" />}>
-                        <UserLoginForm />
+                        <AuthPage />
                     </Togglable>}
             </div>
         </div>
