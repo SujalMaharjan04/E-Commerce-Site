@@ -13,7 +13,7 @@ export const useLogout = () => {
             type: 'CLEAR_USER'
         })
 
-        window.localStorage.removeItem('loggedAppAdmin')
+        window.localStorage.removeItem('loggedApp')
         const redirectPath = user.role === 'Admin' ? '/admin' : '/'
         navigate(redirectPath)
         dispatch({

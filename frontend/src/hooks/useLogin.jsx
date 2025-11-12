@@ -4,20 +4,12 @@ import { UserContext } from "../context/adminContext";
 import { NotificationContext } from "../context/NotificationContext";
 import loginService from '../services/login'
 
-export const useLogin = (redirectPath) => {
+export const useLogin = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [user, dispatchUser] = useContext(UserContext)
     const [notification, dispatch] = useContext(NotificationContext)
     const navigate = useNavigate()
-
-    const handleUserChange = (event) => {
-        setUsername(event.target.value)
-    }
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value)
-    }
 
     const handleLogin = async(event) => {
         event.preventDefault()
@@ -30,38 +22,54 @@ export const useLogin = (redirectPath) => {
             setTimeout(() => {
                 dispatch({type: "CLEAR_NOTIFICATION"})
             }, 2000)
+            return
         }
         const user = await loginService.login({username, password})
+
+        if (!user || !user.token) {
+            dispatch({
+                type: 'SET_NOTIFICATION',
+                payload: {text: "Invalid Credentials", type: "error"}
+            })
+
+            setTimeout(() => {
+                dispatch({
+                    type: "CLEAR_NOTIFICATION"
+                })
+            }, 2000)
+            return 
+        }
+
         window.localStorage.setItem(
-            'loggedAppAdmin', JSON.stringify(user)
+            'loggedApp', JSON.stringify(user)
         )
         dispatchUser({type: 'SET_USER', payload: user})
         setUsername("")
         setPassword("")
 
-        if (user.token) {
-            // navigate('/admin/dashboard')
-            navigate(redirectPath)
-        }  else {
-            alert('Invalid Credentials')
+        if (user.role === 'Admin') {
+            navigate('/admin/dashboard')
+        }  
+        else {
+            navigate('/')
         }
         }
         catch {
-        dispatch({
-            type: 'SET_NOTIFICATION',
-            payload: {
-            text: 'Login Credentials failed',
-            type: 'error'
-            }
-        })
-
-        setTimeout(() => {
             dispatch({
-            type: 'CLEAR_NOTIFICATION'
+                type: 'SET_NOTIFICATION',
+                payload: {
+                text: 'Login Credentials failed',
+                type: 'error'
+                }
             })
-        }, 2000)
+
+            setTimeout(() => {
+                dispatch({
+                type: 'CLEAR_NOTIFICATION'
+                })
+            }, 2000)
         }
     }
 
-    return {username, handleUserChange, password, handlePasswordChange, handleLogin }
+    return {username, setUsername, password, setPassword, handleLogin }
 }
