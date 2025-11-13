@@ -6,6 +6,9 @@ const authRouter = require('express').Router()
 authRouter.post('/signup', authController.signUp)
 
 //Route for logging in user
-authRouter.post('/login', authController.login)
+authRouter.post('/login/user', authController.login)
+
+//Route for loggin in admin
+authRouter.post('/login/admin', authController.login)
 
 module.exports = authRouter

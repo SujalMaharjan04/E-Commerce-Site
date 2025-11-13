@@ -30,6 +30,14 @@ const login = async(req, res) => {
     const passwordCorrect = await bcrypt.compare(password, user.passwordHash)
 
     if (!passwordCorrect) return res.status(401).json({error: 'Invalid Credentials'})
+
+    if (req.path === '/login/user' && user.role !== 'Customer') {
+        return res.status(403).json({error: "You can't Access this"})
+    }
+
+    if (req.path === '/login/admin' && user.role !== 'Admin') {
+        return res.status(403).json({error: "You can't Access this"})
+    }
     
     const token = jwt.sign({
         id: user.id,
