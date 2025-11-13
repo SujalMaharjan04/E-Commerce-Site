@@ -25,7 +25,7 @@ const App = () => {
     }
   }, [dispatchUser])
 
-  const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500";
+  const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500 z-99";
     const typeStyles = {
         success: "bg-green-500",
         error: "bg-red-500",
