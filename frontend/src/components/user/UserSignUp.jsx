@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Input from "../common/Input";
+import userService from '../../services/user'
+import { NotificationContext } from "../../context/NotificationContext";
 
 // Review Components
 const Review = ({label, value}) => {
@@ -11,9 +13,10 @@ const Review = ({label, value}) => {
     )
 }
 
-const UserSignUp = ({onSwitch}) => {
+const UserSignUp = ({onSwitch, onClose}) => {
     const [steps, setSteps] = useState(0)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [notification, dispatch] = useContext(NotificationContext)
 
     const [form, setForm] = useState({
         //Personal Info
@@ -24,11 +27,13 @@ const UserSignUp = ({onSwitch}) => {
         phoneNumber: "",
         
         //Address
-        country: "",
-        city: "",
-        state: "",
-        zip: "",
-        street: "",
+        address: { 
+            country: "",
+            city: "",
+            state: "",
+            zip: "",
+            street: ""
+        },
 
         //Account
         username: "",
@@ -46,17 +51,17 @@ const UserSignUp = ({onSwitch}) => {
             if (!f.firstName.trim()) err.firstName = "First Name is required";
             if (!f.lastName.trim()) err.lastName = "Last Name is required";
             if (!/^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/.test(f.email)) err.email = "Enter a Valid Email";
-            if (!/^\+[0-9]{10,15}$/.test(f.phoneNumber)) err.phoneNumber = "Enter a Valid Phone Number";
+            if (!/^\+?[0-9]{10,15}$/.test(f.phoneNumber)) err.phoneNumber = "Enter a Valid Phone Number";
             return err
         },
 
         //Address
         (f) => {
             const err = {}
-            if (!f.country.trim()) err.country = "Country is required";
-            if (!f.city.trim()) err.city = "City is required";
-            if (!f.state.trim()) err.state = "State is required";
-            if (!f.street.trim()) err.street = "Street is required";
+            if (!f.address.country.trim()) err.country = "Country is required";
+            if (!f.address.city.trim()) err.city = "City is required";
+            if (!f.address.state.trim()) err.state = "State is required";
+            if (!f.address.street.trim()) err.street = "Street is required";
             return err
         },
 
@@ -84,7 +89,19 @@ const UserSignUp = ({onSwitch}) => {
 
     //Function to Update Fields when user makes changes
     const updateFields = (key, value) => {
-        setForm((p) => ({...p, [key]: value}))
+        setForm((p) => {
+            if (["country", "city", "state", "zip", "street"].includes(key)) {
+                return {
+                    ...p,
+                    address: {
+                        ...p.address,
+                        [key]: value
+                    }
+                }
+            }
+
+            return {...p, [key]: value}
+        })
         setErrors((e) => ({...e, [key]: undefined}))
     }
 
@@ -125,11 +142,49 @@ const UserSignUp = ({onSwitch}) => {
 
         setIsSubmitting(true)
         try{
+            await userService.signUp(form)
+            setForm({
+                firstName: "",
+                middleName: "",
+                lastName: "",
+                email: "",
+                phoneNumber: "",
+                address: {
+                    country: "",
+                    city: "",
+                    state: "",
+                    zip: "",
+                    street: ""
+                },
+                username: "",
+                password: "",
+                repeatPassword: "",
+                terms: false
+            })
+            setErrors({})
+            setSteps(0)
+            dispatch({
+                type: "SET_NOTIFICATION",
+                payload: {text: "User Sign Up Successful", type: "success"}
+            })
 
+            setTimeout(() => {
+                dispatch({type: "CLEAR_NOTIFICATION"})
+            }, 2000)
+            if (onClose) onClose()
         }
-        catch {
+        catch (error) {
+            console.log(error)
+            dispatch({
+                type: 'SET_NOTIFICATION',
+                payload: {text: 'User Sign Up Failed', type: "error"}
+            })
 
+            setTimeout(() => {
+                dispatch({type: 'CLEAR_NOTIFICATION'})
+            }, 2000)
         }
+        
 
         finally {
             setIsSubmitting(false)
@@ -213,28 +268,28 @@ const UserSignUp = ({onSwitch}) => {
                             <div className = "grid grid-cols-2 gap-4">
                                 <Input 
                                     label = "Country"
-                                    value = {form.country}
+                                    value = {form.address.country}
                                     onChange = {(v) => updateFields("country", v)}
                                     error = {errors.country}
                                     name = "country"
                                 />
                                 <Input 
                                     label = "City"
-                                    value = {form.city}
+                                    value = {form.address.city}
                                     onChange = {(v) => updateFields("city", v)}
                                     error = {errors.city}
                                     name = "city"
                                 />
                                 <Input 
                                     label = "State"
-                                    value = {form.state}
+                                    value = {form.address.state}
                                     onChange = {(v) => updateFields("state", v)}
                                     error = {errors.state}
                                     name = "state"
                                 />
                                 <Input 
                                     label = "ZIP"
-                                    value = {form.zip}
+                                    value = {form.address.zip}
                                     onChange = {(v) => updateFields("zip", v)}
                                     name = "zip"
                                     type = "number"
@@ -243,7 +298,7 @@ const UserSignUp = ({onSwitch}) => {
                             <div className = "mt-4">
                                 <Input 
                                     label = "Street"
-                                    value = {form.street}
+                                    value = {form.address.street}
                                     onChange = {(v) => updateFields("street", v)}
                                     error = {errors.street}
                                     name = "street"
@@ -289,17 +344,17 @@ const UserSignUp = ({onSwitch}) => {
                     <section style = {{display: `${steps === 3 ? "block" : "none"}`}}>
                         <h3 className = "text-lg font-medium mb-4">Review & Submit:</h3>
                             <div className = "grid grid-cols-1 gap-4">
-                                <Review label = "Name" value = {`${form.firstName} ${form.middleName ?? ""} ${form.lastName}`} />
+                                <Review label = "Name" value = {`${form.firstName} ${form.middleName || ""} ${form.lastName}`} />
                                 <Review label = "Email" value = {`${form.email}`} />
                                 <Review label = "Phone Number" value = {`${form.phoneNumber}`} />
-                                <Review label = "Address" value = {`${form.country}, ${form.city}, ${form.state}, ${form.zip ?? ""} ${form.street}`} />
+                                <Review label = "Address" value = {`${form.address.country}, ${form.address.city}, ${form.address.state}, ${form.address.zip || ""} ${form.address.street}`} />
                                 <Review label = "Username" value = {`${form.username}`} />
                                 
                                 <div className = "flex items-center gap-4 mt-2">
                                     <input type = "checkbox" checked = {form.terms} onChange = {(e) => updateFields("terms", e.target.checked)} />
                                     <span className = "text-xs text-gray-700">I accept the Terms and Condition</span>
                                 </div>
-                                {errors && (
+                                {errors.terms && (
                                     <span className = "text-xs text-red-600">{errors.terms}</span>
                                 )}
                             </div>

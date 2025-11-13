@@ -57,7 +57,8 @@ export const useLogin = (isAdmin = false) => {
             navigate('/')
         }
         }
-        catch {
+        catch (err) {
+            console.log(err)
             dispatch({
                 type: 'SET_NOTIFICATION',
                 payload: {

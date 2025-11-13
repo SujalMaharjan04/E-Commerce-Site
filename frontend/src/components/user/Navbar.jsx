@@ -7,6 +7,7 @@ import { useState, useContext } from 'react'
 import Togglable from '../common/Togglable'
 import { UserContext } from '../../context/adminContext'
 import AuthPage from './AuthPage'
+import UserCard from '../common/UserCard'
 
 const Navbar = () => {
     const [view, setView] = useState(false)
@@ -30,8 +31,12 @@ const Navbar = () => {
                 <button onClick={toggleSearchBar}><img src = {Search} alt = "search" className = "h-6 w-auto" /> </button>
                 <Link to = "/cart"><img src = {Cart} alt = "cart" className = "h-6 w-auto" /> </Link>
                 {user 
-                    ? <button><img src = {User} alt = "user" className = "h-6 w-auto" /></button>
-                    : <Togglable trigger = {<img src = {User} alt = "user" className = "h-6 w-auto" />}>
+                    ? <div className = "group">
+                        <button><img src = {User} alt = "user" className = "h-6 w-auto" /></button>
+                        <UserCard />
+                    </div>
+                        
+                    : <Togglable trigger = {<img src = {User} alt = "user" className = "h-6 w-auto hover:cursor-pointer" />}>
                         <AuthPage />
                     </Togglable>}
             </div>

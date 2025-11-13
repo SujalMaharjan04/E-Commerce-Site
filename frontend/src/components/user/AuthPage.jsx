@@ -7,7 +7,7 @@ const AuthPage = () => {
 
     return (
         <div>
-            {signUpPage ? (<UserSignUp onSwitch = {() => setSignUpPage(false)} />)
+            {signUpPage ? (<UserSignUp onSwitch = {() => setSignUpPage(false)} onClose = {() => setSignUpPage(false)} />)
                         : (<UserLoginForm onSwitch={() => setSignUpPage(true)} />)}
         </div>
     )
