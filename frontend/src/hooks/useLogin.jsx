@@ -4,12 +4,13 @@ import { UserContext } from "../context/adminContext";
 import { NotificationContext } from "../context/NotificationContext";
 import loginService from '../services/login'
 
-export const useLogin = () => {
+export const useLogin = (isAdmin = false) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [user, dispatchUser] = useContext(UserContext)
     const [notification, dispatch] = useContext(NotificationContext)
     const navigate = useNavigate()
+
 
     const handleLogin = async(event) => {
         event.preventDefault()
@@ -24,7 +25,9 @@ export const useLogin = () => {
             }, 2000)
             return
         }
-        const user = await loginService.login({username, password})
+        const user = isAdmin 
+            ? await loginService.adminLogin({username, password})
+            : await loginService.userLogin({username, password})
 
         if (!user || !user.token) {
             dispatch({

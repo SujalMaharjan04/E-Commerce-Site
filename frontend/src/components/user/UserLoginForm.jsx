@@ -2,7 +2,7 @@ import { useLogin } from "../../hooks/useLogin"
 import Input from "../common/Input"
 
 const UserLoginForm = ({onSwitch}) => {
-    const {username, password, setUsername, setPassword, handleLogin} = useLogin('/')
+    const {username, password, setUsername, setPassword, handleLogin} = useLogin(false)
     return (
         <div>
             <h2 className = "font-semibold text-2xl text-center">Log In</h2>
