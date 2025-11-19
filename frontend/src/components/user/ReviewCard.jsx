@@ -28,14 +28,14 @@ const ReviewCard = () => {
                             Despite its slim and lightweight design, it feels sturdy and
                             uncompromising in quality.
                         </p>
-                         <div>
+                        <div>
                             <button>Read More ...</button>
                         </div>
 
                         <p className = "pt-4">Reviewed By: Ram</p>
                     </div>
 
-                   
+                
                 </div>
             </div>
         </div>

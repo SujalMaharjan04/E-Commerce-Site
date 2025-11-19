@@ -22,7 +22,7 @@ const ProductCard = (props) => {
             </div>
 
             <div className = "flex justify-center items-center">
-                <button className = "border border-solid border-2 bg-[#E09F75] w-[70%] rounded-xl my-5 h-8 hover:bg-[#DF8E64]">Add To Cart</button>
+                <button className = " border-solid border-2 bg-[#E09F75] w-[70%] rounded-xl my-5 h-8 hover:bg-[#DF8E64]">Add To Cart</button>
             </div>
         </div>
     )

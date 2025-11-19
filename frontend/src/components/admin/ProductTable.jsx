@@ -80,7 +80,7 @@ const ProductTable = (props) => {
     }
     return (
         <div className = "mt-4">
-            <table className = "w-full table-auto border-collapse border border-solid border-2 text-[#090F13]">
+            <table className = "w-full table-auto border-collapse  border-solid border-2 text-[#090F13]">
                 <thead>
                     <tr>
                         <th>Product</th>
@@ -105,10 +105,10 @@ const ProductTable = (props) => {
                             <td>sales</td>
                             <td>ratings</td>
                             <td className = " text-white">
-                                <Togglable ref = {(el) => localEditRef.current[index] = el } buttonLabel = "Edit" className = "border border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
+                                <Togglable ref = {(el) => localEditRef.current[index] = el } buttonLabel = "Edit" className = " border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
                                     <AdminProductModalForm buttonLabel = "Edit Product" id = {p.id} name = {p.name} description = {p.description} image = {p.image} price = {p.price} stock = {p.stock} brands = {brands} selectedBrand = {p.brand?.id || ''} categories = {category} selectedCategory = {p.category?.id || ''} handleName = {props.handleName} handleDescription = {props.handleDescription} handleImage = {props.handleImage} handlePrice = {props.handlePrice} handleStock = {props.handleStock} handleBrand = {props.handleBrand} handleCategory = {props.handleCategory} addItem = {editItem} onCancel = {() => localEditRef.current[index]?.toggleVisibility()} />
                                 </Togglable>
-                                <button onClick = {() => removeProduct(p.id)} className = "border border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
+                                <button onClick = {() => removeProduct(p.id)} className = " border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
                             </td>
                         </tr>
                     )})}

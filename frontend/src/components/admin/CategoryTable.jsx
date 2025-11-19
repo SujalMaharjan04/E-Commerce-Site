@@ -86,7 +86,7 @@ const  CategoryTable = (props) => {
 
     return (
         <div className = "mt-4">
-            <table className = "w-full table-auto border-collapse border border-solid border-2 text-[#090F13]">
+            <table className = "w-full table-auto border-collapse  border-solid border-2 text-[#090F13]">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -102,10 +102,10 @@ const  CategoryTable = (props) => {
                             <td>{category.description}</td>
                             <td>{category.image}</td>
                             <td className = "text-white">
-                                <Togglable ref = {(e) => localCategoryRef.current[index] = e} buttonLabel = "Edit" className = "border border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
+                                <Togglable ref = {(e) => localCategoryRef.current[index] = e} buttonLabel = "Edit" className = " border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
                                     <AdminCategoryModalForm buttonLabel = "Edit Category" id = {category.id} name = {category.name} description = {category.description} image = {category.image} handleName = {props.handleName} handleDescription = {props.handleDescription} handleImage = {props.handleImage} addItem = {(id, newCategory) => editItem(id, newCategory, index)} onCancel = {() => localCategoryRef.current[index]?.toggleVisibility()} />
                                 </Togglable>
-                                <button onClick = {() => removeItem(category.id)} className = "border border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
+                                <button onClick = {() => removeItem(category.id)} className = " border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
                             </td>
                         </tr>
                     ))}

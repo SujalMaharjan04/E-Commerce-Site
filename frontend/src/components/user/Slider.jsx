@@ -39,7 +39,7 @@ const Slider = () => {
                         <div className = "text-4xl leading-16">{slide.heading}</div>
                         <div className = "mt-14">{slide.description}</div>
                         <div>
-                            <button className = "border border-2 border-solid rounded-xl w-full bg-[#E09F75] mt-8 h-12 hover:bg-[#DF8E64]">View More &rarr;</button>
+                            <button className = " border-2 border-solid rounded-xl w-full bg-[#E09F75] mt-8 h-12 hover:bg-[#DF8E64]">View More &rarr;</button>
                         </div>
                     </div>
                 </div>    
