@@ -5,7 +5,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('loggedAppAdmin')
+    const token = localStorage.getItem('loggedApp')
     
     if (token) {
         try {

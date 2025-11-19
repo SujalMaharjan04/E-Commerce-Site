@@ -1,4 +1,3 @@
-import axios from 'axios'
 import api from './api'
 
 
@@ -31,4 +30,15 @@ const signUp = async(credentials) => {
     return response.data
 }
 
-export default {setToken, signUp}
+const getUser = async () => {
+    const response = await api.get('/users')
+    return response.data
+}
+
+const update = async (id, newUsers) => {
+    const response = await api.put(`/users/${id}`, newUsers)
+    return response.data
+}
+
+
+export default {setToken, signUp, getUser, update}
