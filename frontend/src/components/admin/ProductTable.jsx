@@ -80,9 +80,9 @@ const ProductTable = (props) => {
     }
     return (
         <div className = "mt-4">
-            <table className = "w-full table-auto border-collapse  border-solid border-2 text-[#090F13]">
+            <table className = "w-full table-fixed border-collapse  border-solid border-2 text-[#090F13]">
                 <thead>
-                    <tr>
+                    <tr className = "border-2">
                         <th>Product</th>
                         <th>Category</th>
                         <th>Brand</th>
@@ -96,7 +96,7 @@ const ProductTable = (props) => {
                 <tbody className = "text-center">
                     {products.map((p, index) => {
                         return (
-                        <tr key = {p.id}>
+                        <tr key = {p.id} className = "border-2 m-2">
                             <td>{p.name}</td>
                             <td>{p.category?.name || '-'}</td>
                             <td>{p.brand?.name || '-'}</td>
@@ -105,7 +105,7 @@ const ProductTable = (props) => {
                             <td>sales</td>
                             <td>ratings</td>
                             <td className = " text-white">
-                                <Togglable ref = {(el) => localEditRef.current[index] = el } buttonLabel = "Edit" className = " border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
+                                <Togglable ref = {(el) => localEditRef.current[index] = el } buttonLabel = "Edit" className = " border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl m-2">
                                     <AdminProductModalForm buttonLabel = "Edit Product" id = {p.id} name = {p.name} description = {p.description} image = {p.image} price = {p.price} stock = {p.stock} brands = {brands} selectedBrand = {p.brand?.id || ''} categories = {category} selectedCategory = {p.category?.id || ''} handleName = {props.handleName} handleDescription = {props.handleDescription} handleImage = {props.handleImage} handlePrice = {props.handlePrice} handleStock = {props.handleStock} handleBrand = {props.handleBrand} handleCategory = {props.handleCategory} addItem = {editItem} onCancel = {() => localEditRef.current[index]?.toggleVisibility()} />
                                 </Togglable>
                                 <button onClick = {() => removeProduct(p.id)} className = " border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>

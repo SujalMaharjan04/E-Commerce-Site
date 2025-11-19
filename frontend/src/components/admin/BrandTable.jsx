@@ -86,9 +86,9 @@ const  BrandTable = (props) => {
 
     return (
         <div className = "mt-4">
-            <table className = "w-full table-auto border-collapse  border-solid border-2 text-[#090F13]">
+            <table className = "w-full table-fixed border-collapse border-spacing-2 border-solid border-2 text-[#090F13]">
                 <thead>
-                    <tr>
+                    <tr className = "border-2">
                         <th>Name</th>
                         <th>description</th>
                         <th>Image</th>
@@ -97,12 +97,12 @@ const  BrandTable = (props) => {
                 </thead>
                 <tbody className = "text-center">
                     {brands.map((brand, index) => (
-                        <tr key = {brand.id}>
+                        <tr key = {brand.id} className="border-2">
                             <td>{brand.name}</td>
                             <td>{brand.description}</td>
                             <td>{brand.image}</td>
                             <td className = "text-white">
-                                <Togglable ref = {(e) => localBrandRef.current[index] = e} buttonLabel = "Edit" className = " border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl mb-2">
+                                <Togglable ref = {(e) => localBrandRef.current[index] = e} buttonLabel = "Edit" className = " border-solid border-black border-2 bg-green-900 hover:bg-green-500 w-32 rounded-xl m-2">
                                     <AdminCategoryModalForm buttonLabel = "Edit Product" id = {brand.id} name = {brand.name} description = {brand.description} image = {brand.image} handleName = {props.handleName} handleDescription = {props.handleDescription} handleImage = {props.handleImage} addItem = {editItem} onCancel = {() => localBrandRef.current[index]?.toggleVisibility()} />
                                 </Togglable>
                                 <button onClick = {() => removeItem(brand.id)} className = " border-solid border-black border-2 bg-red-900 hover:bg-red-500 w-32 rounded-xl mb-2">Delete</button>
