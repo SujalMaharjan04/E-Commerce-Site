@@ -193,9 +193,9 @@ const AdminProducts = () => {
 
     //Setting the brand, category and product data to state
     useEffect(() => {
-       if (brandsResult.data) {
-        setBrand(brandsResult.data)
-       }
+        if (brandsResult.data) {
+            setBrand(brandsResult.data)
+        }
     }, [brandsResult.data])    
 
     useEffect(() => {
@@ -215,17 +215,17 @@ const AdminProducts = () => {
         <div className = "text-[#090F13] ml-4">
                 <h2 className = "text-xl font-bold ">Admin Product Page</h2>
                 <div className = "flex gap-4 mt-4 text-2xl">
-                    <Togglable ref = {productToggle} buttonLabel = "+ Add Product" className = "border border-solid border-black border-2 w-48 h-14 bg-blue-900 text-white rounded-2xl hover:cursor-pointer hover:bg-blue-700 transition-all duration-150">
+                    <Togglable ref = {productToggle} buttonLabel = "+ Add Product" className = "border-solid border-black border-2 w-48 h-14 bg-blue-900 text-white rounded-2xl hover:cursor-pointer hover:bg-blue-700 transition-all duration-150">
                         <AdminProductModalForm buttonLabel = "+ Add Product" name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} selectedBrand = {selectedBrand} categories = {category} selectedCategory = {selectedCategory} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} addItem = {addProduct} onCancel = {() => productToggle.current.toggleVisibility()} />
                     </Togglable>
                     
-                    <Togglable ref = {categoryToggle} buttonLabel = "+ Add Category" className = "border border-solid border-black border-2 w-48 h-14 bg-green-900 text-white rounded-2xl hover:cursor-pointer hover:bg-green-700 transition-all duration-150">
+                    <Togglable ref = {categoryToggle} buttonLabel = "+ Add Category" className = "border-solid border-black border-2 w-48 h-14 bg-green-900 text-white rounded-2xl hover:cursor-pointer hover:bg-green-700 transition-all duration-150">
 
                         <AdminCategoryModalForm label = "Category" name = {name} description = {description} image = {image} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} addItem = {addCategory} buttonLabel = "+ Add Category" onCancel = {() => categoryToggle.current.toggleVisibility()} />
 
                     </Togglable>
 
-                    <Togglable ref = {brandToggle} buttonLabel = "+ Add Brand" className = "border border-solid border-black border-2 w-48 h-14 bg-purple-900 text-white rounded-2xl hover:cursor-pointer hover:bg-purple-700 transition-all duration-150">
+                    <Togglable ref = {brandToggle} buttonLabel = "+ Add Brand" className = "border-solid border-black border-2 w-48 h-14 bg-purple-900 text-white rounded-2xl hover:cursor-pointer hover:bg-purple-700 transition-all duration-150">
                         <AdminCategoryModalForm label = "Brand" name = {name} description = {description} image = {image} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} addItem = {addBrand} onCancel = {() => brandToggle.current.toggleVisibility()} buttonLabel = "+ Add Brand" />
                     </Togglable>
                 </div>
