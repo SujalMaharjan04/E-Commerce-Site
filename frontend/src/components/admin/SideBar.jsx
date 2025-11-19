@@ -14,7 +14,7 @@ const SideBar = () => {
             </Link>
             <Link to = "/admin/products" className="relative flex items-center">
                 <img src ={Icon} alt = "icon" className = "h-8 w-auto"/>
-               
+            
             </Link>
             <Link to = "/admin/orders" className="relative flex items-center">
                 <img src ={Icon} alt = "icon" className = "h-8 w-auto"/>
