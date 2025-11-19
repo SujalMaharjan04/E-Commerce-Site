@@ -118,4 +118,33 @@ const ProductContextProvider = (props) => {
         </ProductContext.Provider>
     )
 }
-export {UserContextProvider, BrandContextProvider, CategoryContextProvider, ProductContextProvider, UserContext, BrandContext, CategoryContext, ProductContext}
+
+const usersReducer = (state, action) => {
+    switch (action.type) {
+        case "SET_USERS": 
+            return action.payload
+
+        case "ADD_USERS":
+            return [...state, action.payload]
+
+        case "UPDATE_USERS":
+            return state.map(s => s.id === action.payload.id ? action.payload : s)
+
+        default: 
+            return state
+    }
+}
+
+
+const UsersContext = createContext()
+
+const UsersContextProvider = (props) => {
+    const [users, dispatchUsers] = useReducer(usersReducer, [])
+
+    return (
+        <UsersContext.Provider value = {[users, dispatchUsers]}>
+            {props.children}
+        </UsersContext.Provider>
+    )
+}
+export {UserContextProvider, BrandContextProvider, CategoryContextProvider, ProductContextProvider, UsersContextProvider, UserContext, BrandContext, CategoryContext, ProductContext, UsersContext}
