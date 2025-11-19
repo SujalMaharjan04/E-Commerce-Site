@@ -28,7 +28,7 @@ const AdminNavBar = () => {
                 <img src = {Calendar} alt = "calendar" className = "h-8 w-auto" />
                 <span>{currentDate}</span>
                 <div className = "group">
-                    <button><img src = {User} alt = "user" className = " border border-solid border-2 rounded-full h-8 w-auto m-4" /></button>
+                    <button><img src = {User} alt = "user" className = "  border-solid border-2 rounded-full h-8 w-auto m-4" /></button>
                     <UserCard/>
                 </div>
             </div>
