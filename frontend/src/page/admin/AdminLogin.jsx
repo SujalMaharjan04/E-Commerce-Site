@@ -27,7 +27,7 @@ const AdminLogin = () => {
                         showPasswordToggle = {true}
                     />
                 </div>
-                <button type = "submit" className = "border border-solid border-2 rounded-3xl w-24 bg-[#E09F75] h-10 font-bold">Log In</button>
+                <button type = "submit" className = " border-solid border-2 rounded-3xl w-24 bg-[#E09F75] h-10 font-bold">Log In</button>
             </form>
 
             <Link to = "/">&larr; Go to</Link>
