@@ -18,22 +18,24 @@ const getUserById = async (req, res) => {
     }
 }
 
+
+
 const updateUser = async (req, res) => {
     try {
         
-        if (req.user.role !== req.params.id) {
+        if (req.user.role !== 'Admin') {
             return res.status(401).json({error: "Unauthorized: cannot modify another user"})
         }
         
-        const user = await User.findById(req.params.id)
-        const updates = {}
+        // const user = await User.findById(req.params.id)
+        // const updates = {}
 
-        for (const key in user) {
-            if (req.body[key] !== undefined && req.body[key] !== user[key])
-                updates[key] = req.body[key]
-        }
+        // for (const key in user) {
+        //     if (req.body[key] !== undefined && req.body[key] !== user[key])
+        //         updates[key] = req.body[key]
+        // }
 
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, updates, {new: true, runValidators: true})
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
 
         return res.status(201).json(updatedUser)
     }
