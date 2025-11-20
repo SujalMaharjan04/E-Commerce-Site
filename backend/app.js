@@ -12,17 +12,21 @@ const paymentRouter = require('./Routes/paymentRoute')
 const newAdmin = require('./controllers/seedAdmin')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
+const path = require('path')
+const newProduct = require('./controllers/seedProduct')
 
 
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 mongoose
     .connect(config.MONGODB_URL)
     .then(async() => {
-       logger.info('Connected to the database')
-       await newAdmin()
+        logger.info('Connected to the database')
+        await newAdmin()
+        await newProduct()
     })
     .catch((error) => {
         logger.error('Error connecting to the database', error.message)

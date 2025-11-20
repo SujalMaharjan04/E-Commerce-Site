@@ -2,7 +2,7 @@ const productRouter = require('express').Router()
 const productController = require('../controllers/productController')
 const {tokenExtractor, userExtractor} = require('../utils/middleware')
 const multer = require('multer')
-const uploads = multer({dest: 'uploads/'})
+const uploads = multer({dest: 'uploads/products/'})
 
 //Route to get all Products
 productRouter.get('/', productController.getProduct)
