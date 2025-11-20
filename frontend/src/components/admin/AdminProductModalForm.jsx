@@ -101,7 +101,11 @@ const AdminProductModalForm = (props) => {
             ram: ["4GB", "8GB", "16GB", "32GB"],
             storage: ["128GB", "256GB", "512GB", "1TB"],
             processor: ["i3", "i5", "i7", "Ryzen 5", "Ryzen 7"],
-            gpu: ["Integrated", "RTX 3050", "RTX 4060"]
+            gpu: ["Integrated", "RTX 3050", "RTX 4060"],
+            screenSize: ['13.6inches', '14inches', '15.7inches'],
+            CPU: ['Apple M4', 'Apple M3'],
+            OS: ['MAC OS', 'Windows', 'Linux'],
+            
         },
         Smartphone: {
             ram: ["4GB", "6GB", "8GB", "12GB"],
