@@ -20,6 +20,7 @@ const AdminProducts = () => {
     const [image, setImage] = useState('')
     const [price, setPrice] = useState(0)
     const [stock, setStock] = useState(0)
+    const [specs, setSpecs] = useState(0)
     const [selectedBrand, setSelectedBrand] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('')
     const [brands, dispatchBrand] = useContext(BrandContext)
@@ -101,6 +102,10 @@ const AdminProducts = () => {
 
     const handleCategory = (event) => {
         setSelectedCategory(event.target.value)
+    }
+
+    const handleSpecs = (event) => {
+        setSpecs(event.target.value)
     }
 
 
@@ -216,7 +221,7 @@ const AdminProducts = () => {
                 <h2 className = "text-xl font-bold ">Admin Product Page</h2>
                 <div className = "flex gap-4 mt-4 text-2xl">
                     <Togglable ref = {productToggle} buttonLabel = "+ Add Product" className = "border-solid border-black border-2 w-48 h-14 bg-blue-900 text-white rounded-2xl hover:cursor-pointer hover:bg-blue-700 transition-all duration-150">
-                        <AdminProductModalForm buttonLabel = "+ Add Product" name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} selectedBrand = {selectedBrand} categories = {category} selectedCategory = {selectedCategory} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} addItem = {addProduct} onCancel = {() => productToggle.current.toggleVisibility()} />
+                        <AdminProductModalForm buttonLabel = "+ Add Product" name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} selectedBrand = {selectedBrand} categories = {category} selectedCategory = {selectedCategory} specs = {specs} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} handleSpecs = {handleSpecs} addItem = {addProduct} onCancel = {() => productToggle.current.toggleVisibility()} />
                     </Togglable>
                     
                     <Togglable ref = {categoryToggle} buttonLabel = "+ Add Category" className = "border-solid border-black border-2 w-48 h-14 bg-green-900 text-white rounded-2xl hover:cursor-pointer hover:bg-green-700 transition-all duration-150">
