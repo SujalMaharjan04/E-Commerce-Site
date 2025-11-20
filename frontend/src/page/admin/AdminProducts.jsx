@@ -133,7 +133,7 @@ const AdminProducts = () => {
         mutationFn: (newProduct) => productService.create(newProduct),
         onSuccess: (updatedProduct) => {
             dispatchProducts({
-                type: "ADD_PRODUCTS",
+                type: "ADD_PRODUCT",
                 payload: updatedProduct
             })
             query.invalidateQueries({queryKey: ['product']})
