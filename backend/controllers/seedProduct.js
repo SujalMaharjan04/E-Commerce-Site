@@ -17,7 +17,7 @@ const seedProduct = async () => {
             category: "68f91ccaa0f8dd97e5b3439e", // replace with actual Category ObjectId
             brand: "68f91d1fa0f8dd97e5b343b0", // replace with actual Brand ObjectId
             image: [
-            "/uploads/3d2b515f6f35cbb6f269a8c3bc0814d9.jpg",
+            "http://localhost:3001/uploads/products/944555a265d4675e760c1752116ae513",
             
             ]
         },
@@ -36,7 +36,7 @@ const seedProduct = async () => {
             category: "68f91ccaa0f8dd97e5b3439e",
             brand: "68f91d1aa0f8dd97e5b343ad",
             image: [
-            "/uploads/3d2b515f6f35cbb6f269a8c3bc0814d9.jpg",
+            "http://localhost:3001/uploads/products/944555a265d4675e760c1752116ae513",
             ]
         },
         {
@@ -54,7 +54,7 @@ const seedProduct = async () => {
             category: "68f91ccaa0f8dd97e5b3439e",
             brand: "68f91d1fa0f8dd97e5b343b0",
             image: [
-            "/uploads/3d2b515f6f35cbb6f269a8c3bc0814d9.jpg",
+            "http://localhost:3001/uploads/products/944555a265d4675e760c1752116ae513",
             ]
         },
         {
@@ -72,7 +72,7 @@ const seedProduct = async () => {
             category: "68f91ccaa0f8dd97e5b3439e",
             brand: "68f91d1fa0f8dd97e5b343b0",
             image: [
-            "/uploads/3d2b515f6f35cbb6f269a8c3bc0814d9.jpg",
+            "http://localhost:3001/uploads/products/944555a265d4675e760c1752116ae513",
             ]
         },
         {
@@ -90,7 +90,7 @@ const seedProduct = async () => {
             category: "68f91ccaa0f8dd97e5b3439e",
             brand: "68f91d28a0f8dd97e5b343b6",
             image: [
-            "/uploads/3d2b515f6f35cbb6f269a8c3bc0814d9.jpg",
+            "http://localhost:3001/uploads/products/944555a265d4675e760c1752116ae513",
             ]
         }
     ];

@@ -71,7 +71,8 @@ const addProduct = async (req, res, next) => {
             return res.status(400).json({error: "Name and Price should be given"})
         }
 
-        const image = req.file ? req.file.path : ''
+        const filePath = req.file ? req.file.path.replace(/\\/g, '/') : ''
+        const image = `${req.protocol}://${req.get('host')}/${filePath}`
 
         const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings, specs})
         const savedProduct = await newProduct.save()
@@ -99,7 +100,7 @@ const updateProduct = async (req, res, next) => {
         }
 
         if (req.file) {
-            updates.image = req.file.path
+            updates.image = `${req.protocol}://${req.get('host')}/${req.file.path.replace(/\\/g, '/')}`
         }
 
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updates, {
