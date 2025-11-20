@@ -65,7 +65,7 @@ const addProduct = async (req, res, next) => {
             return res.status(403).json({error: "Unauthorized: You can't add products"})
         }
 
-        const {name, description, price, stock, category, brand, ratings} = req.body
+        const {name, description, price, stock, category, brand, ratings, specs} = req.body
 
         if (!name || !price) {
             return res.status(400).json({error: "Name and Price should be given"})
@@ -73,7 +73,7 @@ const addProduct = async (req, res, next) => {
 
         const image = req.file ? req.file.path : ''
 
-        const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings})
+        const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings, specs})
         const savedProduct = await newProduct.save()
         return res.status(200).json(savedProduct)
     }
