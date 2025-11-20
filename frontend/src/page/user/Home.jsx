@@ -1,26 +1,71 @@
+import { useContext, useEffect, useState } from 'react'
 import Laptop from '../../assets/image/dell_laptop.png'
 import ProductCard from '../../components/user/ProductCard'
 import ReviewCard from '../../components/user/ReviewCard'
 import Slider from '../../components/user/Slider'
+import { ProductContext } from '../../context/adminContext'
+import { useQuery } from '@tanstack/react-query'
+import productService from '../../services/product'
+
 const Home = () => {
+    const [current, setCurrent] = useState(0)
+    const [products, dispatchProducts] = useContext(ProductContext)
+    
+
+    const next = () => {
+        if (current < products.length - 3) {
+            setCurrent(current + 1)
+        }
+    }
+
+    const prev = () => {
+        if (current > 0) {
+            setCurrent(current - 1)
+        }
+    }
+    const product = useQuery({
+        queryKey: ['product'],
+        queryFn: productService.getAll
+    })
+
+    useEffect(() => {
+        if (product.data) {
+            dispatchProducts({
+                type: 'SET_PRODUCTS',
+                payload: product.data
+            })
+        }
+    }, [product.data, dispatchProducts])
+
+    console.log(products)
     return (
         <div className = "bg-[#EFEBCE]">
             <Slider />
             {/* Best Seller Section */}
-            <div>
+            <div >
                 <div className = "flex justify-center items-center py-5">
                     <h2 className = "text-4xl">Best Sellers</h2>
                 </div>
-                <div className = "bg-[#BFC7E2]">
+                <div className = "bg-[#BFC7E2] relative">
                     <div className = "flex justify-end items-center">
                         <button className = " border-solid border-2 bg-[#E09F75] w-60 h-10 m-4 text-2xl hover:bg-[#DF8E64]" >Shop All Products</button>
                     </div>
                     
-                    <div className = "flex flex-row justify-evenly items-center">
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                    </div>  
+                    <div className = "overflow-hidden">
+                        <div className = "flex flex-row justify-evenly items-center transition-transform duration-500" style = {{transform: `translate(-${current * 100}%)`}}>
+                            {products.map(product =>{
+                                return (
+                                    <div className = "min-w-1/3 px-2" key = {product.id}>
+                                        <ProductCard product = {product}/>
+                                    </div>
+                                
+                            )})}
+                        </div>  
+                    </div>
+
+                    <button type = "button" onClick = {next} className = "absolute top-[40%] right-0 bg-[#BFC7E2] rounded-full h-12 w-12 opacity-0 hover:opacity-50">&rarr;</button>
+                    <button type = "button" onClick = {prev} className = "absolute top-[40%] bg-[#BFC7E2] rounded-full h-12 w-12 opacity-0 hover:opacity-50">&larr;</button>
+                    
                 </div>
             </div>
 

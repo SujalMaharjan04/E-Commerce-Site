@@ -1,14 +1,16 @@
 import laptop from '../../assets/image/dell_laptop.png'
 import {Star} from 'lucide-react'
-const ProductCard = (props) => {
+const ProductCard = ({product}) => {
     const maxStar = 5
     return (
-        <div className = "flex flex-col w-[20%] shadow-xl/50 mb-10 ">
+        <div className = "flex flex-col w-full px-4 shadow-xl/50 mb-10 ">
             <div className = "flex justify-center">
-                <img src = {laptop} alt = "laptop" className = "h-60 w-auto" />
+                {console.log(product.image[0])}
+                <img src = {product.image[0]} alt = "laptop" className = "h-60 w-auto" />
             </div>
             <div className = "text-[#090F13] mx-4">
-                <p>Apple 2025 MacBook Air 13-inch Laptop with M4 chip: Built for Apple Intelligence, 13.6-inch Liquid Retina Display, 16GB Unified Memory, 256GB SSD Storage, 12MP Center Stage Camera, Touch ID; Sky Blue</p>
+                <p>{product.name}</p>
+                {/* <p>Apple 2025 MacBook Air 13-inch Laptop with M4 chip: Built for Apple Intelligence, 13.6-inch Liquid Retina Display, 16GB Unified Memory, 256GB SSD Storage, 12MP Center Stage Camera, Touch ID; Sky Blue</p> */}
             </div>
 
             <div className = "flex items-center mt-5 ml-4">
@@ -18,7 +20,7 @@ const ProductCard = (props) => {
             </div>
 
             <div className = "text-[#090F13] mx-4">
-                Rs 3,99,999.00
+                {product.price}{/* Rs 3,99,999.00 */}
             </div>
 
             <div className = "flex justify-center items-center">
