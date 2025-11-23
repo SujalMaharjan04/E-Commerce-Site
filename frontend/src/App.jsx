@@ -1,21 +1,22 @@
 import UserLayout from "./layout/UserLayout"
 import AdminLayout from './layout/AdminLayout'
 import AdminLogin from './page/admin/AdminLogin'
-import {Routes, Route, useNavigate, Navigate} from "react-router-dom"
+import {Routes, Route, useNavigate, Navigate, useMatch} from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import loginService from './services/login'
 import DashBoard from "./components/admin/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
 import AdminUsers from "./page/admin/AdminUsers"
-import { UserContext} from "./context/adminContext"
+import { ProductContext, UserContext} from "./context/adminContext"
 import { NotificationContext } from "./context/NotificationContext"
 import Home from "./page/user/Home"
-import Product from "./services/product"
+import ProductById from "./page/user/ProductById"
 
 const App = () => {
   const [user, dispatchUser] = useContext(UserContext)
   const [notification, dispatch] = useContext(NotificationContext)
+  const [products, dispatchProducts] = useContext(ProductContext)
 
   useEffect(() => {
     const loggedAppAdmin = window.localStorage.getItem('loggedApp')
@@ -38,7 +39,11 @@ const App = () => {
     })
   }
 
-  
+  console.log(products)
+  const match = useMatch('/product/:id')
+  const product = match 
+                      ? products.find(product => product.id === Number(match.params.id))
+                      : null
 
 
   return (
@@ -55,8 +60,11 @@ const App = () => {
           <Route path = "/" element = {
             <Home />
           } />
-          <Route path = "/product" element = {
+          {/* <Route path = "/product" element = {
             <Product />
+          } /> */}
+          <Route path = "/product/:id" element = {
+            <ProductById product = {product} />
           } />
         </Route>
 

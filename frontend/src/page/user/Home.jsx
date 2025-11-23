@@ -6,6 +6,7 @@ import Slider from '../../components/user/Slider'
 import { ProductContext } from '../../context/adminContext'
 import { useQuery } from '@tanstack/react-query'
 import productService from '../../services/product'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
     const [current, setCurrent] = useState(0)
@@ -56,7 +57,7 @@ const Home = () => {
                             {products.map(product =>{
                                 return (
                                     <div className = "min-w-1/3 px-2" key = {product.id}>
-                                        <ProductCard product = {product}/>
+                                        <Link to = {`/product/${product.id}`}><ProductCard product = {product}/></Link>
                                     </div>
                                 
                             )})}
