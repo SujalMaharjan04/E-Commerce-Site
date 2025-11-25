@@ -66,7 +66,8 @@ const addProduct = async (req, res, next) => {
         }
 
         const {name, description, price, stock, category, brand, ratings, specs} = req.body
-
+        const changedSpecs = JSON.parse(specs)
+        console.log(changedSpecs)
         if (!name || !price) {
             return res.status(400).json({error: "Name and Price should be given"})
         }
@@ -74,7 +75,7 @@ const addProduct = async (req, res, next) => {
         const filePath = req.file ? req.file.path.replace(/\\/g, '/') : ''
         const image = `${req.protocol}://${req.get('host')}/${filePath}`
 
-        const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings, specs})
+        const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings, specs: changedSpecs})
         const savedProduct = await newProduct.save()
         return res.status(200).json(savedProduct)
     }
