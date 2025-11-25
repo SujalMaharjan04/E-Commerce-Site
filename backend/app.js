@@ -26,7 +26,7 @@ mongoose
     .then(async() => {
         logger.info('Connected to the database')
         await newAdmin()
-        await newProduct()
+        // await newProduct()
     })
     .catch((error) => {
         logger.error('Error connecting to the database', error.message)
