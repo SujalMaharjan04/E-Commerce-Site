@@ -39,12 +39,8 @@ const App = () => {
     })
   }
 
-  console.log(products)
-  const match = useMatch('/product/:id')
-  const product = match 
-                      ? products.find(product => product.id === Number(match.params.id))
-                      : null
-
+  
+ 
 
   return (
     <div>
@@ -64,7 +60,7 @@ const App = () => {
             <Product />
           } /> */}
           <Route path = "/product/:id" element = {
-            <ProductById product = {product} />
+            <ProductById />
           } />
         </Route>
 
