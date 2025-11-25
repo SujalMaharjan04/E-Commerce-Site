@@ -63,20 +63,37 @@ const AdminProductModalForm = (props) => {
     }
 
     //Specs Change
-    const handleSpecs = (key, value) => {
-        setFormData((prev) => ({
+    const handleSpecs = (key, value, isArray = false) => {
+        
+        setFormData((prev) => {
+            const existing = prev.specs[key] || []
+            return {
             ...prev,
             specs: {
                 ...prev.specs,
-                [key]: value
+                [key]: isArray
+                        ? existing.includes(value) ? existing : [...existing, value]
+                        : value
             }
-        }))
+        }})
     }
 
+    //Specs Delete
+    const handleSpecsDelete = (key, value) => {
+        setFormData(prev => {
+            if (!Array.isArray(prev.specs[key])) return prev
+            return {
+                ...prev,
+                specs: {
+                    ...prev.specs,
+                    [key]: prev.specs[key].filter(v => v !== value)
+                }
+        }})
+    }
     //Submit Function
     const handleSubmit = (event) => {
         event.preventDefault()
-
+        console.log(formData.specs)
         const newProduct = {
             name: formData.name,
             description: formData.description,
@@ -98,13 +115,15 @@ const AdminProductModalForm = (props) => {
     //Spec Option Config
     const specOptions = {
         Laptop: {
-            ram: ["4GB", "8GB", "16GB", "32GB"],
+            ram: ["4GB", "8GB", "16GB", "32GB", "64GB"],
             storage: ["128GB", "256GB", "512GB", "1TB"],
             processor: ["i3", "i5", "i7", "Ryzen 5", "Ryzen 7"],
             gpu: ["Integrated", "RTX 3050", "RTX 4060"],
-            screenSize: ['13.6inches', '14inches', '15.7inches'],
+            display: ['13.6inches', '14inches', '15.7inches'],
             CPU: ['Apple M4', 'Apple M3'],
             OS: ['MAC OS', 'Windows', 'Linux'],
+            colors: ['Black', 'White', 'Pink', 'Silver', 'Gray'],
+            modalName: ['13-inch MacBook Air (M4, 2025)']
             
         },
         Smartphone: {
@@ -114,27 +133,28 @@ const AdminProductModalForm = (props) => {
             camera: ["12MP", "48MP", "64MP"]
         }
     }
+    const multiSpecs = ['ram', 'colors', 'storage']
+
     return (
         <div>
             <form className = "text-[#090F13]" onSubmit={handleSubmit}>
                 <div className = "grid grid-cols-2 gap-2">
+                    {/*Product Name */}
                     <div className = "flex flex-col">
                         <label className = "">Product Name</label>
                         <input type = "text" name = "name" placeholder = "Enter Name Here" className = " border-solid border-2 rounded-xl pl-2" value = {formData.name} onChange={handleChange} />
                     </div>
-                    <div className = "flex flex-col">
-                        <label>Product description</label>
-                        <input type = "text" name = "description" placeholder = "Enter description Here" className = " border-solid border-2 rounded-xl pl-2" value = {formData.description} onChange={handleChange} />
-                    </div>
+                    {/*Product Price */}
                     <div className = "flex flex-col">
                         <label>Price</label>
                         <input type = "number" name = "price" placeholder = "Enter Price Here" className = " border-solid border-2 rounded-xl pl-2" value = {formData.price} onChange = {handleChange} />
                     </div>
+                    {/*Product Stock */}
                     <div className = "flex flex-col">
                         <label>Stock</label>
                         <input type = "number" name = "stock" placeholder = "Enter Stock Here" className = " border-solid border-2 rounded-xl pl-2" value = {formData.stock} onChange = {handleChange} />
                     </div>
-
+                    {/*Product Brand */}
                     <div className = "flex flex-col">
                         <label>Brand</label>
                         <select name = "selectedBrand" value = {formData.selectedBrand} onChange = {handleSelectChange} className = " border-solid border-2 rounded-xl pl-2">
@@ -144,7 +164,7 @@ const AdminProductModalForm = (props) => {
                             ))}
                         </select>
                     </div>
-
+                    {/*Product Cateogory and specs select */}
                     <div className = "flex flex-col">
                         <label>Category</label>
                         <select name = "selectedCategory" value = {formData.selectedCategory} onChange = {handleCategoryChange} className = " border-solid border-2 rounded-xl pl-2">
@@ -156,23 +176,58 @@ const AdminProductModalForm = (props) => {
                     </div>
                     {categoryObj && specOptions[categoryObj.name] && (
                         <div className = "col-span-2 grid grid-cols-2 gap-2">
+                            {/* Specs Shown as per the Category */}
                             {Object.keys(specOptions[categoryObj.name]).map(key => (
                                 <div key = {key} className = "flex flex-col">
                                     <label>{key}</label>
-                                    <select value = {formData.specs[key] || ""} onChange = {(e) => handleSpecs(key, e.target.value)} className = " border-solid border-2 rounded-xl pl-2">
-                                        <option value = "">Select {key}</option>
-                                        {specOptions[categoryObj.name][key].map((option, index) => (
-                                            <option key = {index} value = {option}>{option}</option>
-                                        ))}
-                                    </select>
+                                    {multiSpecs.includes(key) ? (
+                                        <>
+                                            <select value = '' onChange = {(e) => handleSpecs(key, e.target.value, true)} className = " border-solid border-2 rounded-xl pl-2">
+                                                <option value = "">Select {key}</option>
+                                                {specOptions[categoryObj.name][key].map((option, index) => (
+                                                    <option key = {index} value = {option}>{option}</option>
+                                                ))}
+                                            </select>
+
+                                            {/*Selected Specs Shown as Pills */}
+                                    
+                                            <div className = "flex flex-wrap gap-2 mt-1">
+                                                {(formData.specs[key] || []).map((item, i) => (
+                                                    <span key = {i} className = "flex items-center bg-gray-200 px-2 py-1 rounded-lg">
+                                                        {item}
+                                                        <button type = "button" className = "ml-2 text-red-500 font-bold" onClick = {()=> handleSpecsDelete(key, item)}>&#10005;</button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        //Single Select
+                                        <select value = {formData.specs[key]} onChange = {(e) => handleSpecs(key, e.target.value, false)} className = "border-solid border-2 rounded-xl pl-2">
+                                            <option>Select {key}</option>
+                                            {specOptions[categoryObj.name][key].map((option, index) => (
+                                                <option key = {index} value = {option}>{option}</option>
+                                            ))}
+                                        </select>
+                                    )}
+                                    
+
+                                    
+                                    
                                 </div>
                             ))}
                         </div>
                     )}
+                    {/*Product Image */}
                     <div className = "flex flex-col">
                         <label>Product Image</label>
                         <input type = "file" name = "image" placeholder = "Enter image Here" className = " border-solid border-2 rounded-xl pl-2"  onChange = {handleImage} />
                     </div>
+                    {/*Product Description */}
+                    
+                </div>
+                <div className = "flex flex-col">
+                    <label>Product description</label>
+                    <textarea type = "text" name = "description" rows = "5" cols = "10" placeholder = "Enter description Here" className = " border-solid border-2 rounded-xl pl-2" value = {formData.description} onChange={handleChange} />
                 </div>
 
                 <div className = "flex gap-4 mt-2">

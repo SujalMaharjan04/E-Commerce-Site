@@ -20,6 +20,7 @@ const create = async(newProduct) => {
     formData.append('stock', newProduct.stock)
     formData.append('brand', newProduct.brand)
     formData.append('category', newProduct.category)
+    formData.append('specs', JSON.stringify(newProduct.specs))
 
     if (newProduct.image) {
         formData.append('image', newProduct.image)
