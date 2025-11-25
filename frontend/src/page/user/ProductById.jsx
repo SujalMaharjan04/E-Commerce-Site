@@ -27,14 +27,14 @@ const ProductById = () => {
 
     const productSpecs = {
         "Brand": product.brand.name,
-        "Model Name": product.name,
+        "Model Name": product.specs.modalName,
         "Screen Size": product.specs.display,
-        "Color": product.color || '',
-        "Hard Disk Size": product.specs.storage || '',
+        "Color": product.specs.colors[0] || [],
+        "Hard Disk Size": product.specs.storage[0] || [],
         "CPU Model": product.specs.processor,
-        "RAM Memory Installed Size": product.specs.ram,
-        "Operating System": product.specs.os || '',
-        "Graphic Card Description": product.specs.graphics,
+        "RAM Memory Installed Size": product.specs.ram[0] || [],
+        "Operating System": product.specs.OS || '',
+        "Graphic Card Description": product.specs.gpu,
     }
     
 
@@ -74,22 +74,24 @@ const ProductById = () => {
                     <hr className = "border-2 rounded-lg text-white" />
 
                     <div className = "flex justify-start items-center gap-4" >
-                        <button className = "bg-gray-500/75 h-10 w-10 rounded-lg"></button>
-                        <button className = "bg-gray-500/75 h-10 w-10  rounded-lg"></button>
-                        <button className = "bg-gray-500/75 h-10 w-10  rounded-lg"></button>
-                        <button className = "bg-gray-500/75 h-10 w-10  rounded-lg"></button>
+                        {product.specs.colors.map((color, index) => (
+                            <>
+                                <button key = {index} className = 'h-10 w-10 rounded-full hover:cursor-pointer' style = {{backgroundColor: color}} ></button>
+                            </>
+                        ))}
+
                     </div>
 
-                    <p>Size: <strong>{size ? size : product.specs.ram} Unified Memory</strong></p>
+                    <p>Size: <strong>{size ? size : product.specs.ram[0]} Unified Memory</strong></p>
                     <div className = "flex justify-start items-center gap-4 font-bold">
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setSize(e.target.value)}>{product.specs.ram} Unified Memory</button>
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setSize(e.target.value)}>{product.specs.ram} Unified Memory</button>
+                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2 hover:cursor-pointer" onClick = {(e) => setSize(product.specs.ram[0])}>{product.specs.ram[0]} Unified Memory</button>
+                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2 hover:cursor-pointer" onClick = {(e) => setSize(product.specs.ram[1])}>{product.specs.ram[1]} Unified Memory</button>
                     </div>
 
-                    <p>Style Name: <strong>{style ? style : product.specs.storage}</strong></p>
+                    <p>Style Name: <strong>{style ? style : product.specs.storage[0]}</strong></p>
                     <div className = "flex justify-start items-center gap-4 font-bold">
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setStyle(e.target.value)}>{product.specs.storage} </button>
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setStyle(e.target.value)}>{product.specs.storage} </button>
+                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setStyle(product.specs.storage[0])}>{product.specs.storage[0]} </button>
+                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setStyle(product.specs.storage[1])}>{product.specs.storage[1]} </button>
                     </div>
 
                     <div className = "grid grid-cols-2 gap-4">
@@ -130,7 +132,7 @@ const ProductById = () => {
                         <div className = "flex flex-col justify-center items-center w-[75%] gap-4 ml-5">
                             <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Add To Cart</button>
 
-                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Add To Cart</button>
+                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Buy Now</button>
                         </div>
 
                     </div>
