@@ -38,7 +38,6 @@ const Home = () => {
         }
     }, [product.data, dispatchProducts])
 
-    console.log(products)
     return (
         <div className = "bg-[#EFEBCE]">
             <Slider />
