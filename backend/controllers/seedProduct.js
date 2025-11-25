@@ -13,7 +13,6 @@ const seedProduct = async () => {
             storage: "512GB SSD",
             display: "13.3-inch FHD",
             graphics: "Intel Iris Xe",
-            screenSize: "15.6inch"
             },
             category: "68f91ccaa0f8dd97e5b3439e", // replace with actual Category ObjectId
             brand: "68f91d1fa0f8dd97e5b343b0", // replace with actual Brand ObjectId
