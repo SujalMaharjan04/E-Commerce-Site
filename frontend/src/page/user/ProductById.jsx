@@ -1,10 +1,11 @@
 import React from "react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import productService from '../../services/product'
 import { useContext, useState } from "react"
 import Location from '../../assets/icons/location_on.svg'
 import { UsersContext } from "../../context/adminContext"
+import cartService from '../../services/cart'
 
 
 const ProductById = () => {
@@ -14,8 +15,31 @@ const ProductById = () => {
     const [users, dispatchUsers] = useContext(UsersContext)
     const [quantity, setQuantity] = useState(1)
     const {id} = useParams()
+    const query = useQueryClient()
 
-    const {data: product, isLoading, isError, error} = useQuery({
+    //Mutation to Decrease Product
+    const decreaseProduct = useMutation({
+        mutationFn: ({id, newQuantity}) => productService.decreaseProduct(id, newQuantity),
+        onSuccess: () => {
+            query.invalidateQueries({queryKey: ['product']})
+        }
+    })
+
+    //Mutation to Add to Cart
+    const addCart = useMutation({
+        mutationFn: ({id, product, quantity}) => cartService( product, quantity),
+        onSuccess: ({id, product}) => {
+            const newQuantity = product.quantity - quantity
+            decreaseProduct.mutateAsync(id, newQuantity)
+        }
+    })
+    
+    //Function to Add To Cart
+    const addToCart = ({id, product, quantity}) => {
+        addCart.mutateAsync({id, product, quantity})
+    }
+
+    const {data: product, isLoading, isError} = useQuery({
         queryKey: ['product', id],
         queryFn: () => productService.getById(id),
         enabled: !!id
@@ -36,7 +60,7 @@ const ProductById = () => {
         "Operating System": product.specs.OS || '',
         "Graphic Card Description": product.specs.gpu,
     }
-    
+
 
 
     return (
@@ -130,7 +154,7 @@ const ProductById = () => {
                                 ? <p className = "text-red-500">Maximum Stock Reached</p>
                                 : null}
                         <div className = "flex flex-col justify-center items-center w-[75%] gap-4 ml-5">
-                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Add To Cart</button>
+                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addToCart(product.id, quantity)}>Add To Cart</button>
 
                             <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Buy Now</button>
                         </div>
