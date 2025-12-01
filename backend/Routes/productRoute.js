@@ -19,7 +19,8 @@ productRouter.get('/categories/:category', productController.getProductByCategor
 //Route to get individual Product
 productRouter.get('/:id', productController.getProductById)
 
-
+//Route to decrease Quantity
+productRouter.put('/:id', productController.decreaseProduct)
 
 //Route to update product
 productRouter.put('/:id', tokenExtractor, userExtractor, uploads.single('image'), productController.updateProduct)

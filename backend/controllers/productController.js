@@ -1,6 +1,6 @@
 const Product = require('../models/Product')
 
-
+//Function to Get All Product
 const getProduct = async (req, res, next) => {
     try {
         const products = await Product.find({}).populate('brand', 'name').populate('category', 'name')
@@ -11,7 +11,7 @@ const getProduct = async (req, res, next) => {
     }
 }
 
-
+//Function to Get Individual Product
 const getProductById = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id).populate('brand', 'name').populate('category', 'name')
@@ -26,6 +26,8 @@ const getProductById = async (req, res, next) => {
     }
 }
 
+
+//Function to Get Product By Category
 const getProductByCategory = async (req, res, next) => {
     try {
         const {category} = req.params
@@ -42,6 +44,7 @@ const getProductByCategory = async (req, res, next) => {
     }
 }
 
+//Function to Get Product By Brand
 const getProductByBrand = async (req, res, next) => {
     try {
         const {brand} = req.params
@@ -58,6 +61,7 @@ const getProductByBrand = async (req, res, next) => {
     }
 }
 
+//Function to Add Product By Admin Only
 const addProduct = async (req, res, next) => {
 
     try {
@@ -67,11 +71,12 @@ const addProduct = async (req, res, next) => {
 
         const {name, description, price, stock, category, brand, ratings, specs} = req.body
         const changedSpecs = JSON.parse(specs)
-        console.log(changedSpecs)
+        
         if (!name || !price) {
             return res.status(400).json({error: "Name and Price should be given"})
         }
 
+        //Changing the file path to use localhost:3001/uploads/image
         const filePath = req.file ? req.file.path.replace(/\\/g, '/') : ''
         const image = `${req.protocol}://${req.get('host')}/${filePath}`
 
@@ -84,6 +89,7 @@ const addProduct = async (req, res, next) => {
     }
 }
 
+//Function to Update Product By Admin Only
 const updateProduct = async (req, res, next) => {
     console.log(req.params.id, req.body)
     try {
@@ -94,12 +100,14 @@ const updateProduct = async (req, res, next) => {
         const product = await Product.findById(req.params.id)
         const updates = {}
 
+        //Checking what changes have been made
         for (const key in req.body) {
             if (req.body[key] !== product[key]) {
                 updates[key] = req.body[key]
             }
         }
 
+        //Changing the file path in the form of localhost:3001/uploads/Image
         if (req.file) {
             updates.image = `${req.protocol}://${req.get('host')}/${req.file.path.replace(/\\/g, '/')}`
         }
@@ -116,6 +124,8 @@ const updateProduct = async (req, res, next) => {
     }
 }
 
+
+//Function to Delete Product By Admin Only
 const deleteProduct = async (req, res, next) => {
     try {
 
@@ -137,6 +147,24 @@ const deleteProduct = async (req, res, next) => {
 
 }
 
-module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct}
+//Function to Decrease A product By User
+const decreaseProduct = async(req, res, next) => {
+    try {
+        const productId = req.params.id
+        const product = await Product.findByIdAndUpdate(productId, req.body)
+
+        if (!product) {
+            return res.status(404).json({error: 'Product Not Found'})
+        }
+
+        return res.status(200).json(product)
+    }
+
+    catch (error) {
+        next(error)
+    }
+}
+
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct, decreaseProduct}
 
 
