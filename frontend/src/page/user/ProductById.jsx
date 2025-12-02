@@ -23,16 +23,12 @@ const ProductById = () => {
 
     //Mutation to Add to Cart
     const addCart = useMutation({
-        mutationFn: ({id, product, quantity}) => cartService( product, quantity),
-        onSuccess: ({id, product}) => {
-            
+        mutationFn: ({productId, quantity}) => cartService.addToCart( productId, quantity),
+        onSuccess: () => {
+            setQuantity(1)
         }
     })
-    
-    //Function to Add To Cart
-    const addToCart = ({id, product, quantity}) => {
-        addCart.mutateAsync({id, product, quantity})
-    }
+
 
     const {data: product, isLoading, isError} = useQuery({
         queryKey: ['product', id],
@@ -141,16 +137,18 @@ const ProductById = () => {
                         </div>
 
                         <div className = "bg-[#D9D9D9] h-10 w-full flex justify-evenly items-center rounded-xl">
-                            <span className = "font-bold text-xl">Quantity: <input type = "number" value = {quantity} onChange = {(e) => setQuantity(prev => prev < product.stock ? e.target.value : product.stock)} className = "w-10 m-0" /></span>
-                            <button type = "button" className = "text-2xl hover:cursor-pointer " onClick = {() => setQuantity(prev => prev < product.stock ? prev + 1 : product.stock)}>+</button>
-                            <button type = "buttont" className = "text-2xl hover:cursor-pointer " onClick={() => setQuantity(prev => prev > 1 ?quantity - 1 : 1)}>-</button>
+                            <span className = "font-bold text-xl">Quantity: <input type = "number" value = {quantity} onChange = {(e) => {
+                                const val = Number(e.target.value)
+                                setQuantity(val < product.stock ? val : product.stock)}} className = "w-10 m-0" /></span>
+                            <button type = "button" className = "text-2xl hover:cursor-pointer " onClick = {() => setQuantity(prev => Math.min(prev + 1, product.stock))}>+</button>
+                            <button type = "buttont" className = "text-2xl hover:cursor-pointer " onClick={() => setQuantity(prev => Math.max(prev + 1, 1))}>-</button>
                         </div>
                         
                         {quantity >= product.stock 
                                 ? <p className = "text-red-500">Maximum Stock Reached</p>
                                 : null}
                         <div className = "flex flex-col justify-center items-center w-[75%] gap-4 ml-5">
-                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addToCart(product.id, quantity)}>Add To Cart</button>
+                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addCart.mutateAsync({productId: product.id, quantity: Number(quantity)})}>Add To Cart</button>
 
                             <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Buy Now</button>
                         </div>
