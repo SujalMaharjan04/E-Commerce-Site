@@ -20,7 +20,7 @@ const getItems = async (req, res) => {
 //Controller to Put Items in the Cart
 const addItems = async (req, res) => {
     try {
-        const {productId, quantity} = req.body
+        const {productId, quantity, selectedSpecs} = req.body
 
         if (!productId || !quantity) return res.status(400).json({error: "Product Id and Quantity are required"})
 
@@ -29,16 +29,26 @@ const addItems = async (req, res) => {
         if (!product) return res.status(404).json({error: "Product Not Found"})
 
         if (product.stock < quantity) return res.status(400).json({error: "Not enough stock available"})
-        
-        const newItem = new Cart({
-            user: req.user.id,
-            items: {
-                products: productId,
-                quantity: quantity
-            }
 
-        })
-        const savedItem = await newItem.save()
+        const cart = await Cart.findOne({user: req.user.id})
+
+        if (!cart) {
+            cart = new Cart({user: req.user.id, items: []})
+        }
+
+        //Checking if product and specs already exists
+        const existingItemIndex = cart.items.findIndex(
+            item => 
+                item.products.toString() === productId && JSON.stringify(item.selectedSpecs) === JSON.stringify(selectedSpecs)
+        )
+        
+        if (existingItemIndex > -1) {
+            cart.items[existingItemIndex].quantity += quantity
+        } else {
+            cart.items.push({product: productId, quantity, selectedSpecs})
+        }
+        
+        const savedItem = await cart.save()
         return res.status(200).json(savedItem)
     }
 
