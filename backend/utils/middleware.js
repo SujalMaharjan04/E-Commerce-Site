@@ -21,7 +21,7 @@ const tokenExtractor = (req, res, next) => {
     const authorization = req.get('authorization')
 
     if (authorization && authorization.includes('Bearer ')) {
-       req.token =  authorization.substring(7)
+        req.token =  authorization.substring(7)
     } else {
         req.token = null
     }
