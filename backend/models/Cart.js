@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema({
-    user: {type: mongoose.Schema.Types.ObjectId, Ref: 'Users'},
-    items: {
+    user: {type: mongoose.Schema.Types.ObjectId, Ref: 'User'},
+    items: [ {
         products: [
         {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'Products'
+            ref: 'Product'
         }
         ],
-        quantity: {type: Number, default: 1}
-    },
+        quantity: {type: Number, default: 1, min: 1}
+    }],
     updatedAt: {type: Date, default: Date.now}
 
 })
