@@ -60,9 +60,5 @@ const deleteProduct = async(id) => {
 }
 
 
-//Function to decrease Product Quantity By User
-const decreaseProduct = async (id, newQuantity) => {
-    const response = await api.put(`${baseUrl}/${id}`, newQuantity)
-    return response.data
-}
-export default {getAll, create, edit, deleteProduct, getById, decreaseProduct}
+
+export default {getAll, create, edit, deleteProduct, getById}

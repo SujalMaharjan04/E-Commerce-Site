@@ -17,20 +17,11 @@ const ProductById = () => {
     const {id} = useParams()
     const query = useQueryClient()
 
-    //Mutation to Decrease Product
-    const decreaseProduct = useMutation({
-        mutationFn: ({id, newQuantity}) => productService.decreaseProduct(id, newQuantity),
-        onSuccess: () => {
-            query.invalidateQueries({queryKey: ['product']})
-        }
-    })
-
     //Mutation to Add to Cart
     const addCart = useMutation({
         mutationFn: ({id, product, quantity}) => cartService( product, quantity),
         onSuccess: ({id, product}) => {
-            const newQuantity = product.quantity - quantity
-            decreaseProduct.mutateAsync(id, newQuantity)
+            
         }
     })
     

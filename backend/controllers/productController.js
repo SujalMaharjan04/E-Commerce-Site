@@ -147,24 +147,8 @@ const deleteProduct = async (req, res, next) => {
 
 }
 
-//Function to Decrease A product By User
-const decreaseProduct = async(req, res, next) => {
-    try {
-        const productId = req.params.id
-        const product = await Product.findByIdAndUpdate(productId, req.body)
 
-        if (!product) {
-            return res.status(404).json({error: 'Product Not Found'})
-        }
 
-        return res.status(200).json(product)
-    }
-
-    catch (error) {
-        next(error)
-    }
-}
-
-module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct, decreaseProduct}
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct}
 
 
