@@ -14,6 +14,10 @@ const ProductById = () => {
     const [size, setSize] = useState(null)
     const [style, setStyle] = useState(null)
     const [quantity, setQuantity] = useState(1)
+    const [selectedSpecs, setSelectedSpecs] = useState({})
+    const [selectedColor, setSelectedColor] = useState(false)
+    const [selectedRam, setSelectedRam] = useState(false)
+    const [selectedStorage, setSelectedStorage] = useState(false)
     const [user, dispatchUser] = useContext(UserContext)
     const {id} = useParams()
     const query = useQueryClient()
@@ -23,7 +27,7 @@ const ProductById = () => {
 
     //Mutation to Add to Cart
     const addCart = useMutation({
-        mutationFn: ({productId, quantity}) => cartService.addToCart( productId, quantity),
+        mutationFn: ({productId, quantity, selectedSpecs}) => cartService.addToCart( productId, quantity, selectedSpecs),
         onSuccess: () => {
             setQuantity(1)
         }
@@ -40,6 +44,7 @@ const ProductById = () => {
     if (isLoading) return <h1>Loading...</h1>
     if (isError) return <h1>Error Fetching Data</h1>
 
+    //Object of Product Specs
     const productSpecs = {
         "Brand": product.brand.name,
         "Model Name": product.specs.modalName,
@@ -52,7 +57,12 @@ const ProductById = () => {
         "Graphic Card Description": product.specs.gpu,
     }
 
-
+    const handleAddSpecs = (key, value) => {
+        setSelectedSpecs(prev => ({
+            ...prev,
+            [key]: value
+        }))
+    }
 
     return (
         <div className = "mx-5 my-10">
@@ -91,7 +101,9 @@ const ProductById = () => {
                     <div className = "flex justify-start items-center gap-4" >
                         {product.specs.colors.map((color, index) => (
                             <>
-                                <button key = {index} className = 'h-10 w-10 rounded-full hover:cursor-pointer' style = {{backgroundColor: color}} ></button>
+                                <button key = {index} className = {`h-10 w-10 rounded-full hover:cursor-pointer  hover:shadow-[0_0_10px_#00f] ${selectedColor === color ? " shadow-[0_0_5px_#00f]" : "border-none"}`} style = {{backgroundColor: color}} onClick = {() => {
+                                    setSelectedColor(color)
+                                    handleAddSpecs('colors', color)}} ></button>
                             </>
                         ))}
 
@@ -99,14 +111,29 @@ const ProductById = () => {
 
                     <p>Size: <strong>{size ? size : product.specs.ram[0]} Unified Memory</strong></p>
                     <div className = "flex justify-start items-center gap-4 font-bold">
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2 hover:cursor-pointer" onClick = {(e) => setSize(product.specs.ram[0])}>{product.specs.ram[0]} Unified Memory</button>
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2 hover:cursor-pointer" onClick = {(e) => setSize(product.specs.ram[1])}>{product.specs.ram[1]} Unified Memory</button>
+
+                        {product.specs.ram.map((r, index) => (
+                            <>
+                                <button key = {index} className = {`bg-gray-500/75 h-10 w-full  rounded-lg  hover:cursor-pointer ${selectedRam === r ? "border-black border-2": "border-none"}`} onClick = {(e) => {
+                                    setSelectedRam(r)
+                                    setSize (r)
+                                    handleAddSpecs('ram', r)}}>{r} Unified Memory</button>
+                            </>
+                        ))}
+                        
                     </div>
 
                     <p>Style Name: <strong>{style ? style : product.specs.storage[0]}</strong></p>
                     <div className = "flex justify-start items-center gap-4 font-bold">
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setStyle(product.specs.storage[0])}>{product.specs.storage[0]} </button>
-                        <button className = "bg-gray-500/75 h-10 w-auto  rounded-lg p-2" onClick = {(e) => setStyle(product.specs.storage[1])}>{product.specs.storage[1]} </button>
+                        {product.specs.storage.map((s, index) => (
+                            <>
+                                <button className = {`bg-gray-500/75 h-10 w-[20%]  rounded-lg  hover:cursor-pointer ${selectedStorage === s ? "border-black border-2": "border-none"}`} onClick = {(e) => {
+                                    setSelectedStorage(s)
+                                    setStyle(s)
+                                    handleAddSpecs('storage', s)}}>{s} </button>
+                            </>
+                        ))}
+                        
                     </div>
 
                     <div className = "grid grid-cols-2 gap-4">
@@ -148,7 +175,7 @@ const ProductById = () => {
                                 ? <p className = "text-red-500">Maximum Stock Reached</p>
                                 : null}
                         <div className = "flex flex-col justify-center items-center w-[75%] gap-4 ml-5">
-                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addCart.mutateAsync({productId: product.id, quantity: Number(quantity)})}>Add To Cart</button>
+                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addCart.mutateAsync({productId: product.id, quantity: Number(quantity), selectedSpecs: selectedSpecs})}>Add To Cart</button>
 
                             <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Buy Now</button>
                         </div>
