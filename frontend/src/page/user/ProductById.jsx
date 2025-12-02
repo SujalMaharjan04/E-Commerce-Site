@@ -4,18 +4,22 @@ import { useParams } from "react-router-dom"
 import productService from '../../services/product'
 import { useContext, useState } from "react"
 import Location from '../../assets/icons/location_on.svg'
-import { UsersContext } from "../../context/adminContext"
+import { UserContext} from "../../context/adminContext"
 import cartService from '../../services/cart'
+import useUserAddr from '../../hooks/useUserAddr'
 
 
 const ProductById = () => {
     const [img, setImg] = useState('')
     const [size, setSize] = useState(null)
     const [style, setStyle] = useState(null)
-    const [users, dispatchUsers] = useContext(UsersContext)
     const [quantity, setQuantity] = useState(1)
+    const [user, dispatchUser] = useContext(UserContext)
     const {id} = useParams()
     const query = useQueryClient()
+    const userAddrQuery = useUserAddr()
+    
+    const userAddr = userAddrQuery.data
 
     //Mutation to Add to Cart
     const addCart = useMutation({
@@ -127,12 +131,13 @@ const ProductById = () => {
                 </div>
 
                 {/*Address and Change Address function Section */}
-                <div className = "bg-[#BFC7E2] h-52 w-64 rounded-lg p-5 ">
+                <div className = "bg-[#BFC7E2] h-56 w-64 rounded-lg p-5 ">
                     <div className = "flex flex-col justify-between items-start gap-4">
                         <div className = "flex justify-center items-center gap-2">
                             <img src = {Location} />
-                            {/* <p>Delivering to {users.address.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)} </p> */}
-                            <p>Delivering to </p>
+                            {user ?
+                                <p>Delivering to {userAddr.address.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)} </p>
+                                :<p>Please Log In to order</p>}
                         </div>
 
                         <div className = "bg-[#D9D9D9] h-10 w-full flex justify-evenly items-center rounded-xl">
