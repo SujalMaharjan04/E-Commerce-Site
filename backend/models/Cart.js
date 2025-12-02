@@ -9,7 +9,12 @@ const cartSchema = new mongoose.Schema({
             ref: 'Product'
         }
         ],
-        quantity: {type: Number, default: 1, min: 1}
+        quantity: {type: Number, default: 1, min: 1},
+        selectedSpecs: {
+            type: Object,
+            default: {}
+        }
+
     }],
     updatedAt: {type: Date, default: Date.now}
 
