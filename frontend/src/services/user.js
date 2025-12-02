@@ -40,5 +40,10 @@ const update = async (id, newUsers) => {
     return response.data
 }
 
+const getUserAddress = async () => {
+    const response = await api.get(`/users/profile`)
+    return response.data
+}
 
-export default {setToken, signUp, getUser, update}
+
+export default {setToken, signUp, getUser, update, getUserAddress}
