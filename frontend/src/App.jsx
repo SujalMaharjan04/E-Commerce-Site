@@ -12,6 +12,7 @@ import { ProductContext, UserContext} from "./context/adminContext"
 import { NotificationContext } from "./context/NotificationContext"
 import Home from "./page/user/Home"
 import ProductById from "./page/user/ProductById"
+import Cart from "./page/user/Cart"
 
 const App = () => {
   const [user, dispatchUser] = useContext(UserContext)
@@ -61,6 +62,10 @@ const App = () => {
           } /> */}
           <Route path = "/product/:id" element = {
             <ProductById />
+          } />
+
+          <Route path = "/cart" element = {
+            <Cart />
           } />
         </Route>
 
