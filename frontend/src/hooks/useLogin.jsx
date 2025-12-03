@@ -50,6 +50,17 @@ export const useLogin = (isAdmin = false) => {
         setUsername("")
         setPassword("")
 
+        dispatch({
+            type: "SET_NOTIFICATION",
+            payload: {text: 'Login Successful', type: 'success'}
+        })
+
+        setTimeout(() => {
+            dispatch({
+                type: "CLEAR_NOTIFICATION"
+            })
+        }, 2000)
+
         if (user.role === 'Admin') {
             navigate('/admin/dashboard')
         }  
