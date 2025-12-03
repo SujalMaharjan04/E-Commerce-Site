@@ -4,7 +4,7 @@ const Product = require('../models/Product')
 //Controller to Get Cart Items based on Logged In Users
 const getItems = async (req, res) => {
     try {
-        const cartItems = await Cart.findOne({user: req.user.id}).populate('user', 'name email').populate('items.products', 'name price')
+        const cartItems = await Cart.findOne({user: req.user.id}).populate('user', 'name email').populate('items.products', 'image name price')
         
         if (!cartItems) {
             return res.status(404).json({items: []})
