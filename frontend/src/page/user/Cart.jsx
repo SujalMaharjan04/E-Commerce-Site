@@ -30,9 +30,9 @@ const Cart = () => {
                 <hr className = "w-full border-4 rounded-lg border-white" />
 
                 <div className = "flex justify-end items-center mt-8">
-                    <button className = "bg-[#E09F75] w-60 rounded-lg h-14 flex items-center justify-center gap-8 hover:cursor-pointer">
+                    <button className = "bg-[#E09F75] w-60 rounded-lg h-14 flex items-center justify-center gap-8 hover:cursor-pointer" onClick = {() => navigate("/")}>
                         <img src = {CartIcon} alt = "cart Icon" className = "h-8 w-8" />
-                        <h2 className = "font-medium text-xl">Update Cart</h2>
+                        <h2 className = "font-medium text-xl" >Update Cart</h2>
                     </button>
                 </div>
 
