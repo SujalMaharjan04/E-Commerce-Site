@@ -11,7 +11,7 @@ const Cart = () => {
                 
                 <hr className = "w-full border-4 rounded-lg border-white" />
 
-                <div className = "grid grid-cols-[40px_80px_1fr_100px_100px_120px] items-center gap-4">
+                <div className = "grid grid-cols-[40px_80px_1fr_100px_100px_120px] items-center gap-4 py-2">
                     <h3></h3>
                     <h3></h3>
                     <h3>Product</h3>
