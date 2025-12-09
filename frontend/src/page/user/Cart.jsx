@@ -3,20 +3,21 @@ const Cart = () => {
 
 
     return (
-        <div className = "text-[#090F13] relative flex justify-around items-center gap-4">
-            <div className = "w-[50%] space-y-4">
+        <div className = "text-[#090F13] relative flex justify-around items-start gap-10">
+            <div className = "w-[50%] space-y-4 flex flex-col">
                 <div>
                     <h2 className = "font-mono text-2xl text-center">Shopping Cart</h2>
                 </div>
                 
                 <hr className = "w-full border-4 rounded-lg border-white" />
 
-                <div className = "flex justify-end items-center py-2">
+                <div className = "grid grid-cols-[40px_80px_1fr_100px_100px_120px] items-center gap-4">
                     <h3></h3>
-                    <h3 className = "ml-30">Product</h3>
-                    <h3 className = "ml-30">Price</h3>
-                    <h3 className = "ml-30">Quantity</h3>
-                    <h3 className = "ml-30">Sub-Total</h3>
+                    <h3></h3>
+                    <h3>Product</h3>
+                    <h3>Price</h3>
+                    <h3>Quantity</h3>
+                    <h3>Sub-Total</h3>
                 </div>
 
                 <hr className = "w-full border-4 rounded-lg border-white" />
