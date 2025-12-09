@@ -42,7 +42,7 @@ const CartItems = () => {
         <div>
             {cart?.items.map((item, index) => (
                 <div className = "grid grid-cols-[40px_80px_1fr_100px_100px_120px] items-center gap-4 " key = {index}>
-                    <button onClick = {() => cartItemDelete(item.id)} className = "hover:cursor-pointer"><img src = {Cross} className = "h-4 w-4" /></button>
+                    <button onClick = {() => cartItemDelete(item.product.id)} className = "hover:cursor-pointer"><img src = {Cross} className = "h-4 w-4" /></button>
                     <img src = {item.product?.image} className = "h-20 w-20" />
                     <p  >{item.product.name}</p>
                     <p>{item.product.price}</p>
