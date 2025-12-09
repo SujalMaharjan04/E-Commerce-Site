@@ -8,5 +8,8 @@ cartRouter.get('/users', tokenExtractor, userExtractor, cartController.getItems)
 //Route to add Items in Cart
 cartRouter.post('/users', tokenExtractor, userExtractor, cartController.addItems)
 
+//Route to delete Items in Cart
+cartRouter.delete('/users',tokenExtractor, userExtractor, cartController.deleteFromCart)
+
 
 module.exports = cartRouter
