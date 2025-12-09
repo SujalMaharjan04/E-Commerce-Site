@@ -159,7 +159,7 @@ const ProductById = () => {
                         <div className = "flex justify-center items-center gap-2">
                             <img src = {Location} />
                             {user ?
-                                <p>Delivering to {userAddr.address.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)} </p>
+                                <p>Delivering to {userAddr.address.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)}</p>
                                 :<p>Please Log In to order</p>}
                         </div>
 
