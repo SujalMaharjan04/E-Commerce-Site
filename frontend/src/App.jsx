@@ -13,6 +13,7 @@ import { NotificationContext } from "./context/NotificationContext"
 import Home from "./page/user/Home"
 import ProductById from "./page/user/ProductById"
 import Cart from "./page/user/Cart"
+import Order from './page/user/Order'
 
 const App = () => {
   const [user, dispatchUser] = useContext(UserContext)
@@ -66,6 +67,10 @@ const App = () => {
 
           <Route path = "/cart" element = {
             <Cart />
+          } />
+
+          <Route path = "/order" element = {
+            <Order />
           } />
         </Route>
 
