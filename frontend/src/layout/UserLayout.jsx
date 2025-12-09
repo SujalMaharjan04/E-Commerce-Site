@@ -13,7 +13,7 @@ const UserLayout = () => {
         error: "bg-red-500",
     };
     return (
-        <div className = "flex flex-col min-h-screen">
+        <div className = "flex flex-col min-h-screen bg-[#EFEBCE]">
             <Navbar />
                 {notification && (
                     <div className = {`${baseStyle} ${typeStyles[notification.type]}`}>
