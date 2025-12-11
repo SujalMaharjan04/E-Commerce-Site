@@ -25,7 +25,7 @@ const CartItems = () => {
             type: "SET_CART",
             payload: cartItem
         })
-    })
+    }, [cartItem])
 
     if (isLoading) return <h1>Loading....</h1>
 
