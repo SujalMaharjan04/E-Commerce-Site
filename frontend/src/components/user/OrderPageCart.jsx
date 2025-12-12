@@ -1,14 +1,28 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import {CartContext} from "../../context/cartContext"
 
-const OrderPageCart = () => {
+const OrderPageCart = ({getTotal}) => {
     const [cart, dispatctCart] = useContext(CartContext)
+    const [subTotal, setSubTotal] = useState(0)
+
+    useEffect(() => {
+        if (!cart?.items) return
+
+        const total = cart.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+
+        setSubTotal(total)
+        
+    }, [cart])
+
+    useEffect(() => {
+        getTotal(subTotal)
+    }, [subTotal])
     
     return (
         <div>
             <div>
                 {cart.items.map((item, index) => (
-                    <div className = "grid grid-cols-[150px_250px]">
+                    <div className = "grid grid-cols-[150px_250px]" key = {index}>
                         <div>
                             {console.log(item)}
                             <img src = {item.product.image[0]} alt = "Image1" className = "h-30 w-30" />

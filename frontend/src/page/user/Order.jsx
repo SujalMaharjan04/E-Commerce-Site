@@ -1,8 +1,14 @@
+import { useState } from "react"
 import OrderPageCart from "../../components/user/OrderPageCart"
 import { useNavigate } from "react-router-dom"
 
 const Order = () => {
     const navigate = useNavigate()
+    const [total, setTotal] = useState(0)
+
+    const getTotal = (subTotal) => {
+        setTotal(subTotal)
+    }
     return (
         <div className = "text-[#090F13] flex justify-around items-start gap-10">
             <div className = "w-[50%] space-y-4">
@@ -82,7 +88,7 @@ const Order = () => {
                 <hr className = "w-full border-4 rounded-lg border-white" />
 
                 <div className = "min-h-70">
-                    <OrderPageCart />
+                    <OrderPageCart getTotal = {getTotal} />
                 </div>
 
 
