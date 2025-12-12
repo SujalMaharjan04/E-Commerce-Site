@@ -15,7 +15,11 @@ const CartItems = () => {
 
     const cartDelete = useMutation({
         mutationFn: (productId) => cartService.deleteFromCart(productId),
-        onSuccess: () => {
+        onSuccess: (productId) => {
+            dispatchCart({
+                type: "DELETE_CART",
+                payload: productId
+            })
             query.invalidateQueries(['cart'])
         }
     })

@@ -5,6 +5,9 @@ const cartReducer = (state, action) => {
         case "SET_CART":
             return action.payload
 
+        case "DELETE_CART":
+            return state.items.filter(item => item.product.id !== action.payload)
+
         default: 
             return state
     }

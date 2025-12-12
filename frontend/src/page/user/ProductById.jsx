@@ -7,6 +7,7 @@ import Location from '../../assets/icons/location_on.svg'
 import { UserContext} from "../../context/adminContext"
 import cartService from '../../services/cart'
 import useUserAddr from '../../hooks/useUserAddr'
+import { CartContext } from "../../context/cartContext"
 
 
 const ProductById = () => {
@@ -19,6 +20,7 @@ const ProductById = () => {
     const [selectedRam, setSelectedRam] = useState(false)
     const [selectedStorage, setSelectedStorage] = useState(false)
     const [user, dispatchUser] = useContext(UserContext)
+    const [cartItem, dispatchCart] = useContext(CartContext)
     const {id} = useParams()
     const query = useQueryClient()
     const userAddrQuery = useUserAddr()
@@ -28,7 +30,11 @@ const ProductById = () => {
     //Mutation to Add to Cart
     const addCart = useMutation({
         mutationFn: ({productId, quantity, selectedSpecs}) => cartService.addToCart( productId, quantity, selectedSpecs),
-        onSuccess: () => {
+        onSuccess: (data) => {
+            dispatchCart({
+                type: "SET_CART",
+                payload: data
+            })
             setQuantity(1)
         }
     })
