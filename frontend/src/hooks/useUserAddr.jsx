@@ -9,7 +9,7 @@ const useUserAddr = () => {
     const userAddr = useQuery({
         queryKey: ['user-address', user?.id],
         enabled: !!user?.token,
-        queryFn: () => userService.getUserAddress(),
+        queryFn: () => userService.getUserInfo(),
         retry: 0
     })
 
