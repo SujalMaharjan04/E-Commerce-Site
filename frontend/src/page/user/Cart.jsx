@@ -1,8 +1,24 @@
 import CartItems from '../../components/user/CartItems'
 import CartIcon from '../../assets/icons/image3.svg'
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { CartContext } from '../../context/cartContext'
+import { OrderContext } from '../../context/orderContext'
 const Cart = () => {
     const navigate = useNavigate()
+    const [cartItem, dispatchCartItem] = useContext(CartContext)
+    const [, dispatchOrderForm] = useContext(OrderContext)
+
+    const handleNext = () => {
+        dispatchOrderForm({
+            type: "SET_CUSTOMER_INFO",
+            payload: {
+                items: cartItem.items
+            }
+        })
+
+        navigate('/order')
+    }
     return (
         <div className = "text-[#090F13] relative flex justify-around items-start gap-10">
             <div className = "w-[50%] space-y-4 flex flex-col">
@@ -76,7 +92,7 @@ const Cart = () => {
                 </div>
 
                 <div className = "flex justify-center items-center mt-10">
-                    <button className = "bg-[#E09F75] w-full h-10 rounded-lg font-bold text-xl hover:cursor-pointer" onClick = {() => navigate("/order")}>Proceed To Checkout</button>
+                    <button className = "bg-[#E09F75] w-full h-10 rounded-lg font-bold text-xl hover:cursor-pointer" onClick = {handleNext}>Proceed To Checkout</button>
                 </div>
 
 
