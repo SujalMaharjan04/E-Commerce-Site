@@ -24,7 +24,6 @@ const OrderPageCart = ({getTotal}) => {
                 {cart.items.map((item, index) => (
                     <div className = "grid grid-cols-[150px_250px]" key = {index}>
                         <div>
-                            {console.log(item)}
                             <img src = {item.product.image[0]} alt = "Image1" className = "h-30 w-30" />
                         </div>
 
