@@ -56,15 +56,18 @@ const deleteUser = async (req, res) => {
     }
 }
 
-const getUserAddress = async (req, res) => {
+const getUserInfo = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select("address")
+        const user = await User.findById(req.user.id).select("name phone email address")
 
         if (!user) {
             return res.status(404).json({error: "User Not Found"})
         }
 
         res.status(200).json({
+            name: user.name,
+            phone: user.phone,
+            email: user.email,
             address: user.address,
         })
     }
@@ -78,5 +81,5 @@ module.exports = {
     getUserById, 
     updateUser,
     deleteUser,
-    getUserAddress
+    getUserInfo
 }

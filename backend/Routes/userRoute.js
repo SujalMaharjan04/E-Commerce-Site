@@ -6,8 +6,8 @@ const {tokenExtractor, userExtractor} = require('../utils/middleware')
 //Route for getting all user
 userRouter.get('/',  userController.getUser)
 
-//Route for getting the user address
-userRouter.get('/profile', tokenExtractor, userExtractor, userController.getUserAddress)
+//Route for getting the user Info
+userRouter.get('/profile', tokenExtractor, userExtractor, userController.getUserInfo)
 
 //Route for getting user by id
 userRouter.get('/:id', tokenExtractor, userExtractor, userController.getUserById)
