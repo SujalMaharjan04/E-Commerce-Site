@@ -14,6 +14,7 @@ import Home from "./page/user/Home"
 import ProductById from "./page/user/ProductById"
 import Cart from "./page/user/Cart"
 import Order from './page/user/Order'
+import Payment from "./page/user/Payment"
 
 const App = () => {
   const [user, dispatchUser] = useContext(UserContext)
@@ -72,6 +73,11 @@ const App = () => {
           <Route path = "/order" element = {
             <Order />
           } />
+
+          <Route path = "/payment" element = {
+            <Payment />
+          } />
+          
         </Route>
 
         <Route path = "/admin" element = {
