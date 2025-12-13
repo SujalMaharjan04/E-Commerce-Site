@@ -11,15 +11,11 @@ const orderSchema = new mongoose.Schema({
         }
     ],
     totalAmount: Number,
-    shippingAddress: {
-        street: String,
-        city: String,
-        state: String,
-        zip: String,
-        country: String
-    },
-    paymentMethod: {type: String, enum: ['esewa', 'khalti', 'cod']},
+    shippingAddress: String,
+    deliveryMethod: {type: String, enum: ['Fast', 'Standard']},
+    paymentMethod: {type: String, enum: ['Esewa', 'Khalti', 'COD']},
     paymentStatus: {type: String, enum: ['pending', 'paid', 'failed'], default: 'pending'},
+    confirmed: {type: Boolean, default: false},
     orderStatus: {type: String, enum: ['processing', 'shipped', 'delivered', 'cancelled'], default: 'processing'},
     createdAt: {type: Date, default: Date.now}
     
