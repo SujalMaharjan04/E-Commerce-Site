@@ -8,6 +8,7 @@ import { UserContext} from "../../context/adminContext"
 import cartService from '../../services/cart'
 import useUserAddr from '../../hooks/useUserAddr'
 import { CartContext } from "../../context/cartContext"
+import { NotificationContext} from '../../context/NotificationContext'
 
 
 const ProductById = () => {
@@ -21,6 +22,7 @@ const ProductById = () => {
     const [selectedStorage, setSelectedStorage] = useState(false)
     const [user, dispatchUser] = useContext(UserContext)
     const [cartItem, dispatchCart] = useContext(CartContext)
+    const [notify, dispatchNotify] = useContext(NotificationContext)
     const {id} = useParams()
     const query = useQueryClient()
     const userAddrQuery = useUserAddr()
@@ -35,7 +37,20 @@ const ProductById = () => {
                 type: "SET_CART",
                 payload: data
             })
+            dispatchNotify({
+                type: "SET_NOTIFICATION",
+                payload: {text: "Item Added To Cart", type: "success"}
+            })
+
+            setTimeout(() => {
+                dispatchNotify({type: "CLEAR_NOTIFICATION"})
+            }, 2000)
             setQuantity(1)
+            setStyle(null)
+            setSize(null)
+            setSelectedColor(false)
+            setSelectedStorage(false)
+            setSelectedRam(false)
         }
     })
 
@@ -68,6 +83,28 @@ const ProductById = () => {
             ...prev,
             [key]: value
         }))
+    }
+
+    const addCartItem = (productId, quantity, selectedSpecs) => {
+
+        if (!user) {
+            dispatchNotify({
+                type: "SET_NOTIFICATION", 
+                payload: {text: "Log In to Add to Cart", type: "error"}
+            })
+
+            setTimeout(() => {
+                dispatchNotify({type: "CLEAR_NOTIFICATION"})
+            }, 2000)
+
+            setQuantity(1)
+            setStyle(null)
+            setSize(null)
+            setSelectedColor(false)
+            setSelectedStorage(false)
+            setSelectedRam(false)
+        }
+        addCart.mutateAsync({productId, quantity: Number(quantity), selectedSpecs: selectedSpecs})
     }
 
     return (
@@ -181,7 +218,7 @@ const ProductById = () => {
                                 ? <p className = "text-red-500">Maximum Stock Reached</p>
                                 : null}
                         <div className = "flex flex-col justify-center items-center w-[75%] gap-4 ml-5">
-                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addCart.mutateAsync({productId: product.id, quantity: Number(quantity), selectedSpecs: selectedSpecs})}>Add To Cart</button>
+                            <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full hover:cursor-pointer" onClick = {() => addCartItem(product.id, quantity, selectedSpecs) }>Add To Cart</button>
 
                             <button type = "button" className = "bg-[#E09F75] text-xl font-bold rounded-full w-full">Buy Now</button>
                         </div>

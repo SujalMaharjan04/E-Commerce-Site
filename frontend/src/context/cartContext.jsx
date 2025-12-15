@@ -1,5 +1,6 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import cartService from '../services/cart'
+import { UserContext } from './adminContext'
 
 const cartReducer = (state, action) => {
     switch (action.type) {
@@ -19,15 +20,18 @@ const CartContext = createContext()
 
 const CartContextProvider = (props) => {
     const [cart, dispatchCart] = useReducer(cartReducer, {user: null, items: []})
+    const [user, dispatchUser] = useContext(UserContext)
 
     useEffect(() => {
+        if (!user) return 
+        
         const loadCart = async () => {
             const data = await cartService.getAllCart()
             dispatchCart({type: "SET_CART", payload: data})
         }
 
         loadCart()
-    }, [])
+    }, [user])
 
     return (
         <CartContext.Provider value = {[cart, dispatchCart]}>
