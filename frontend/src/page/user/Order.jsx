@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from "react"
 import OrderPageCart from "../../components/user/OrderPageCart"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import useUserAddr from "../../hooks/useUserAddr"
 import { OrderContext } from "../../context/orderContext"
 
 const Order = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [total, setTotal] = useState(0)
     const [orderForm, dispatchOrderForm] = useContext(OrderContext)
     const [formData, setFormData] = useState({
@@ -18,6 +19,12 @@ const Order = () => {
         comfirmed: false
     })
     const {data, isLoading, isError} = useUserAddr()
+    const {canProceed} = location.state || {}
+    useEffect(() => {
+        if (!canProceed) {
+            navigate('/cart')
+        }
+    }, [canProceed])
 
     useEffect(() => {
 
@@ -66,7 +73,9 @@ const Order = () => {
             }
         })
 
-        navigate('/payment')
+        navigate('/payment', {
+            state: {canProceed: true}
+        })
     }
 
     const getTotal = (subTotal) => {

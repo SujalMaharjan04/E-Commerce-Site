@@ -1,14 +1,23 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { OrderContext } from "../../context/orderContext"
 import Esewa from '../../assets/icons/image 1.svg'
 import Khalti from '../../assets/icons/image 2.svg'
+import { useLocation, useNavigate } from "react-router-dom"
 
 
 
 const Payment = () => {
     const [orderForm, dispatchOrderForm] = useContext(OrderContext)
     const [paymentMethod, setPaymentMethod] = useState("")
+    const navigate = useNavigate()
+    const location = useLocation()
+    const {canProceed} = location.state || {}
 
+    useEffect(() => {
+        if (!canProceed) {
+            navigate('/cart')
+        }
+    },  [canProceed])
 
     const handleChange = (e) => {
         setPaymentMethod(e.target.value)
@@ -74,7 +83,7 @@ const Payment = () => {
                         <div className = "w-full h-80 bg-[#BFC7E2]">
                             <div className="flex flex-col justify-evenly items-start w-[50%] md:ml-10 text-[#090F13]">
                                 {orderForm.items.map((item, index) => (
-                                    <div className="flex justify-center items-center my-4 gap-2">
+                                    <div className="flex justify-center items-center my-4 gap-2" key = {index}>
                                         <p className = "line-clamp-2">{item.product.name.split(":")[0]}, {item.selectedSpecs.colors}</p>
                                         <p className = "font-bold">&times;</p>
                                         <p>{item.quantity}</p>
