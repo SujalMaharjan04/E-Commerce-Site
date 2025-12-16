@@ -11,5 +11,8 @@ cartRouter.post('/users', tokenExtractor, userExtractor, cartController.addItems
 //Route to delete Items in Cart
 cartRouter.delete('/users',tokenExtractor, userExtractor, cartController.deleteFromCart)
 
+//Route to Proceed to Order Page
+cartRouter.post('/proceed', tokenExtractor, userExtractor, cartController.proceedToOrder)
+
 
 module.exports = cartRouter
