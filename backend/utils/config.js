@@ -9,8 +9,10 @@ const MONGODB_URL = process.env.NODE_ENV === 'test'
 
 const SECRET = process.env.SECRET
 
+const SESSION_SECRET = process.env.SESSION_SECRET
+
 const KHALTI_SECRET_KEY = process.env.KHALTI_SECRET_KEY
 
 const ESEWA_MERCHANT_CODE = process.env.ESEWA_MERCHANT_CODE
 
-module.exports = {PORT, MONGODB_URL, SECRET}
+module.exports = {PORT, MONGODB_URL, SECRET, SESSION_SECRET}
