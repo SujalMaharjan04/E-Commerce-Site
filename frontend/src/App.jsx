@@ -70,13 +70,17 @@ const App = () => {
             <Cart />
           } />
 
-          <Route path = "/order" element = {
-            <Order />
-          } />
+          {user 
+          ? <>
+              <Route path = "/order" element = {
+                <Order />
+              } />
 
-          <Route path = "/payment" element = {
-            <Payment />
-          } />
+              <Route path = "/payment" element = {
+                <Payment />
+              } />
+            </>
+          : <Route to = "*" element = {<Navigate to = "/invalid" replace/>} />}
           
         </Route>
 
