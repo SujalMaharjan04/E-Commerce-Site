@@ -1,4 +1,4 @@
-const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const { tokenExtractor, userExtractor, checkSessionForCheckout } = require('../utils/middleware')
 const orderController = require('../controllers/orderController')
 const orderRouter = require('express').Router()
 
@@ -9,7 +9,7 @@ orderRouter.get('/', tokenExtractor, userExtractor, orderController.getOrders)
 orderRouter.get('/:id', tokenExtractor, userExtractor, orderController.getOneOrder)
 
 //Route to add New Order
-orderRouter.post('/', tokenExtractor, userExtractor, orderController.addOrder)
+orderRouter.post('/', tokenExtractor, userExtractor, checkSessionForCheckout, orderController.addOrder)
 
 //Route to update Order
 orderRouter.put('/:id', tokenExtractor, userExtractor, orderController.updateOrder)
