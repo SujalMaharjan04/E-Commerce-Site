@@ -4,20 +4,24 @@ import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { CartContext } from '../../context/cartContext'
 import { OrderContext } from '../../context/orderContext'
+import cartService from '../../services/cart'
+
 const Cart = () => {
     const navigate = useNavigate()
     const [cartItem, dispatchCartItem] = useContext(CartContext)
     const [, dispatchOrderForm] = useContext(OrderContext)
 
-    const handleNext = () => {
+    const handleNext = async () => {
         dispatchOrderForm({
             type: "SET_CUSTOMER_INFO",
             payload: {
                 items: cartItem.items
             }
         })
-
-        navigate('/order')
+        await cartService.proceedToOrder()
+        navigate('/order', {
+            state: {canProceed: true}
+        } )
     }
     return (
         <div className = "text-[#090F13] relative flex justify-around items-start gap-10">
