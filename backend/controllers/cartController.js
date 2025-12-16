@@ -83,4 +83,22 @@ const deleteFromCart = async(req, res) => {
     }
 }
 
-module.exports = {getItems, addItems, deleteFromCart}
+const proceedToOrder = async(req, res) => {
+    try {
+        const cart = await Cart.findOne({user: req.user.id})
+
+        if (!cart || cart.items.length === 0) {
+            return res.status(404).json({error: "Cart Is Empty"})
+        }
+
+        req.session.canPlaceOrder = true
+
+        res.status(200).json({message: "Proceed To Order"})
+    }
+
+    catch (e) {
+        console.log(e)
+    }
+}
+
+module.exports = {getItems, addItems, deleteFromCart, proceedToOrder}
