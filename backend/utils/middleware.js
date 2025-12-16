@@ -44,4 +44,14 @@ const userExtractor = (req, res, next) => {
     }
 }
 
-module.exports = {errorHandler, unknownEndPoint, userExtractor, tokenExtractor}
+const checkSessionForCheckout = (req, res, next) => {
+    if (!req.session.canPlaceOrder) {
+        return res.status(403).json({error: "Invalid Session"})
+    }
+
+    delete req.session.canPlaceOrder
+
+    next()
+}
+
+module.exports = {errorHandler, unknownEndPoint, userExtractor, tokenExtractor, checkSessionForCheckout}
