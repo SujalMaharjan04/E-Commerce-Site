@@ -20,5 +20,11 @@ const deleteFromCart = async (productId) => {
     return response.data
 }
 
+//Proceed to Order from Cart Session Set
+const proceedToOrder = async () => {
+    const response = await api.post('/cart/proceed', {})
+    return response.data
+}
 
-export default {getAllCart, addToCart, deleteFromCart}
+
+export default {getAllCart, addToCart, deleteFromCart, proceedToOrder}
