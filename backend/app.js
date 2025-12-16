@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const logger = require('./utils/loggers')
@@ -21,6 +22,19 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use(session({
+    name: 'sid',
+    secret: config.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60
+    }
+}))
 
 mongoose
     .connect(config.MONGODB_URL)
@@ -32,6 +46,8 @@ mongoose
     .catch((error) => {
         logger.error('Error connecting to the database', error.message)
 })
+
+
 
 
 app.use('/api/users', userRouter)
