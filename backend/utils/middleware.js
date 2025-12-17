@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, next) => {
         return res.status(400).json({error: 'expect `username` to be unique'})
     }
 
-    res.status(500).json({error: 'Error Connecting to Database'})
+    res.status(500).json({error: err.message})
 
 }
 
@@ -48,8 +48,6 @@ const checkSessionForCheckout = (req, res, next) => {
     if (!req.session.canPlaceOrder) {
         return res.status(403).json({error: "Invalid Session"})
     }
-
-    delete req.session.canPlaceOrder
 
     next()
 }
