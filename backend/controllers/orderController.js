@@ -3,7 +3,7 @@ const Product = require('../models/Product')
 
 const getOrders = async(req, res, next) => {
     try {
-        const orders = await Order.find({}).populate('user', 'username, email, phone, address').populate('product', 'name, description, price, category, brand, image, rating')
+        const orders = await Order.find({}).populate('user', 'username, email, phone, address').populate([{path: 'items.product', select: 'name, description, price, category, brand, image, rating', strictPopulate: false}])
 
         if (orders.length === 0) {
             return res.status(404).json({error: 'No Order found'})
