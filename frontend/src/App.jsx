@@ -16,6 +16,7 @@ import Cart from "./page/user/Cart"
 import Order from './page/user/Order'
 import Payment from "./page/user/Payment"
 
+
 const App = () => {
   const [user, dispatchUser] = useContext(UserContext)
   const [notification, dispatch] = useContext(NotificationContext)
@@ -56,6 +57,7 @@ const App = () => {
         <Route path = "/" element = {
           <UserLayout /> 
         }>
+          
           <Route path = "/" element = {
             <Home />
           } />
