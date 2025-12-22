@@ -12,10 +12,15 @@ const Cart = () => {
     const [, dispatchOrderForm] = useContext(OrderContext)
 
     const handleNext = async () => {
+        const normalizedItem = cartItem.items.map(item => ({
+            product: item.product.id,
+            quantity: item.quantity,
+            selectedSpecs: item.selectedSpecs
+        }))
         dispatchOrderForm({
             type: "SET_CUSTOMER_INFO",
             payload: {
-                items: cartItem.items
+                items: normalizedItem
             }
         })
         await cartService.proceedToOrder()
