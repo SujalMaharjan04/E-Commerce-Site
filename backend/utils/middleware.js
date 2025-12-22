@@ -13,6 +13,7 @@ const errorHandler = (err, req, res, next) => {
         return res.status(400).json({error: 'expect `username` to be unique'})
     }
 
+    console.log(err.message)
     res.status(500).json({error: err.message})
 
 }

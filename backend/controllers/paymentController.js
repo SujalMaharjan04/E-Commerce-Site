@@ -8,7 +8,7 @@ let paymentData
 
 const initiatePayment = async(req, res, next) => {
     try {
-        const {orderId, method} = req.body
+        const {orderId, paymentMethod} = req.body
 
         const order = await Order.findById(orderId)
         if (!order) {
@@ -19,14 +19,14 @@ const initiatePayment = async(req, res, next) => {
 
         const payment = new Payment({
             order: orderId,
-            method,
+            paymentMethod,
             amount,
             status: 'pending'
         })
 
         await payment.save()
 
-        if (method === 'khalti') {
+        if (paymentMethod === 'Khalti') {
             const payload = {
                 return_url: 'http://localhost:3001/payment/verify',
                 website_url: 'http://localhost:3001',
@@ -45,7 +45,7 @@ const initiatePayment = async(req, res, next) => {
                 pidx: response.data.pidx,
                 provider: 'Khalti'
             };
-        } else if (method === 'esewa') {
+        } else if (paymentMethod === 'Esewa') {
             const esewaUrl = "https://uat.esewa.com.np/epay/main"
             const successUrl = "http://localhost:3001/payment/verify"
             const failureUrl = "http://localhost:3001/payment/failure"
@@ -73,7 +73,7 @@ const initiatePayment = async(req, res, next) => {
                 },
             };
         }
-
+        console.log(paymentData)
         return res.status(200).json(paymentData)
     }
     catch(error) {
@@ -83,9 +83,9 @@ const initiatePayment = async(req, res, next) => {
 
 const verifyPayment = async(req, res, next) => {
     try {
-        const {method} = req.body
+        const {paymentMethod} = req.body
 
-        if (method === 'khalti') {
+        if (paymentMethod === 'Khalti') {
             const {pidx} = req.body
 
             const response = await axios.post("https://a.khalti.com/api/v2/epayment/lookup/", {pidx}, {
@@ -111,7 +111,7 @@ const verifyPayment = async(req, res, next) => {
             payment.status = 'failed'
             await payment.save()
             return res.status(400).json({error: 'Khalti Payment Failed'})
-        } else if (method === 'esewa') {
+        } else if (paymentMethod === 'Esewa') {
             const {oid, amt, refId, signed_field_name} = req.body
             const url = "https://uat.esewa.com.np/epay/transrec"
             const order = await Order.findById(oid)

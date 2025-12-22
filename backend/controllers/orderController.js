@@ -39,11 +39,11 @@ const addOrder = async (req, res, next) => {
 
         const {items, shippingAddress, paymentMethod} = req.body
 
-        if (!items || Array.isArray(items) || items.length === 0) {
+        if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({error: 'Order must include items'})
         }
 
-        const totalAmount = 0
+        let totalAmount = 0
         const validatedItems = []
 
         for (const item of items) {
@@ -56,8 +56,7 @@ const addOrder = async (req, res, next) => {
             if (product.stock < item.quantity) {
                 return res.status(400).json({error: 'Insufficient Stock'})
             }
-
-            const itemTotal = item.quantity * item.price
+            const itemTotal = item.quantity * product.price
             totalAmount += itemTotal
 
             validatedItems.push({
@@ -74,7 +73,7 @@ const addOrder = async (req, res, next) => {
             shippingAddress,
             paymentMethod,
             paymentStatus: 'pending',
-            orderStatus: 'pending'
+            orderStatus: 'processing'
         })
 
         const saved = await newOrder.save()
@@ -88,6 +87,7 @@ const addOrder = async (req, res, next) => {
         return res.status(201).json({message: "Order Placed Successfully", order: saved})
     }
     catch(error) {
+        console.log(error)
         next(error)
     }
 }

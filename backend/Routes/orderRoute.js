@@ -9,7 +9,7 @@ orderRouter.get('/', tokenExtractor, userExtractor, orderController.getOrders)
 orderRouter.get('/:id', tokenExtractor, userExtractor, orderController.getOneOrder)
 
 //Route to add New Order
-orderRouter.post('/', tokenExtractor, userExtractor, checkSessionForCheckout, orderController.addOrder)
+orderRouter.post('/', tokenExtractor, userExtractor, orderController.addOrder)
 
 //Route to update Order
 orderRouter.put('/:id', tokenExtractor, userExtractor, orderController.updateOrder)
