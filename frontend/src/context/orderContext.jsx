@@ -8,7 +8,7 @@ const initialState = {
     items: [],
     paymentMethod: "",
     deliveryMethod: "",
-    comfirmed: false
+    comfirmed: false,
 }
 
 const orderReducer = (state, action) => {
