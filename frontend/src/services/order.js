@@ -11,7 +11,7 @@ const getOrderById = async (id) => {
 }
 
 const addOrder = async(order) => {
-    const response = await api.post('/order', order, {withCredentials: true})
+    const response = await api.post('/order', order)
     return response.data
 }
 
