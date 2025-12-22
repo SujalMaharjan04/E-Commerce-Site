@@ -7,6 +7,6 @@ const { tokenExtractor, userExtractor } = require('../utils/middleware')
 paymentRouter.post('/initiate', tokenExtractor, userExtractor, paymentController.initiatePayment)
 
 //Route to verify Payment
-paymentRouter.post('/verify', tokenExtractor, userExtractor, paymentController.verifyPayment)
+paymentRouter.get('/verify', tokenExtractor, userExtractor, paymentController.verifyPayment)
 
 module.exports = paymentRouter
