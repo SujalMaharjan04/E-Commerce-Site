@@ -3,6 +3,7 @@ const Order = require('../models/Order')
 const axios = require('axios')
 const config = require('../utils/config')
 const crypto = require('crypto')
+const { v4: uuidv4 } = require('uuid');
 
 let paymentData
 
@@ -28,7 +29,7 @@ const initiatePayment = async(req, res, next) => {
 
         if (paymentMethod === 'Khalti') {
             const payload = {
-                return_url: 'http://localhost:3001/payment/verify',
+                return_url: 'http://localhost:3001/api/payment/verify',
                 website_url: 'http://localhost:3001',
                 amount: amount * 100,
                 purchase_order_id: orderId,
@@ -46,30 +47,33 @@ const initiatePayment = async(req, res, next) => {
                 provider: 'Khalti'
             };
         } else if (paymentMethod === 'Esewa') {
-            const esewaUrl = "https://uat.esewa.com.np/epay/main"
-            const successUrl = "http://localhost:3001/payment/verify"
-            const failureUrl = "http://localhost:3001/payment/failure"
+            const esewaUrl = "https://rc-epay.esewa.com.np"
+            const successUrl = "http://localhost:3001/api/payment/verify"
+            const failureUrl = "http://localhost:3001/api/payment/failure"
+            const transaction_uuid = uuidv4();
 
-            const message = `${amount}|0|0|${order._id}|${config.ESEWA_MERCHANT_CODE}`
-            const hmac = crypto.createHmac('sha1', config.ESEWA_MERCHANT_CODE)
+            const message = `total_amount=${amount},transaction_uuid=${transaction_uuid},product_code=${config.ESEWA_MERCHANT_CODE}`
+            const secretKey = config.ESEWA_SECRET_KEY
+            const hmac = crypto.createHmac('sha256', secretKey)
             hmac.update(message)
-            const signed_field_name = hmac.digest('base64')
+            const hash = hmac.digest('base64')
 
             paymentData = {
                 provider: 'esewa',
                 paymentId: payment._id,
                 paymentUrl: esewaUrl,
                 params: {
-                    amt: amount,
+                    amount: order.totalAmount,
                     product_service_charge: 0,
                     product_delivery_charge: 0,
                     failure_url: failureUrl,
                     success_url: successUrl,
                     tax_amount: 0,
                     total_amount: order.totalAmount,
-                    product_id: order._id,
-                    scd: config.ESEWA_MERCHANT_CODE,
-                    signed_field_name
+                    transaction_uuid: transaction_uuid,
+                    product_code: config.ESEWA_MERCHANT_CODE,
+                    signed_field_names: "total_amount,transaction_uuid,product_code",
+                    signature: hash
                 },
             };
         }
@@ -112,19 +116,19 @@ const verifyPayment = async(req, res, next) => {
             await payment.save()
             return res.status(400).json({error: 'Khalti Payment Failed'})
         } else if (paymentMethod === 'Esewa') {
-            const {oid, amt, refId, signed_field_name} = req.body
-            const url = "https://uat.esewa.com.np/epay/transrec"
+            const {oid, amt, refId, signed_field_name, signature} = req.body
+            const url = `https://rc.esewa.com.np/api/epay/transaction/status/?product_code=${config.ESEWA_MERCHANT_CODE}&total_amount=${amt}&transaction_uuid=${oid}`
             const order = await Order.findById(oid)
             if (!order) {
                 return res.status(404).json({error: "No Order  Found"})
             }
 
-            const message = `${order.totalAmount}|0|0|${order._id}|${config.ESEWA_MERCHANT_CODE}`
+            const message = `total_amount=${order.totalAmount},tansaction_uuid=${order._id},product_code=${config.ESEWA_MERCHANT_CODE}`
             const hmac = crypto.createHmac('sha1', config.ESEWA_MERCHANT_CODE)
             hmac.update(message)
             const expectedSignature = hmac.digest('base64')
 
-            if (signed_field_name !== expectedSignature) {
+            if (signature !== expectedSignature) {
                 return res.status(400).json({error: 'Payment Verification Failed'})
             }
 
