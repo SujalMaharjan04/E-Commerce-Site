@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const paymentSchema = new mongoose.Schema({
     order: {type: mongoose.Schema.Types.ObjectId, ref: 'Order'},
     method: {type: String, enum: ['esewa', 'khalti', 'cod']},
-    transactionId: {type: String, unique: true},
-    pidx: {type: String, unique: true},
+    transaction_uuid: {type: String, unique: true},
+    pidx: {type: String,},
     amount: {type: Number, required: true},
     status: {type: String, enum: ['pending', 'completed', 'failed'], default: 'pending'},
     dataFormVerficationReq: {type: Object},
