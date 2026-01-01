@@ -81,6 +81,14 @@ const App = () => {
               <Route path = "/payment" element = {
                 <Payment />
               } />
+
+              <Route path = "/success" element = {
+                <h2>Success</h2>
+              } />
+
+              <Route path = "/failed" element = {
+                <h2>Failed</h2>
+              } />
             </>
           : <Route to = "*" element = {<Navigate to = "/invalid" replace/>} />}
           
