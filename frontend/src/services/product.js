@@ -2,9 +2,20 @@ import api from './api'
 
 const baseUrl = '/products'
 
+
+//Function to get all product for admin
+
+const getProductAdmin = async() => {
+    const response = await api.get(`${baseUrl}/admin`)
+    return response.data
+}
+
 //Function to Get All Product
-const getAll = async() => {
-    const response = await api.get(baseUrl)
+const getAll = async({category, cursor}) => {
+    const params = new URLSearchParams()
+    if (category) params.append("category", category)
+    if (cursor) params.append("cursor", cursor)
+    const response = await api.get(`${baseUrl}?${params}`)
     return response.data
 } 
 
@@ -61,4 +72,4 @@ const deleteProduct = async(id) => {
 
 
 
-export default {getAll, create, edit, deleteProduct, getById}
+export default {getAll, create, edit, deleteProduct, getById, getProductAdmin}
