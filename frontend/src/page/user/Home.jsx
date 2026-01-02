@@ -3,15 +3,18 @@ import Laptop from '../../assets/image/dell_laptop.png'
 import ProductCard from '../../components/user/ProductCard'
 import ReviewCard from '../../components/user/ReviewCard'
 import Slider from '../../components/user/Slider'
-import { ProductContext } from '../../context/adminContext'
+import { CategoryContext, ProductContext } from '../../context/adminContext'
 import { useQuery } from '@tanstack/react-query'
 import productService from '../../services/product'
 import { Link } from 'react-router-dom'
+import categoryService from '../../services/category'
 
 const Home = () => {
     const [current, setCurrent] = useState(0)
     const [products, dispatchProducts] = useContext(ProductContext)
-    
+    const [category, dispatchCategory] = useContext(CategoryContext)
+
+
 
     const next = () => {
         if (current < products.length - 3) {
@@ -28,6 +31,11 @@ const Home = () => {
         queryKey: ['product'],
         queryFn: productService.getAll
     })
+    
+    const categories = useQuery({
+        queryKey: ['category'],
+        queryFn: categoryService.getAll
+    })
 
     useEffect(() => {
         if (product.data) {
@@ -36,7 +44,18 @@ const Home = () => {
                 payload: product.data
             })
         }
+
+    
     }, [product.data, dispatchProducts])
+
+    useEffect(() => {
+        if (categories.data) {
+            dispatchCategory({
+                type: 'SET_CATEGORY',
+                payload: categories.data
+            })
+        }
+    }, [categories.data])
 
     return (
         <div className = "bg-[#EFEBCE]">
@@ -53,13 +72,13 @@ const Home = () => {
                     
                     <div className = "overflow-hidden">
                         <div className = "flex flex-row justify-evenly items-center transition-transform duration-500" style = {{transform: `translate(-${current * 100}%)`}}>
-                            {products.map(product =>{
+                            {/* {products.map(product =>{
                                 return (
                                     <div className = "min-w-1/3 px-2" key = {product.id}>
                                         <Link to = {`/product/${product.id}`}><ProductCard product = {product}/></Link>
                                     </div>
                                 
-                            )})}
+                            )})} */}
                         </div>  
                     </div>
 
@@ -83,38 +102,62 @@ const Home = () => {
                     <h2 className = "text-4xl">Categories</h2>
                 </div>
                 <div className = "grid grid-cols-4 gap-1">
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
-                    <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                        <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
-                        <h3 className = "text-xl p-2">Laptop</h3>
-                    </div>
+                    {category.map(category => (
+                        <Link to = {`/products?category=${category.id}`} key = {category.id}>
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">{category.name}</h3>
+                        </div>
+                    </Link>
+                    ))}
+                    {/* <Link to = "/products?category=Laptop">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Laptop</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Smartphone">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Smartphone" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Smartphone</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Tablet">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Tablet" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Tablet</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Camera">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Camera" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Camera</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Headphone">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Headphone" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Headphones</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Accessories">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Accessories" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Accessories</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Laptop">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Laptop</h3>
+                        </div>
+                    </Link>
+                    <Link to = "/products?category=Laptop">
+                        <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
+                            <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
+                            <h3 className = "text-xl p-2">Laptop</h3>
+                        </div>
+                    </Link> */}
                 </div>
 
             </div>
