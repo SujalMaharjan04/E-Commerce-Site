@@ -4,8 +4,11 @@ const {tokenExtractor, userExtractor} = require('../utils/middleware')
 const multer = require('multer')
 const uploads = multer({dest: 'uploads/products/'})
 
-//Route to get all Products
-productRouter.get('/', productController.getProduct)
+//Route to get all products for admin
+productRouter.get('/admin', productController.getProduct)
+
+//Route to get all Products using cursor and pagination
+productRouter.get('/', productController.getProductUsingCursor)
 
 //Route to add individual Product
 productRouter.post('/', tokenExtractor, userExtractor, uploads.single('image'), productController.addProduct)
