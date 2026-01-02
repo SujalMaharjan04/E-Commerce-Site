@@ -43,8 +43,9 @@ mongoose
     .connect(config.MONGODB_URL)
     .then(async() => {
         logger.info('Connected to the database')
-        await newAdmin()
+        // await newAdmin()
         // await newProduct()
+        
     })
     .catch((error) => {
         logger.error('Error connecting to the database', error.message)
