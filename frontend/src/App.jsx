@@ -15,6 +15,7 @@ import ProductById from "./page/user/ProductById"
 import Cart from "./page/user/Cart"
 import Order from './page/user/Order'
 import Payment from "./page/user/Payment"
+import Product from "./page/user/Product"
 
 
 const App = () => {
@@ -61,10 +62,10 @@ const App = () => {
           <Route path = "/" element = {
             <Home />
           } />
-          {/* <Route path = "/product" element = {
+          <Route path = "/products" element = {
             <Product />
-          } /> */}
-          <Route path = "/product/:id" element = {
+          } />
+          <Route path = "/products/:id" element = {
             <ProductById />
           } />
 
