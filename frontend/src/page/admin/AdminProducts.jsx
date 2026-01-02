@@ -125,7 +125,7 @@ const AdminProducts = () => {
     //Query for Product Get
     const product = useQuery({
         queryKey: ['product'],
-        queryFn: productService.getAll
+        queryFn: productService.getProductAdmin
     })
 
     //Mutation Function for Product Add
