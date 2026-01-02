@@ -11,6 +11,42 @@ const getProduct = async (req, res, next) => {
     }
 }
 
+const getProductUsingCursor = async (req, res, next) => {
+    try {
+        const limit = parseInt(req.query.limit) || 10
+        const cursor = req.query.cursor
+        const category = req.query.category
+
+        let query = {}
+
+        if (category) {
+            query.category = category
+        }
+
+        if (cursor) {
+            query.id = {$lt: cursor}
+        }
+
+        const products = await Product.find(query).sort({id: -1}).limit(limit + 1)
+        let hasNextPage = false
+        let nextCursor = null
+
+        if (products.length > limit) {
+            hasNextPage = true
+            const lastProduct = products.pop()
+            nextCursor = lastProduct.id
+        }
+        res.json({
+            products,
+            nextCursor,
+            hasNextPage
+        })
+    }
+    catch (error) {
+        console.log(`Error: ${error.message}`)
+    }
+}
+
 //Function to Get Individual Product
 const getProductById = async (req, res, next) => {
     try {
@@ -149,6 +185,6 @@ const deleteProduct = async (req, res, next) => {
 
 
 
-module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct}
+module.exports = {getProduct, getProductById, getProductByCategory, getProductByBrand, deleteProduct, addProduct, updateProduct, getProductUsingCursor}
 
 
