@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 import productService from '../../services/product'
 import Sidebar from "../../components/user/Sidebar"
+import ProductPageCard from "../../components/user/ProductPageCard"
 
 const Product = () => {
     const [searchParams] = useSearchParams()
@@ -22,8 +23,16 @@ const Product = () => {
     const products = data.pages.flatMap(page => page.products)
     
     return (
-        <div>
-            <Sidebar />
+        <div className = "md:flex md:flex-row md:justify-evenly ">
+            <div>
+                <Sidebar />
+
+            </div>
+            <div className = "md:flex md:flex-col md:flex-1 md:mx-10  ">
+                {products.map(product => (
+                    <ProductPageCard product = {product} />
+                ))}
+            </div>
         </div>
     )
 }
