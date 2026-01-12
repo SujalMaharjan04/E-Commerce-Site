@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const ProductPageCard = ({product}) => {
+    const navigate = useNavigate()
     return (
         <div className = "md:grid md:grid-cols-[auto_1fr] md:min-h-60 md:my-2 bg-[#BFC7E2] text-[#090F13]">
             <Link to = {`/products/${product.id}`}>
@@ -17,7 +18,7 @@ const ProductPageCard = ({product}) => {
                     <p>Rs {product.price}</p>
                 </div>
                 <div className = "md:w-full">
-                    <button type = "button" className = "bg-[#E09F75] md:w-[20%] md:h-[20%] text-center md:my-14  rounded-lg font-bold text-lg">Add To Cart</button>
+                    <button type = "button" className = "bg-[#E09F75] md:w-[20%] md:h-[20%] text-center md:my-14  rounded-lg font-bold text-lg hover:cursor-pointer" onClick = {() => navigate(`/products/${product.id}`)}>See Option</button>
                 </div>
             </div>
         </div>
