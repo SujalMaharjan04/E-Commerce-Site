@@ -1,6 +1,9 @@
 const logger = require('./loggers')
 const jwt = require('jsonwebtoken')
 const config = require('./config')
+const limit = require('express-rate-limit')
+// const redisClient = require('../redisClient')
+const {RedisStore} = require('rate-limit-redis')
 
 const unknownEndPoint = (req, res) => {
     res.status(404).json({error: 'Unknown Endpoint'})
@@ -45,6 +48,34 @@ const userExtractor = (req, res, next) => {
     }
 }
 
+const authLimiter = limit.rateLimit({
+    windowMs: 3 * 60 * 60 * 1000,
+    limit: 3,
+    standardHeaders: true,
+    legacyHeaders: false,
+    skipSuccessfulRequests: false,
+    // store: new RedisStore({
+    //     sendCommand: (...args) => redisClient.sendCommand(args)
+    // }),
+    handler: (req, res) => {
+        const retryAfter = Number(res.getHeader("Retry-After")) || null
+
+        res.status(429).json({
+            message: "Too many requests, Please try again in",
+            retryAfter: Number(retryAfter)
+        })
+    }
+})
+
+const publicLimiter = limit.rateLimit({
+    windowMs: 1 * 60 * 60 * 1000,
+    limit: 50,
+    standardHeaders: true,
+    legacyHeaders: false,
+    skipSuccessfulRequests: true
+})
+
+
 const checkSessionForCheckout = (req, res, next) => {
     if (!req.session.canPlaceOrder) {
         return res.status(403).json({error: "Invalid Session"})
@@ -53,4 +84,4 @@ const checkSessionForCheckout = (req, res, next) => {
     next()
 }
 
-module.exports = {errorHandler, unknownEndPoint, userExtractor, tokenExtractor, checkSessionForCheckout}
+module.exports = {errorHandler, unknownEndPoint, userExtractor, tokenExtractor, checkSessionForCheckout, authLimiter, publicLimiter}
