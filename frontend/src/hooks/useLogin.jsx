@@ -29,6 +29,21 @@ export const useLogin = (isAdmin = false) => {
             ? await loginService.adminLogin({username, password})
             : await loginService.userLogin({username, password})
 
+        if (!user.success && user.type === 'RATE-LIMIT') {
+            console.log(user.message)
+            dispatch({
+                type: "SET_NOTIFICATION",
+                payload: {text: `${user.message} ${user.retryAfter} seconds`, type: 'error'}
+            })
+
+            setTimeout(() => {
+                dispatch({
+                    type: "CLEAR_NOTIFICATION"
+                })
+            }, 2000)
+            return 
+        }
+
         if (!user || !user.token) {
             dispatch({
                 type: 'SET_NOTIFICATION',
