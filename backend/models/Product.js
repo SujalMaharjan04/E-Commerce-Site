@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
     category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
     brand: {type: mongoose.Schema.Types.ObjectId, ref: 'Brand' },
     image: [String],
-    ratings: {type: Number, default: 0},
+    review: {type: mongoose.Schema.Types.ObjectId, ref: 'Review'},
     createdAt: {type: Date, default: Date.now}
 })
 
