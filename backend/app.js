@@ -16,6 +16,7 @@ const middleware = require('./utils/middleware')
 const path = require('path')
 const newProduct = require('./controllers/seedProduct')
 const cartRouter = require('./Routes/cartRoute')
+const reviewRouter = require('./Routes/reviewRoute')
 
 
 const app = express()
@@ -62,6 +63,7 @@ app.use('/api/order', orderRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/payment', paymentRouter)
 app.use('/api/cart', cartRouter)
+app.use('/api/products', reviewRouter)
 
 if (process.env.NODE_ENV === 'test') {
     const testingRoute = require('./Routes/testRoute')
