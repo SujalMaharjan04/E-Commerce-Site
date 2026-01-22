@@ -24,10 +24,10 @@ const getProductUsingCursor = async (req, res, next) => {
         }
 
         if (cursor) {
-            query.id = {$lt: cursor}
+            query._id = {$lt: JSON.parse(cursor)}
         }
 
-        const products = await Product.find(query).sort({id: -1}).limit(limit + 1)
+        const products = await Product.find(query).sort({_id: -1}).limit(limit + 1)
         let hasNextPage = false
         let nextCursor = null
 
@@ -105,7 +105,7 @@ const addProduct = async (req, res, next) => {
             return res.status(403).json({error: "Unauthorized: You can't add products"})
         }
 
-        const {name, description, price, stock, category, brand, ratings, specs} = req.body
+        const {name, description, price, stock, category, brand, specs} = req.body
         const changedSpecs = JSON.parse(specs)
         
         if (!name || !price) {
@@ -116,7 +116,7 @@ const addProduct = async (req, res, next) => {
         const filePath = req.file ? req.file.path.replace(/\\/g, '/') : ''
         const image = `${req.protocol}://${req.get('host')}/${filePath}`
 
-        const newProduct =  new Product({name, description, price, stock, category, brand, image, ratings, specs: changedSpecs})
+        const newProduct =  new Product({name, description, price, stock, category, brand, image, specs: changedSpecs})
         const savedProduct = await newProduct.save()
         return res.status(200).json(savedProduct)
     }
