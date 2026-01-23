@@ -7,6 +7,9 @@ const reviewSchema = new mongoose.Schema({
     rating: {type: Number, required: true},
 }, {timestamps: true})
 
+reviewSchema.index({product: 1, createdAt: -1}) //Index for fast lookup
+reviewSchema.index({product: 1, user: 1}, {unique: true}) //Single review from one person per product 
+
 
 reviewSchema.set('toJSON', {
     transform: (document, returnedObject) => {
