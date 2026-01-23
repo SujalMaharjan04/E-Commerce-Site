@@ -1,16 +1,16 @@
 const Review = require('../models/Review')
 
 
-//Returning all Reviews
-const getAll = async(req, res, next) => {
-    try {
-        const reviews = await Review.find({}).populate('product', 'name').populate('user', 'username')
-        res.status(200).json(reviews)
-    }
-    catch (e) {
-        res.status(400).json(e)
-    }
-}
+// //Returning all Reviews
+// const getAll = async(req, res, next) => {
+//     try {
+//         const reviews = await Review.find({}).populate('product', 'name').populate('user', 'username')
+//         res.status(200).json(reviews)
+//     }
+//     catch (e) {
+//         res.status(400).json(e)
+//     }
+// }
 
 //Returning Review based on ProductId
 const getById = async (req, res, next) => {
@@ -51,4 +51,4 @@ const addReview = async(req, res, next) => {
     }
 }
 
-module.exports = {getAll, addReview, getById}
+module.exports = { addReview, getById}
