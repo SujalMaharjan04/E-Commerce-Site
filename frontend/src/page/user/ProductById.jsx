@@ -1,4 +1,5 @@
 import React from "react"
+import { useEffect } from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import productService from '../../services/product'
@@ -9,6 +10,8 @@ import cartService from '../../services/cart'
 import useUserAddr from '../../hooks/useUserAddr'
 import { CartContext } from "../../context/cartContext"
 import { NotificationContext} from '../../context/NotificationContext'
+import { ReviewContext } from '../../context/reviewContext'
+import reviewService from '../../services/review'
 
 
 const ProductById = () => {
@@ -26,8 +29,28 @@ const ProductById = () => {
     const {id} = useParams()
     const query = useQueryClient()
     const userAddrQuery = useUserAddr()
+    const [review, dispatchReview] = useContext(ReviewContext)
+    
     
     const userAddr = userAddrQuery.data
+
+
+    //Func to load Review
+    const reviewResult = useQuery({
+        queryKey: ['review', id],
+        queryFn: () => reviewService.getReview(id),
+        enabled: !!id
+    })
+
+    useEffect(() => {
+        dispatchReview({
+            type: "SET_REVIEW",
+            payload: reviewResult.data
+        })
+    }, [reviewResult.data])
+
+    console.log(review)
+
 
     //Mutation to Add to Cart
     const addCart = useMutation({
@@ -194,6 +217,11 @@ const ProductById = () => {
                             <li key = {i}>{point}</li>
                         ))} */}
                     </ul>
+
+                    {/*Comment Section */}
+                    <div>
+                        <h2 className = "font-bold text-2xl">Reviews</h2>
+                    </div>
                 </div>
 
                 {/*Address and Change Address function Section */}
