@@ -8,6 +8,7 @@ import { UserContextProvider, BrandContextProvider, CategoryContextProvider, Pro
 import {NotificationContextProvider } from './context/NotificationContext.jsx'
 import {CartContextProvider} from './context/cartContext.jsx'
 import { OrderContextProvider } from './context/orderContext.jsx'
+import { ReviewContextProvider } from './context/reviewContext.jsx'
 
 const queryClient = new QueryClient()
 
@@ -16,21 +17,23 @@ createRoot(document.getElementById('root')).render(
     <NotificationContextProvider>
       <UsersContextProvider>      
         <UserContextProvider>
-          <ProductContextProvider>
-            <BrandContextProvider>
-              <CategoryContextProvider>
-                <CartContextProvider>
-                  <OrderContextProvider>
-                    <QueryClientProvider client = {queryClient}>
-                      <Router>
-                        <App />
-                      </Router>
-                    </QueryClientProvider>
-                  </OrderContextProvider>
-                </CartContextProvider>
-              </CategoryContextProvider>
-            </BrandContextProvider>
-          </ProductContextProvider>
+          <ReviewContextProvider>
+            <ProductContextProvider>
+              <BrandContextProvider>
+                <CategoryContextProvider>
+                  <CartContextProvider>
+                    <OrderContextProvider>
+                      <QueryClientProvider client = {queryClient}>
+                        <Router>
+                          <App />
+                        </Router>
+                      </QueryClientProvider>
+                    </OrderContextProvider>
+                  </CartContextProvider>
+                </CategoryContextProvider>
+              </BrandContextProvider>
+            </ProductContextProvider>
+          </ReviewContextProvider>
         </UserContextProvider>
       </UsersContextProvider>
     </NotificationContextProvider>
