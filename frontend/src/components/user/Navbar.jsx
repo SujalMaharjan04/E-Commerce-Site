@@ -23,7 +23,7 @@ const Navbar = () => {
             <div className = "lg:flex lg:flex-row lg:gap-6 text-[#090F13] lg:text-2xl font-bold">
                 <Link to = "/">Home</Link>
                 <Link to = "/bestSeller">Best Seller</Link>
-                <Link to = "/product">Products</Link>
+                <Link to = "/products">Products</Link>
                 <Link to = "/contact">Contact</Link>
             </div>
             <div className='lg:flex lg:flex-row lg:gap-4 lg:mx-4'>
