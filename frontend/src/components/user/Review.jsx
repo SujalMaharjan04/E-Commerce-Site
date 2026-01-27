@@ -48,7 +48,7 @@ const Review = () => {
     const handleSubmit = async(event) => {
         event.preventDefault()
         console.log(review)
-        if (review.comment === '' || review.rating === 0) {
+        if (review.comment === '' || review.rating === 0) { //Checking if whether the comment is empty or rating is 0
             dispatchNotification({
                 type: "SET_NOTIFICATION",
                 payload: {text: "Rating and comments should be given", type: "error"}
