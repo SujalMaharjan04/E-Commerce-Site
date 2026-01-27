@@ -6,9 +6,14 @@ const getReview = async(id) => {
     return response.data
 }
 
-const addReview = async(id, comment, rating) => {
-    const response = await api.post(`/products/${id}/review`, {comment, rating})
-    return response.data
+const addReview = async(id, {comment, rating}) => {
+    try{
+        const response = await api.post(`/products/${id}/review`, {comment, rating})
+        return response.data
+    }
+    catch (e) {
+        throw e
+    }
 }
 
 export default {getReview, addReview}
