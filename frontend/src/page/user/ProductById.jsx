@@ -12,6 +12,8 @@ import { CartContext } from "../../context/cartContext"
 import { NotificationContext} from '../../context/NotificationContext'
 import { ReviewContext } from '../../context/reviewContext'
 import reviewService from '../../services/review'
+import Review from "../../components/user/Review"
+import ProductReview from "../../components/user/Product_Reivews"
 
 
 const ProductById = () => {
@@ -49,7 +51,7 @@ const ProductById = () => {
         })
     }, [reviewResult.data])
 
-    console.log(review)
+    
 
 
     //Mutation to Add to Cart
@@ -220,7 +222,21 @@ const ProductById = () => {
 
                     {/*Comment Section */}
                     <div>
-                        <h2 className = "font-bold text-2xl">Reviews</h2>
+                        <div>
+                            <h2 className = "font-bold text-2xl">Reviews</h2>
+                        </div>
+
+                        <div className = "bg-[#BFC7E2] md:p-4 md:rounded-lg">
+                            <Review />
+
+                            <div className = "mt-4">
+                                {review?.map(r => (
+                                    <ProductReview review = {r} key = {review.id} />
+                                )
+                                )}
+                            </div>
+                        
+                        </div>
                     </div>
                 </div>
 
@@ -230,7 +246,7 @@ const ProductById = () => {
                         <div className = "flex justify-center items-center gap-2">
                             <img src = {Location} />
                             {user ?
-                                <p>Delivering to {userAddr.address.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)}</p>
+                                <p>Delivering to {userAddr.address?.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)}</p>
                                 :<p>Please Log In to order</p>}
                         </div>
 
