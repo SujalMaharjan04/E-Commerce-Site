@@ -48,11 +48,11 @@ const Navbar = () => {
                     <Link to = "/cart"><img src = {Cart} alt = "cart" className = "h-6 w-auto" /> </Link>
                     {user 
                         ? <div className = "group">
-                            <button><img src = {User} alt = "user" className = "hidden md:h-6 md:w-auto" /></button>
+                            <button><img src = {User} alt = "user" className = "hidden md:block md:h-6 md:w-auto" /></button>
                             <UserCard />
                         </div>
                             
-                        : <Togglable trigger = {<img src = {User} alt = "user" className = "hidden md:h-6 md:w-auto md:hover:cursor-pointer" />}>
+                        : <Togglable trigger = {<img src = {User} alt = "user" className = "hidden md:block md:h-6 md:w-auto md:hover:cursor-pointer" />}>
                             <AuthPage />
                         </Togglable>}
 
