@@ -105,7 +105,7 @@ const Home = () => {
                     {category.map(category => (
                         <Link to = {`/products?category=${category.id}`} key = {category.id}>
                         <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
-                            <img src = {Laptop} alt = "Laptop" className = "w-auto h-60" />
+                            <img src = {Laptop} alt = "Laptop" className = "w-auto h-30 md:h-60" />
                             <h3 className = "text-xl p-2">{category.name}</h3>
                         </div>
                     </Link>
