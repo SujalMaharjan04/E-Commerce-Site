@@ -32,14 +32,14 @@ const Slider = () => {
     }, [])
 
     return (
-        <div className = "relative h-[500px] w-full overflow-hidden text-[#090F13]">
+        <div className = "relative h-36 md:h-[500px] w-full overflow-hidden text-[#090F13]">
             {obj.map((slide, index) => (
-                <div key = {index} className = {`absolute inset-0 h-[500px] bg-cover bg-center transition-opacity duration-700 ${index === current ? "opacity-100 z-20" : "opacity-0 z-0"}`} style = {{backgroundImage: `url(${slide.image})`}}>
-                    <div className = {`absolute top-14 ${slide.position === "left" ? "left-20" : "right-20"}  w-[500px]`}>
-                        <div className = "text-4xl leading-16">{slide.heading}</div>
-                        <div className = "mt-14">{slide.description}</div>
+                <div key = {index} className = {`absolute inset-0 md:h-[500px] bg-cover bg-center transition-opacity duration-700 ${index === current ? "opacity-100 z-20" : "opacity-0 z-0"}`} style = {{backgroundImage: `url(${slide.image})`}}>
+                    <div className = {`absolute top-2 md:top-14 ${slide.position === "left" ? "left-2 md:left-20 right-auto" : "right-2 md:right-20 left-auto"} w-[50%] md:w-[500px]`}>
+                        <div className = "text-xs md:text-4xl md:leading-16">{slide.heading}</div>
+                        <div className = "text-xs mt-2 line-clamp-2 md:mt-14">{slide.description}</div>
                         <div>
-                            <button className = " border-2 border-solid rounded-xl w-full bg-[#E09F75] mt-8 h-12 hover:bg-[#DF8E64]">View More &rarr;</button>
+                            <button className = " border-2 border-solid rounded-xl w-[50%] md:w-full bg-[#E09F75] mt-2 md:mt-8 h-8 md:h-12 hover:bg-[#DF8E64]">View More &rarr;</button>
                         </div>
                     </div>
                 </div>    
