@@ -70,6 +70,12 @@ const Navbar = () => {
                         <Link to = "/bestSeller">Best Seller</Link>
                         <Link to = "/products">Products</Link>
                         <Link to = "/contact">Contact</Link>
+                        {user 
+                        ? <div><p>{user.username} logged in</p></div>
+                        : <Togglable trigger = {<img src = {User} alt = "user" className = "h-4 w-auto md:h-6 md:w-auto md:hover:cursor-pointer" />} triggerLabel = "Log In">
+                            <AuthPage />
+                        </Togglable>
+                        }
                     </div>
                 </div>
 

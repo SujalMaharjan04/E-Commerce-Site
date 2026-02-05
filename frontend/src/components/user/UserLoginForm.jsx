@@ -5,7 +5,7 @@ const UserLoginForm = ({onSwitch}) => {
     const {username, password, setUsername, setPassword, handleLogin} = useLogin(false)
     return (
         <div>
-            <h2 className = "font-semibold text-2xl text-center">Log In</h2>
+            <h2 className = "font-semibold md:text-2xl text-center">Log In</h2>
             <form onSubmit={handleLogin} className = "text-[#090F13]">
                 <div className = "flex flex-col p-4">
                     <Input 
