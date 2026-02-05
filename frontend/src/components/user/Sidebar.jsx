@@ -5,6 +5,7 @@ import brandService from '../../services/brand'
 
 const Sidebar = ({searchFilter, onFilterChange}) => {
     const [brands, dispatchBrand] = useContext(BrandContext)
+    const [active, setActive] = useState(false)
     
 
     const result = useQuery({
@@ -19,39 +20,73 @@ const Sidebar = ({searchFilter, onFilterChange}) => {
         })
     }, [result.data])
     return (
-        <div>
-            <div>
-                <h2 className="text-xl">Brand</h2>
-                <div>
-                    {brands?.map(brand => (
-                        
-                        <div key = {brand.id}>
-                            <input  type = "radio" value = {brand.id} checked = {searchFilter.brand === brand.id} name = "brand" onChange = {() => {}} onClick = {() => onFilterChange("brand", brand.id )} /> {brand.name}
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div>
-                <h2 className = "text-xl">RAM</h2>
-                <div className = "md:flex md:flex-col">
-                    <div>
-                        <input type = "radio" value = "4GB" checked = {searchFilter.ram === "4GB"} name = "ram" onChange = {() => {}} onClick = {() => onFilterChange("ram", "4GB")} /> 4GB
-                    </div>
-                    <div>
-                        <input type = "radio" value = "8GB" checked = {searchFilter.ram === "8GB"} name = "ram" onChange = {() => {}} onClick = {() => onFilterChange("ram", "8GB")} /> 8GB
-                    </div>
-                    <div>
-                        <input type = "radio" value = "16GB" checked = {searchFilter.ram === "16GB"} name = "ram" onChange = {() => {}} onClick = {() => onFilterChange("ram", "16GB")} /> 16GB
-                    </div>
-                    <div>
-                        <input type = "radio" value = "32GB" checked = {searchFilter.ram === "32GB"} name = "ram" onChange = {() => {}} onClick = {() => onFilterChange("ram", "32GB")} /> 32GB
-                    </div>
-                    <div>
-                        <input type = "radio" value = "64GB" checked = {searchFilter.ram === "64GB"} name = "ram" onChange = {() => {}} onClick = {() => onFilterChange("ram", "64GB")} /> 64GB
-                    </div>
-                </div>
+        <div className = "relative">
+        <div className="relative z-50">
+            <div className="block md:hidden mb-4">
+                <button 
+                    type="button" 
+                    onClick={() => setActive(!active)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition-colors"
+                >
+                    {active ? 'Close Filter' : 'Filter'}
+                </button>
             </div>
             
+            <div className={`
+                absolute top-full left-0 w-64 bg-white shadow-xl rounded-lg p-4 z-50
+                transform transition-all duration-300 ease-in-out origin-top
+                ${active ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"}
+                md:static md:w-full md:bg-transparent md:shadow-none md:p-0 md:opacity-100 md:scale-y-100 md:translate-y-0 md:pointer-events-auto md:z-auto
+                max-h-[60vh] overflow-y-auto md:max-h-none md:overflow-visible border md:border-none border-gray-200
+            `}>
+                <div className="mb-6">
+                    <h2 className="text-lg font-bold mb-3 md:text-xl">Brand</h2>
+                    <div className="flex flex-col gap-2">
+                        {brands?.map(brand => (
+                            <div key={brand.id} className="flex items-center gap-2">
+                                <input 
+                                    type="radio" 
+                                    value={brand.id} 
+                                    checked={searchFilter.brand === brand.id} 
+                                    name="brand" 
+                                    onChange={() => {}} 
+                                    onClick={() => onFilterChange("brand", brand.id)} 
+                                    className="cursor-pointer"
+                                /> 
+                                <label className="cursor-pointer" onClick={() => onFilterChange("brand", brand.id)}>{brand.name}</label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 className="text-lg font-bold mb-3 md:text-xl">RAM</h2>
+                    <div className="flex flex-col gap-2">
+                        {[
+                            { val: "4GB", label: "4GB" },
+                            { val: "8GB", label: "8GB" },
+                            { val: "16GB", label: "16GB" },
+                            { val: "32GB", label: "32GB" },
+                            { val: "64GB", label: "64GB" }
+                        ].map((ram) => (
+                            <div key={ram.val} className="flex items-center gap-2">
+                                <input 
+                                    type="radio" 
+                                    value={ram.val} 
+                                    checked={searchFilter.ram === ram.val} 
+                                    name="ram" 
+                                    onChange={() => {}} 
+                                    onClick={() => onFilterChange("ram", ram.val)}
+                                    className="cursor-pointer"
+                                /> 
+                                <label className="cursor-pointer" onClick={() => onFilterChange("ram", ram.val)}>{ram.label}</label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         </div>
     )
 }
