@@ -8,11 +8,13 @@ import Togglable from '../common/Togglable'
 import { UserContext } from '../../context/adminContext'
 import AuthPage from './AuthPage'
 import UserCard from '../common/UserCard'
+import { useLogout } from '../../hooks/useLogout'
 
 const Navbar = () => {
     const [active, setActive] = useState(false)
     const [view, setView] = useState(false)
     const [user, dispatchUser] = useContext(UserContext) 
+    const {handleLogout} = useLogout()
     const toggleSearchBar = () => {
         setView(!view)
     }
@@ -71,7 +73,10 @@ const Navbar = () => {
                         <Link to = "/products">Products</Link>
                         <Link to = "/contact">Contact</Link>
                         {user 
-                        ? <div><p>{user.username} logged in</p></div>
+                        ? <div>
+                                <p>{user.username} logged in</p>
+                                <button type = "button" onClick = {handleLogout} className = "border-solid border-2 bg-red-500 text-[#090F13] rounded-xl w-32 mt-4 ">Log Out</button>
+                            </div>
                         : <Togglable trigger = {<img src = {User} alt = "user" className = "h-4 w-auto md:h-6 md:w-auto md:hover:cursor-pointer" />} triggerLabel = "Log In">
                             <AuthPage />
                         </Togglable>
