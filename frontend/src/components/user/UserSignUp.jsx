@@ -191,7 +191,7 @@ const UserSignUp = ({onSwitch, onClose}) => {
         }
     }
     return (
-        <div >
+        <div>
             {/* Heading */}
             <div className = "flex items-center justify-between mb-6">
                 <h2 className = "font-semibold text-2xl">Sign Up</h2>
