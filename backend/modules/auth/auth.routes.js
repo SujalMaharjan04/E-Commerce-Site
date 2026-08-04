@@ -1,5 +1,5 @@
-const authController = require('../controllers/authController')
-const { authLimiter } = require('../utils/middleware')
+const authController = require('./auth.controller')
+const { authLimiter } = require('../../shared/middleware/middleware')
 const authRouter = require('express').Router()
 
 
