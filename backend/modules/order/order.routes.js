@@ -1,5 +1,5 @@
-const { tokenExtractor, userExtractor, checkSessionForCheckout } = require('../utils/middleware')
-const orderController = require('../controllers/orderController')
+const { tokenExtractor, userExtractor, checkSessionForCheckout } = require('../../shared/middleware/middleware')
+const orderController = require('./order.controller')
 const orderRouter = require('express').Router()
 
 //Route to Get all Order

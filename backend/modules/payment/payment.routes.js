@@ -1,6 +1,6 @@
 const paymentRouter = require('express').Router()
-const paymentController = require('../controllers/paymentController')
-const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const paymentController = require('./payment.controller')
+const { tokenExtractor, userExtractor } = require('../../shared/middleware/middleware')
 
 
 //Route to initiate Payment

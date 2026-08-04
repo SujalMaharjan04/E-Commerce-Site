@@ -1,5 +1,5 @@
-const { getBrand, addBrand, updateBrand, deleteBrand, getOneBrand } = require('../controllers/brandControllers')
-const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const { getBrand, addBrand, updateBrand, deleteBrand, getOneBrand } = require('./brand.controller')
+const { tokenExtractor, userExtractor } = require('../../shared/middleware/middleware')
 const multer = require('multer')
 const uploads = multer({dest: 'uploads/'})
 

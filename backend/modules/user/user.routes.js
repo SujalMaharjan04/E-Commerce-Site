@@ -1,6 +1,6 @@
 const userRouter = require('express').Router()
-const userController = require('../controllers/userController')
-const {tokenExtractor, userExtractor} = require('../utils/middleware')
+const userController = require('./user.controller')
+const {tokenExtractor, userExtractor} = require('../../shared/middleware/middleware')
 
 
 //Route for getting all user

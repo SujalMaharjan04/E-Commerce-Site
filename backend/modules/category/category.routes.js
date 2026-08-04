@@ -1,5 +1,5 @@
-const categoryController = require('../controllers/categoryController')
-const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const categoryController = require('./category.controller')
+const { tokenExtractor, userExtractor } = require('../../shared/middleware/middleware')
 const multer = require('multer')
 const upload =multer({dest: 'uploads/'})
 

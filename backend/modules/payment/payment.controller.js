@@ -1,7 +1,7 @@
-const Payment = require('../models/Payment')
-const Order = require('../models/Order')
+const Payment = require('./payment.model')
+const Order = require('../order/order.model')
 const axios = require('axios')
-const config = require('../utils/config')
+const config = require('../../shared/utils/config')
 const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid');
 

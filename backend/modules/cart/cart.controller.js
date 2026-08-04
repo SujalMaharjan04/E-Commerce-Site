@@ -1,5 +1,5 @@
-const Cart = require('../models/Cart')
-const Product = require('../models/Product')
+const Cart = require('./cart.model')
+const Product = require('../product/product.model')
 
 //Controller to Get Cart Items based on Logged In Users
 const getItems = async (req, res) => {

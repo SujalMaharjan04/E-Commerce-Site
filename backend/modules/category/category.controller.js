@@ -1,4 +1,4 @@
-const Category = require('../models/Category')
+const Category = require('./category.model')
 
 const getCategory = async(req, res, next) => {
     try {
@@ -70,17 +70,20 @@ const updateCategory = async(req, res, next) => {
     try {
         const categorys = await Category.findById(req.params.id)
         const updates = {}
-
+        
         for (const key in req.body) {
             if (req.body[key] !== categorys[key]) {
                 updates[key] = req.body[key]
             }
         }
-
+        
         if (req.file) {
             updates.logo = req.file.path
         }
         
+        console.log('req body', req.body)
+        console.log('current category: ', categorys.toObject())
+        console.log('computed updates', updates)
         const updatedCategory = await Category.findByIdAndUpdate(req.params.id, updates, {new: true, runValidators: true})
         return res.status(200).json(updatedCategory)
     }

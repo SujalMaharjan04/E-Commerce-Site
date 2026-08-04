@@ -1,5 +1,5 @@
-const cartController = require('../controllers/cartController')
-const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const cartController = require('./cart.controller')
+const { tokenExtractor, userExtractor } = require('../../shared/middleware/middleware')
 const cartRouter = require('express').Router()
 
 //Route to get All Items in Cart

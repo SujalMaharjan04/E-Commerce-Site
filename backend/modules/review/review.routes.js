@@ -1,5 +1,5 @@
-const reviewController = require('../controllers/reviewController')
-const { tokenExtractor, userExtractor } = require('../utils/middleware')
+const reviewController = require('./review.controller')
+const { tokenExtractor, userExtractor } = require('../../shared/middleware/middleware')
 const reviewRouter = require('express').Router()
 
 //Route to get the Review
