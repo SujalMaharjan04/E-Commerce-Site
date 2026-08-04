@@ -1,6 +1,6 @@
-const logger = require('./loggers')
+const logger = require('../utils/loggers')
 const jwt = require('jsonwebtoken')
-const config = require('./config')
+const config = require('../utils/config')
 const limit = require('express-rate-limit')
 // const redisClient = require('../redisClient')
 const {RedisStore} = require('rate-limit-redis')
