@@ -1,6 +1,6 @@
 const productRouter = require('express').Router()
-const productController = require('../controllers/productController')
-const {tokenExtractor, userExtractor} = require('../utils/middleware')
+const productController = require('./product.controller')
+const {tokenExtractor, userExtractor} = require('../../shared/middleware/middleware')
 const multer = require('multer')
 const uploads = multer({dest: 'uploads/products/'})
 
