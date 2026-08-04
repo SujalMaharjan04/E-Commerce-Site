@@ -1,4 +1,4 @@
-const Product = require('../models/Product')
+const Product = require('../modules/product/product.model')
 const axios = require('axios')
 
 const seedProduct = async () => {

@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const User = require('../modules/user/user.model')
 const bcrypt = require('bcrypt')
 
 const createSeedAdmin = async() => {
