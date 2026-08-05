@@ -19,6 +19,7 @@ const cartRouter = require('./modules/cart/cart.routes')
 const reviewRouter = require('./modules/review/review.routes')
 
 
+
 const app = express()
 app.use(express.json())
 app.use(cors({
@@ -26,31 +27,19 @@ app.use(cors({
     credentials: true
 }))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-app.use(session({
-    name: 'sid',
-    secret: config.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,
-    cookie: {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
-        maxAge: 1000 * 60 * 60
-    }
-}))
-
-mongoose
-    .connect(config.MONGODB_URL)
-    .then(async() => {
-        logger.info('Connected to the database')
-        // await newAdmin()
-        // await newProduct()
-        
-    })
-    .catch((error) => {
-        logger.error('Error connecting to the database', error.message)
-})
+// app.use(session({
+//     name: 'sid',
+//     secret: config.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     rolling: true,
+//     cookie: {
+//         httpOnly: true,
+//         secure: false,
+//         sameSite: 'lax',
+//         maxAge: 1000 * 60 * 60
+//     }
+// }))
 
 
 
