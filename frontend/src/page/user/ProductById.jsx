@@ -14,6 +14,7 @@ import { ReviewContext } from '../../context/reviewContext'
 import reviewService from '../../services/review'
 import Review from "../../components/user/Review"
 import ProductReview from "../../components/user/Product_Reivews"
+import { useProduct } from "../../hooks/useProducts"
 
 
 const ProductById = () => {
@@ -29,7 +30,6 @@ const ProductById = () => {
     const [cartItem, dispatchCart] = useContext(CartContext)
     const [notify, dispatchNotify] = useContext(NotificationContext)
     const {id} = useParams()
-    const query = useQueryClient()
     const userAddrQuery = useUserAddr()
     const [review, dispatchReview] = useContext(ReviewContext)
     
@@ -80,11 +80,7 @@ const ProductById = () => {
     })
 
 
-    const {data: product, isLoading, isError} = useQuery({
-        queryKey: ['product', id],
-        queryFn: () => productService.getById(id),
-        enabled: !!id
-    }) 
+    const {data: product, isLoading, isError} = useProduct(id)
 
 
     if (isLoading) return <h1>Loading...</h1>

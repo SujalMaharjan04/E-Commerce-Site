@@ -11,6 +11,7 @@ import productService from '../../services/product'
 import ProductTable from '../../components/admin/ProductTable'
 import CategoryTable from "../../components/admin/CategoryTable"
 import BrandTable from "../../components/admin/BrandTable"
+import { useCreateProduct } from "../../hooks/useProducts"
 
 
 const AdminProducts = () => {
@@ -128,24 +129,6 @@ const AdminProducts = () => {
         queryFn: productService.getProductAdmin
     })
 
-    //Mutation Function for Product Add
-    const addProducts = useMutation({
-        mutationFn: (newProduct) => productService.create(newProduct),
-        onSuccess: (updatedProduct) => {
-            dispatchProducts({
-                type: "ADD_PRODUCT",
-                payload: updatedProduct
-            })
-            query.invalidateQueries({queryKey: ['product']})
-            notify({text: `${updatedProduct.name} has been edited`, type: 'success'})
-        },
-        onError: () => {
-            notify({text: `Product can not be edited`, type: 'error'})
-        }
-    })
-
-
-
     //Function to add Category
     const addCategory = async(newCategory) => {
         categoryToggle.current.toggleVisibility()
@@ -187,9 +170,17 @@ const AdminProducts = () => {
     }
 
     //Function to add Product
+    const createProduct = useCreateProduct()
     const addProduct = async(event, newProduct) => {
         event.preventDefault()
-        await addProducts.mutateAsync(newProduct)
+        await createProduct.mutateAsync(newProduct, {
+            onSuccess: (updatedProduct) => {
+                notify({text: `${updatedProduct.name} has been added`, type: 'success'})
+            },
+            onError: () => {
+                notify({text: `Product failed to be added`, type: 'error'})
+            }
+        })
         productToggle.current.toggleVisibility()
             
     }

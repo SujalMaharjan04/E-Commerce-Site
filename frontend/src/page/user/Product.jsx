@@ -1,9 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { useState, useEffect } from "react"
+import { useState} from "react"
 import { useSearchParams } from "react-router-dom"
-import productService from '../../services/product'
 import Sidebar from "../../components/user/Sidebar"
 import ProductPageCard from "../../components/user/ProductPageCard"
+import { useProducts } from "../../hooks/useProducts"
 
 const Product = () => {
     const [searchFilter, setSearchFilter] = useState({
@@ -12,14 +11,8 @@ const Product = () => {
     })
     const [searchParams] = useSearchParams()
     const category = searchParams.get("category")
-    const {data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage} = useInfiniteQuery({
-        queryKey: ["product", category],
-        queryFn: ({pageParam = null}) => productService.getAll({
-            category, 
-            cursor: pageParam
-        }), 
-        getNextPageParam: (lastPage) => lastPage.nextCursor
-    })
+
+    const {data, isLoading, isError} = useProducts(category)
 
     if (isLoading) return (<h1>Loading....</h1>)
     if (isError) return (<h1>Error Getting Data</h1>)

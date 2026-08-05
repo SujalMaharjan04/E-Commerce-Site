@@ -6,6 +6,7 @@ import { NotificationContext } from "../../context/NotificationContext"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { BrandContext, CategoryContext } from "../../context/adminContext"
 import productService from '../../services/product'
+import { useDeleteProduct, useEditProduct } from "../../hooks/useProducts"
 
 const ProductTable = (props) => {
     const [products, dispatchProducts] = useContext(ProductContext)
@@ -29,52 +30,48 @@ const ProductTable = (props) => {
         }, 2000)
     }
 
-    //Mutation Function for Product Edit
-    const editProduct = useMutation({
-        mutationFn: ({id, newProduct}) => productService.edit(id, newProduct),
-        onSuccess: (updatedProduct) => {
-            dispatchProducts({
-                type: "UPDATE_PRODUCTS",
-                payload: {
-                    id: updatedProduct.id,
-                    newProduct: updatedProduct
-                }
-            })
-            notify({text: `${updatedProduct.name} has been edited`, type: 'success'})
-            query.invalidateQueries({queryKey: ['product']})
-            localEditRef.current.toggleVisibility()
-            
-        },
-        onError: (updateProduct) => {
-            notify({text: `${updatedProduct.name} update failed`, type: 'error'})
-        }
-    })
-        //Function to edit Product
+    //Function to edit Product
+    const editProduct = useEditProduct()
     const editItem = async(id, newProduct) => {
-        await editProduct.mutateAsync({id, newProduct})
+        await editProduct.mutateAsync({id, newProduct}, {
+            onSuccess: (updatedProduct) => {
+                notify({text: `${updatedProduct.name} has been edited`, type: 'success'})
+            },
+            onError: (updatedProduct) => {
+                notify({text: `${updatedProduct.name} update failed`, type: 'error'})
+            }
+        })
         
     }
 
-    //Mutation to delete Product
-    const remove = useMutation({
-        mutationFn: (id) => productService.deleteProduct(id),
-        onSuccess: (id) => {
-            dispatchProducts({
-                type: 'DELETE_PRODUCT',
-                payload: id
-            })
-            notify({text: `Deletion Successful`, type: 'success'})
-            query.invalidateQueries({queryKey: ['product']})
-        },
-        onError: () => {
-            notify({text: `Delete Unsuccessful`, type: 'error'})
-        }
-    })
+    // //Mutation to delete Product
+    // const remove = useMutation({
+    //     mutationFn: (id) => productService.deleteProduct(id),
+    //     onSuccess: (id) => {
+    //         dispatchProducts({
+    //             type: 'DELETE_PRODUCT',
+    //             payload: id
+    //         })
+    //         notify({text: `Deletion Successful`, type: 'success'})
+    //         query.invalidateQueries({queryKey: ['product']})
+    //     },
+    //     onError: () => {
+    //         notify({text: `Delete Unsuccessful`, type: 'error'})
+    //     }
+    // })
    
     //Function to delete Product
+    const remove = useDeleteProduct()
     const removeProduct = async(id) => {
         if (window.confirm('Do you want to delete this product?'))  {
-            await remove.mutateAsync(id)
+            await remove.mutateAsync(id, {
+                onSuccess: () => {
+                    notify({text: `Deletion Successful`, type: 'success'})
+                },
+                onError: () => {
+                    notify({text: `Delete Unsuccessful`, type: 'error'})
+                }
+            })
         }
         
     }
