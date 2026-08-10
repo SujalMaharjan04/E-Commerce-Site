@@ -9,12 +9,12 @@ import { UserContext} from "../../context/adminContext"
 import cartService from '../../services/cart'
 import useUserAddr from '../../hooks/useUserAddr'
 import { CartContext } from "../../context/cartContext"
-import { NotificationContext} from '../../context/NotificationContext'
 import { ReviewContext } from '../../context/reviewContext'
 import reviewService from '../../services/review'
 import Review from "../../components/user/Review"
 import ProductReview from "../../components/user/Product_Reivews"
 import { useProduct } from "../../hooks/useProducts"
+import useNotificationStore from "../../store/notification.store"
 
 
 const ProductById = () => {
@@ -28,7 +28,7 @@ const ProductById = () => {
     const [selectedStorage, setSelectedStorage] = useState(false)
     const [user, dispatchUser] = useContext(UserContext)
     const [cartItem, dispatchCart] = useContext(CartContext)
-    const [notify, dispatchNotify] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
     const {id} = useParams()
     const userAddrQuery = useUserAddr()
     const [review, dispatchReview] = useContext(ReviewContext)
@@ -62,14 +62,8 @@ const ProductById = () => {
                 type: "SET_CART",
                 payload: data
             })
-            dispatchNotify({
-                type: "SET_NOTIFICATION",
-                payload: {text: "Item Added To Cart", type: "success"}
-            })
+            notify("Item Added to Cart", "success")
 
-            setTimeout(() => {
-                dispatchNotify({type: "CLEAR_NOTIFICATION"})
-            }, 2000)
             setQuantity(1)
             setStyle(null)
             setSize(null)
@@ -109,14 +103,7 @@ const ProductById = () => {
     const addCartItem = (productId, quantity, selectedSpecs) => {
 
         if (!user) {
-            dispatchNotify({
-                type: "SET_NOTIFICATION", 
-                payload: {text: "Log In to Add to Cart", type: "error"}
-            })
-
-            setTimeout(() => {
-                dispatchNotify({type: "CLEAR_NOTIFICATION"})
-            }, 2000)
+            notify("Log In to Add to Cart", "error")
 
             setQuantity(1)
             setStyle(null)

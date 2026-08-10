@@ -6,12 +6,12 @@ import categoryService from '../../services/category'
 import brandService from '../../services/brand'
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {BrandContext, CategoryContext, ProductContext} from '../../context/adminContext'
-import {NotificationContext} from "../../context/NotificationContext"
 import productService from '../../services/product'
 import ProductTable from '../../components/admin/ProductTable'
 import CategoryTable from "../../components/admin/CategoryTable"
 import BrandTable from "../../components/admin/BrandTable"
 import { useCreateProduct } from "../../hooks/useProducts"
+import useNotificationStore from "../../store/notification.store"
 
 
 const AdminProducts = () => {
@@ -27,22 +27,8 @@ const AdminProducts = () => {
     const [brands, dispatchBrand] = useContext(BrandContext)
     const [category, dispatchCategory] = useContext(CategoryContext)
     const [products, dispatchProducts] = useContext(ProductContext)
-    const [notification, dispatch] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
     const query = useQueryClient()
-    
-
-    //Notification dispatch function
-    const notify = (message) => {
-        dispatch({
-            type: 'SET_NOTIFICATION',
-            payload: message
-        })
-        setTimeout(() => {
-            dispatch({
-                type: 'CLEAR_NOTIFICATION'
-            })
-        }, 2000)
-    }
 
     //Brand Dispatch function
     const setBrand = (brands) => {
@@ -142,10 +128,11 @@ const AdminProducts = () => {
             setName('')
             setDescription('')
             setImage(null)
-            notify({text: `${category.name} has been added`, type: 'success'})
+            notify(`${category.name} has been added`,  'success')
         }
         catch(error) {
-            notify({text: `${category.name} has not been added`, type: 'error'})
+            notify(`${category.name} has not been added`, 'error')
+            console.log(error.message)
         }
     }
 
@@ -162,10 +149,10 @@ const AdminProducts = () => {
             setName('')
             setDescription('')
             setImage('')
-            notify({text: `${brand.name} has been added`, type: 'success'})
+            notify(`${brand.name} has been added`, 'success')
         }
         catch (error) {
-            notify({text: ` has not been added`, type: 'error'})
+            notify(` has not been added`, 'error')
         }
     }
 
@@ -175,10 +162,10 @@ const AdminProducts = () => {
         event.preventDefault()
         await createProduct.mutateAsync(newProduct, {
             onSuccess: (updatedProduct) => {
-                notify({text: `${updatedProduct.name} has been added`, type: 'success'})
+                notify(`${updatedProduct.name} has been added`, 'success')
             },
             onError: () => {
-                notify({text: `Product failed to be added`, type: 'error'})
+                notify(`Product failed to be added`, 'error')
             }
         })
         productToggle.current.toggleVisibility()

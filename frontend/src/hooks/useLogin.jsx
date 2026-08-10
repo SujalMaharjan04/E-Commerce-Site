@@ -1,103 +1,58 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/adminContext";
-import { NotificationContext } from "../context/NotificationContext";
 import loginService from '../services/login'
+import useNotificationStore from "../store/notification.store";
 
 export const useLogin = (isAdmin = false) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [user, dispatchUser] = useContext(UserContext)
-    const [notification, dispatch] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
     const navigate = useNavigate()
 
 
     const handleLogin = async(event) => {
         event.preventDefault()
         try {
-        if (!username || !password) {
-            dispatch({
-                type: "SET_NOTIFICATION",
-                payload: {text: 'Username and password required', type: 'error'}
-            })
-            setTimeout(() => {
-                dispatch({type: "CLEAR_NOTIFICATION"})
-            }, 2000)
-            return
-        }
-        const user = isAdmin 
-            ? await loginService.adminLogin({username, password})
-            : await loginService.userLogin({username, password})
+            if (!username || !password) {
+                notify("Username and password required", "error")
+                return
+            }
+            const user = isAdmin 
+                ? await loginService.adminLogin({username, password})
+                : await loginService.userLogin({username, password})
 
-        if (!user.success && user.type === 'RATE-LIMIT') {
-            console.log(user.message)
-            dispatch({
-                type: "SET_NOTIFICATION",
-                payload: {text: `${user.message} ${user.retryAfter} seconds`, type: 'error'}
-            })
+            if (!user.success && user.type === 'RATE-LIMIT') {
+                console.log(user.message)
+                notify(`${user.message} ${user.retryAfter} seconds`, "error")
+                return 
+            }
 
-            setTimeout(() => {
-                dispatch({
-                    type: "CLEAR_NOTIFICATION"
-                })
-            }, 2000)
-            return 
-        }
+            if (!user || !user.token) {
+                notify("Invalid Credentials", "error")
+                return 
+            }
 
-        if (!user || !user.token) {
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                payload: {text: "Invalid Credentials", type: "error"}
-            })
+            window.localStorage.setItem(
+                'loggedApp', JSON.stringify(user)
+            )
+            dispatchUser({type: 'SET_USER', payload: user})
+            setUsername("")
+            setPassword("")
 
-            setTimeout(() => {
-                dispatch({
-                    type: "CLEAR_NOTIFICATION"
-                })
-            }, 2000)
-            return 
-        }
+            notify("Login Successful", "success")
 
-        window.localStorage.setItem(
-            'loggedApp', JSON.stringify(user)
-        )
-        dispatchUser({type: 'SET_USER', payload: user})
-        setUsername("")
-        setPassword("")
-
-        dispatch({
-            type: "SET_NOTIFICATION",
-            payload: {text: 'Login Successful', type: 'success'}
-        })
-
-        setTimeout(() => {
-            dispatch({
-                type: "CLEAR_NOTIFICATION"
-            })
-        }, 2000)
-
-        if (user.role === 'Admin') {
-            navigate('/admin/dashboard')
-        }  
-        else {
-            navigate('/')
-        }
+            if (user.role === 'Admin') {
+                navigate('/admin/dashboard')
+            }  
+            else {
+                navigate('/')
+            }
         }
         catch (err) {
             console.log(err)
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                payload: {
-                text: 'Login Credentials failed',
-                type: 'error'
-                }
-            })
-
-            setTimeout(() => {
-                dispatch({
-                type: 'CLEAR_NOTIFICATION'
-                })
-            }, 2000)
+            notify("Login Credentials Failed", "error")
         }
     }
 
