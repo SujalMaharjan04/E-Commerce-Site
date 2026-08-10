@@ -1,8 +1,10 @@
 import { useLogin } from "../../hooks/useLogin"
 import Input from "../common/Input"
+import { useErrorLines } from "../../hooks/useErrorLines"
 
 const UserLoginForm = ({onSwitch}) => {
     const {username, password, setUsername, setPassword, handleLogin} = useLogin(false)
+    const {setTouched, usernameError, passwordError} = useErrorLines(username, password)
     return (
         <div>
             <h2 className = "font-semibold md:text-2xl text-center">Log In</h2>
@@ -13,6 +15,8 @@ const UserLoginForm = ({onSwitch}) => {
                         value = {username}
                         onChange={(value) => setUsername(value)}
                         name = "username"
+                        onBlur = {() => setTouched(t => ({...t, username: true}))}
+                        error = {usernameError}
                     />
                 </div>
                 <div className = "flex flex-col p-4">
@@ -23,6 +27,8 @@ const UserLoginForm = ({onSwitch}) => {
                         name = "password"
                         type = "password"
                         showPasswordToggle = {true}
+                        onBlur = {() => setTouched(t => ({...t, password: true}))}
+                        error = {passwordError}
                     />
                 </div>
                 <div className = "p-4 flex justify-center">

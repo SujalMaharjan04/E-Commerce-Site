@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import Input from "../common/Input";
 import userService from '../../services/user'
-import { NotificationContext } from "../../context/NotificationContext";
+import useNotificationStore from '../../store/notification.store'
 
 // Review Components
 const Review = ({label, value}) => {
@@ -16,7 +16,7 @@ const Review = ({label, value}) => {
 const UserSignUp = ({onSwitch, onClose}) => {
     const [steps, setSteps] = useState(0)
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [notification, dispatch] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
 
     const [form, setForm] = useState({
         //Personal Info
@@ -163,26 +163,28 @@ const UserSignUp = ({onSwitch, onClose}) => {
             })
             setErrors({})
             setSteps(0)
-            dispatch({
-                type: "SET_NOTIFICATION",
-                payload: {text: "User Sign Up Successful", type: "success"}
-            })
+            // dispatch({
+            //     type: "SET_NOTIFICATION",
+            //     payload: {text: "User Sign Up Successful", type: "success"}
+            // })
+            notify("User Sign Up Successful", "success")
 
-            setTimeout(() => {
-                dispatch({type: "CLEAR_NOTIFICATION"})
-            }, 2000)
+            // setTimeout(() => {
+            //     dispatch({type: "CLEAR_NOTIFICATION"})
+            // }, 2000)
             if (onClose) onClose()
         }
         catch (error) {
             console.log(error)
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                payload: {text: 'User Sign Up Failed', type: "error"}
-            })
+            // dispatch({
+            //     type: 'SET_NOTIFICATION',
+            //     payload: {text: 'User Sign Up Failed', type: "error"}
+            // })
+            notify("User Sign Up Failed", "error")
 
-            setTimeout(() => {
-                dispatch({type: 'CLEAR_NOTIFICATION'})
-            }, 2000)
+            // setTimeout(() => {
+            //     dispatch({type: 'CLEAR_NOTIFICATION'})
+            // }, 2000)
         }
         
 
