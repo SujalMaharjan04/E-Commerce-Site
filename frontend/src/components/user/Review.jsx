@@ -3,14 +3,14 @@ import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import reviewService from '../../services/review'
 import {UserContext} from '../../context/adminContext'
-import { NotificationContext } from "../../context/NotificationContext"
+import useNotificationStore from "../../store/notification.store"
 
 const Review = () => {
     const [active, setActive] = useState(0)
     const query = useQueryClient()
     const { id } = useParams()
     const [user, ] = useContext(UserContext)
-    const [, dispatchNotification] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
     const [review, setReview] = useState({
         rating: 0,
         comment: ""
@@ -32,16 +32,7 @@ const Review = () => {
         onError: (error) => {
             const msg = error?.response?.data?.error || "Failed to add Review"
 
-            dispatchNotification({
-                type: "SET_NOTIFICATION",
-                payload: {text: msg, type: 'error'}
-            })
-
-            setTimeout(() => {
-                dispatchNotification({
-                    type: "CLEAR_NOTIFICATION"
-                })
-            }, 2000);
+            notify(msg, "error")
         }
     })
 
@@ -49,16 +40,8 @@ const Review = () => {
         event.preventDefault()
         console.log(review)
         if (review.comment === '' || review.rating === 0) { //Checking if whether the comment is empty or rating is 0
-            dispatchNotification({
-                type: "SET_NOTIFICATION",
-                payload: {text: "Rating and comments should be given", type: "error"}
-            })
 
-            setTimeout(() => {
-                dispatchNotification({
-                    type: "CLEAR_NOTIFICATION"
-                })
-            }, 2000)
+            notify("Rating and comments should be given", "error")
             return
         }
         await addReview.mutateAsync({id, review})

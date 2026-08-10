@@ -4,13 +4,13 @@ import Togglable from "../common/Togglable"
 import AdminCategoryModalForm from "./AdminCategoryModalForm"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import brandService from '../../services/brand'
-import { NotificationContext } from "../../context/NotificationContext"
+import useNotificationStore from "../../store/notification.store"
  
 const  BrandTable = (props) => {
     const [brands, setBrand] = useContext(BrandContext)
     const localBrandRef = useRef([])
     const query = useQueryClient()
-    const [notification, dispatch] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
 
     const edit = useMutation({
         mutationFn: ({id, newBrand}) => brandService.edit(id, newBrand),
@@ -19,30 +19,12 @@ const  BrandTable = (props) => {
                 type: 'UPDATE_BRAND',
                 payload: updatedBrand
             })
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                payload: {
-                    text: `${updatedBrand.name} has been edited`, type: 'success'
-                }
-            })
-
-            setTimeout(() => {
-                dispatch({type: 'CLEAR_NOTIFICATION'})
-            }, 2000);
+            notify(`${updatedBrand.name} has been edited`, "success")
 
             query.invalidateQueries({queryKey: ['brand']})
         },
         onError: (updatedBrand) => {
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                payload: {
-                    text: `${updatedBrand.name} has not been edited`, type: 'error'
-                }
-            })
-
-            setTimeout(() => {
-                dispatch({type: 'CLEAR_NOTIFICATION'})
-            }, 2000);
+            notify(`${updatedBrand.name} has not been edited`, "error")
         }
     })
 
@@ -53,24 +35,11 @@ const  BrandTable = (props) => {
                 type: "DELETE_BRAND",
                 payload: id
             })
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                payload: {text: `Deletion Successful`, type: 'success'}
-            })
-
-            setTimeout(() => {
-                dispatch({type: 'CLEAR_NOTIFICATION'})
-            }, 2000)
+            notify("Deletion Successful", "success")
             query.invalidateQueries({queryKey: ['brand']})
         },
         onError: () => {
-            dispatch({
-                type: 'SET_NOTIFICATION',
-                text: `Deletion Unsuccessful`, type: 'error'
-            })
-            setTimeout(() => {
-                dispatch({type: 'CLEAR_NOTIFICATION'})
-            }, 2000)
+            notify("Deletion Unsuccessful", "error")
         }}
     )
     

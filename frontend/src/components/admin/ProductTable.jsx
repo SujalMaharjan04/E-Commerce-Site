@@ -1,64 +1,31 @@
-import { useRef, useContext, useState } from "react"
+import { useRef, useContext} from "react"
 import Togglable from "../common/Togglable"
 import AdminProductModalForm from "./AdminProductModalForm"
 import { ProductContext } from "../../context/adminContext"
-import { NotificationContext } from "../../context/NotificationContext"
-import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { BrandContext, CategoryContext } from "../../context/adminContext"
-import productService from '../../services/product'
 import { useDeleteProduct, useEditProduct } from "../../hooks/useProducts"
+import useNotificationStore from "../../store/notification.store"
 
 const ProductTable = (props) => {
     const [products, dispatchProducts] = useContext(ProductContext)
-    const [notification, dispatch] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
     const [brands, dispatchBrand] = useContext(BrandContext)
     const [category, dispatchCategory] = useContext(CategoryContext)
     const localEditRef = useRef([])
-    const query = useQueryClient()
-    
-
-    //Notification dispatch function
-    const notify = (message) => {
-        dispatch({
-            type: 'SET_NOTIFICATION',
-            payload: message
-        })
-        setTimeout(() => {
-            dispatch({
-                type: 'CLEAR_NOTIFICATION'
-            })
-        }, 2000)
-    }
 
     //Function to edit Product
     const editProduct = useEditProduct()
     const editItem = async(id, newProduct) => {
         await editProduct.mutateAsync({id, newProduct}, {
             onSuccess: (updatedProduct) => {
-                notify({text: `${updatedProduct.name} has been edited`, type: 'success'})
+                notify(`${updatedProduct.name} has been edited`, 'success')
             },
             onError: (updatedProduct) => {
-                notify({text: `${updatedProduct.name} update failed`, type: 'error'})
+                notify(`${updatedProduct.name} update failed`, 'error')
             }
         })
         
     }
-
-    // //Mutation to delete Product
-    // const remove = useMutation({
-    //     mutationFn: (id) => productService.deleteProduct(id),
-    //     onSuccess: (id) => {
-    //         dispatchProducts({
-    //             type: 'DELETE_PRODUCT',
-    //             payload: id
-    //         })
-    //         notify({text: `Deletion Successful`, type: 'success'})
-    //         query.invalidateQueries({queryKey: ['product']})
-    //     },
-    //     onError: () => {
-    //         notify({text: `Delete Unsuccessful`, type: 'error'})
-    //     }
-    // })
    
     //Function to delete Product
     const remove = useDeleteProduct()
@@ -66,10 +33,10 @@ const ProductTable = (props) => {
         if (window.confirm('Do you want to delete this product?'))  {
             await remove.mutateAsync(id, {
                 onSuccess: () => {
-                    notify({text: `Deletion Successful`, type: 'success'})
+                    notify(`Deletion Successful`, 'success')
                 },
                 onError: () => {
-                    notify({text: `Delete Unsuccessful`, type: 'error'})
+                    notify(`Delete Unsuccessful`, 'error')
                 }
             })
         }

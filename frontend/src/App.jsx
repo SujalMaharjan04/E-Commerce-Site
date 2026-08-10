@@ -3,25 +3,23 @@ import AdminLayout from './layout/AdminLayout'
 import AdminLogin from './page/admin/AdminLogin'
 import {Routes, Route, useNavigate, Navigate, useMatch} from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
-import loginService from './services/login'
 import DashBoard from "./components/admin/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
 import AdminUsers from "./page/admin/AdminUsers"
 import { ProductContext, UserContext} from "./context/adminContext"
-import { NotificationContext } from "./context/NotificationContext"
 import Home from "./page/user/Home"
 import ProductById from "./page/user/ProductById"
 import Cart from "./page/user/Cart"
 import Order from './page/user/Order'
 import Payment from "./page/user/Payment"
 import Product from "./page/user/Product"
+import useNotificationStore from "./store/notification.store"
 
 
 const App = () => {
   const [user, dispatchUser] = useContext(UserContext)
-  const [notification, dispatch] = useContext(NotificationContext)
-  const [products, dispatchProducts] = useContext(ProductContext)
+  const notification = useNotificationStore(state => state.notification)
 
   useEffect(() => {
     const loggedAppAdmin = window.localStorage.getItem('loggedApp')
@@ -37,12 +35,12 @@ const App = () => {
         error: "bg-red-500",
     };
 
-  const setUser = (user) => {
-    dispatchUser({
-      type: 'SET_USER',
-      payload: user
-    })
-  }
+  // const setUser = (user) => {
+  //   dispatchUser({
+  //     type: 'SET_USER',
+  //     payload: user
+  //   })
+  // }
 
   
  
@@ -51,7 +49,7 @@ const App = () => {
     <div>
       {notification && (
         <div className = {`${baseStyle} ${typeStyles[notification.type]}`}>
-            {notification.text}
+            {notification.message}
         </div>)
       }
       <Routes>

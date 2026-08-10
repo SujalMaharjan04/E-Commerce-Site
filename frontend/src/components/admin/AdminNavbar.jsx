@@ -1,17 +1,12 @@
 import Calendar from '../../assets/icons/Calendar.svg'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import User from '../../assets/icons/User.svg'
 import UserCard from '../common/UserCard'
-import { UserContext } from '../../context/adminContext'
-import { NotificationContext } from '../../context/NotificationContext'
-import { useNavigate } from 'react-router-dom'
+
 
 
 const AdminNavBar = () => {
      const [currentDate, setCurrenDate] = useState('')
-     const [user, dispatchUser] = useContext(UserContext)
-     const [notification, dispatch] = useContext(NotificationContext)
-     const navigate = useNavigate()
 
     useEffect(() => {
         const now = new Date()
