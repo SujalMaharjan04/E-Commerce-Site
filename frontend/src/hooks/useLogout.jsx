@@ -1,12 +1,12 @@
 import { useContext } from "react"
 import { UserContext } from "../context/adminContext"
-import { NotificationContext } from "../context/NotificationContext"
 import { useNavigate } from "react-router-dom"
+import useNotificationStore from "../store/notification.store"
 
 
 export const useLogout = () => {
     const [user, dispatchUser] = useContext(UserContext)
-    const [notification, dispatch] = useContext(NotificationContext)
+    const notify = useNotificationStore(state => state.notify)
     const navigate = useNavigate()
     const handleLogout = () => {
         dispatchUser({
@@ -16,19 +16,8 @@ export const useLogout = () => {
         window.localStorage.removeItem('loggedApp')
         const redirectPath = user.role === 'Admin' ? '/admin' : '/'
         navigate(redirectPath)
-        dispatch({
-            type: "SET_NOTIFICATION",
-            payload: {
-                text: 'You have logged out',
-                type: 'success'
-            }
-        })
 
-        setTimeout(() => {
-            dispatch({
-                type: 'CLEAR_NOTIFICATION'
-            })
-        }, 2000)
+        notify("You have logged out", "success")
     }
 
     return {handleLogout}
