@@ -1,56 +1,41 @@
-import { useContext, useRef } from "react"
+import { useRef } from "react"
 import { CategoryContext } from "../../context/adminContext"
 import Togglable from "../common/Togglable"
 import AdminCategoryModalForm from "./AdminCategoryModalForm"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import categoryService from '../../services/category'
 import useNotificationStore from "../../store/notification.store"
+import { useCategories, useDeleteCategory, useEditCategory } from "../../hooks/useCategory"
  
 const  CategoryTable = (props) => {
-    const [categories, setCategory] = useContext(CategoryContext)
     const localCategoryRef = useRef([])
-    const query = useQueryClient()
     const notify = useNotificationStore(state => state.notify)
+    const {data: categories, isLoading, isError} = useCategories()
+    const edit = useEditCategory()
+    const remove = useDeleteCategory()
 
-    const edit = useMutation({
-        mutationFn: ({id, newCategory}) => categoryService.edit(id, newCategory),
-        onSuccess: (updatedCategory) => {
-            setCategory({
-                type: 'UPDATE_CATEGORY',
-                payload: updatedCategory
-            })
-            notify(`${updatedCategory.name} has been edited`), "success"
-
-            query.invalidateQueries({queryKey: ['category']})
-        },
-        onError: () => {
-            notify("Category has not been edited", "error")
-        }
-    })
-
-    const remove = useMutation({
-        mutationFn: (id) => categoryService.deleteCategory(id),
-        onSuccess: (data ,id) => {
-            setCategory({
-                type: "DELETE_CATEGORY",
-                payload: id
-            })
-            notify("Deletion Successful", "success")
-            query.invalidateQueries({queryKey: ['category']})
-        },
-        onError: () => {
-            notify("Deletion Unsuccessful", "error")
-        }}
-    )
-    
+    if (isLoading) return <div>Loading....</div>
+    if (isError) return <div>Error</div>
 
     const editItem = async(id, newCategory, index) => {
-        await edit.mutateAsync({id, newCategory})
+        await edit.mutateAsync({id, newCategory}, {
+            onSuccess: () => {
+                notify(`${newCategory.name} has been edited`), "success"
+            },
+            onError: () => {
+                notify("Category has not been edited", "error")
+            }
+        })
         localCategoryRef.current[index].toggleVisibility()
     } 
 
     const removeItem = async(id) => {
-        await remove.mutateAsync(id)
+        await remove.mutateAsync(id, {
+            onSuccess: () => {
+                notify("Deletion Successful", "success")
+            },
+            onError: () => {
+                notify("Deletion Unsuccessful", "error")
+            }
+        })
     }
 
     return (

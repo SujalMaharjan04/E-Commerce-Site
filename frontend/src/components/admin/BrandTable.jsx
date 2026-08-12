@@ -1,56 +1,41 @@
-import { useContext, useRef } from "react"
+import { useRef } from "react"
 import { BrandContext } from "../../context/adminContext"
 import Togglable from "../common/Togglable"
 import AdminCategoryModalForm from "./AdminCategoryModalForm"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import brandService from '../../services/brand'
 import useNotificationStore from "../../store/notification.store"
+import { useBrands, useDeleteBrand, useEditBrand } from "../../hooks/useBrand"
  
 const  BrandTable = (props) => {
-    const [brands, setBrand] = useContext(BrandContext)
     const localBrandRef = useRef([])
-    const query = useQueryClient()
     const notify = useNotificationStore(state => state.notify)
-
-    const edit = useMutation({
-        mutationFn: ({id, newBrand}) => brandService.edit(id, newBrand),
-        onSuccess: (updatedBrand) => {
-            setBrand({
-                type: 'UPDATE_BRAND',
-                payload: updatedBrand
-            })
-            notify(`${updatedBrand.name} has been edited`, "success")
-
-            query.invalidateQueries({queryKey: ['brand']})
-        },
-        onError: (updatedBrand) => {
-            notify(`${updatedBrand.name} has not been edited`, "error")
-        }
-    })
-
-    const remove = useMutation({
-        mutationFn: (id) => brandService.deleteBrand(id),
-        onSuccess: (_,id) => {
-            setBrand({
-                type: "DELETE_BRAND",
-                payload: id
-            })
-            notify("Deletion Successful", "success")
-            query.invalidateQueries({queryKey: ['brand']})
-        },
-        onError: () => {
-            notify("Deletion Unsuccessful", "error")
-        }}
-    )
+    const {data: brands, isLoading, isError} = useBrands()
+    const edit = useEditBrand()
+    const remove = useDeleteBrand()
     
+    if (isLoading) return <div>Loading....</div>
+    if (isError) return <div>Error</div>
 
     const editItem = async(id, newBrand) => {
-        await edit.mutateAsync({id, newBrand})
+        await edit.mutateAsync({id, newBrand}, {
+            onSuccess: () => {
+                notify(`${newBrand.name} has been edited`, "success")
+            }, 
+            onError: () => {
+                notify(`${newBrand.name} has not been edited`, "error")
+            }
+        })
         localBrandRef.current.toggleVisibility()
     } 
 
     const removeItem = async(id) => {
-        await remove.mutateAsync(id)
+        await remove.mutateAsync(id, {
+            onSuccess: () => {
+                notify("Deletion Successful", "success")
+            },
+            onError: () => {
+                notify("Deletion Unsuccessful", "error")
+            }
+        })
     }
 
     return (
