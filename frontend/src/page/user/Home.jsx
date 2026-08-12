@@ -1,20 +1,15 @@
-import { useContext, useEffect, useState } from 'react'
+import { useState } from 'react'
 import Laptop from '../../assets/image/dell_laptop.png'
 import ProductCard from '../../components/user/ProductCard'
 import ReviewCard from '../../components/user/ReviewCard'
 import Slider from '../../components/user/Slider'
 import { CategoryContext, ProductContext } from '../../context/adminContext'
-import { useQuery } from '@tanstack/react-query'
-import productService from '../../services/product'
 import { Link } from 'react-router-dom'
-import categoryService from '../../services/category'
+import { useProducts } from '../../hooks/useProducts'
+import { useCategories } from '../../hooks/useCategory'
 
 const Home = () => {
     const [current, setCurrent] = useState(0)
-    const [products, dispatchProducts] = useContext(ProductContext)
-    const [category, dispatchCategory] = useContext(CategoryContext)
-
-
 
     const next = () => {
         if (current < products.length - 3) {
@@ -27,35 +22,17 @@ const Home = () => {
             setCurrent(current - 1)
         }
     }
-    const product = useQuery({
-        queryKey: ['product'],
-        queryFn: productService.getAll
-    })
+    const {data, isLoading: productLoading, isError: productError} = useProducts()
     
-    const categories = useQuery({
-        queryKey: ['category'],
-        queryFn: categoryService.getAll
-    })
+    const {data: categories, isLoading: categoriesLoading, isError: categoriesError} = useCategories()
 
-    useEffect(() => {
-        if (product.data) {
-            dispatchProducts({
-                type: 'SET_PRODUCTS',
-                payload: product.data
-            })
-        }
+    const products = data?.pages?.flatMap(page => page.products) ?? []
 
-    
-    }, [product.data, dispatchProducts])
+    if (productLoading) return <div>Loading.....</div>
+    if (categoriesLoading) return <div>Loading...</div>
 
-    useEffect(() => {
-        if (categories.data) {
-            dispatchCategory({
-                type: 'SET_CATEGORY',
-                payload: categories.data
-            })
-        }
-    }, [categories.data])
+    if (productError) return <div>Error</div>
+    if (categoriesError) return <div>Error</div>
 
     return (
         <div className = "bg-[#EFEBCE]">
@@ -72,7 +49,7 @@ const Home = () => {
                     
                     <div className = "overflow-hidden">
                         <div className = "flex flex-row justify-evenly items-center transition-transform duration-500" style = {{transform: `translate(-${current * 100}%)`}}>
-                            {/* {products.map(product =>{
+                             {/* {products.map(product =>{
                                 return (
                                     <div className = "min-w-1/3 px-2" key = {product.id}>
                                         <Link to = {`/product/${product.id}`}><ProductCard product = {product}/></Link>
@@ -102,7 +79,7 @@ const Home = () => {
                     <h2 className = "text-4xl">Categories</h2>
                 </div>
                 <div className = "grid grid-cols-4 gap-1">
-                    {category.map(category => (
+                    {categories.map(category => (
                         <Link to = {`/products?category=${category.id}`} key = {category.id}>
                         <div className = "flex flex-col justify-center items-center bg-[#BFC7E2]">
                             <img src = {Laptop} alt = "Laptop" className = "w-auto h-30 md:h-60" />

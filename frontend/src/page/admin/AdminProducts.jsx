@@ -1,17 +1,15 @@
-import { useState, useRef, useContext, useEffect } from "react"
+import { useState, useRef} from "react"
 import AdminCategoryModalForm from "../../components/admin/AdminCategoryModalForm"
 import AdminProductModalForm from "../../components/admin/AdminProductModalForm"
 import Togglable from "../../components/common/Togglable"
-import categoryService from '../../services/category'
-import brandService from '../../services/brand'
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {BrandContext, CategoryContext, ProductContext} from '../../context/adminContext'
-import productService from '../../services/product'
 import ProductTable from '../../components/admin/ProductTable'
 import CategoryTable from "../../components/admin/CategoryTable"
 import BrandTable from "../../components/admin/BrandTable"
-import { useCreateProduct } from "../../hooks/useProducts"
+import { useCreateProduct} from "../../hooks/useProducts"
 import useNotificationStore from "../../store/notification.store"
+import { useCategories, useCreateCategory } from "../../hooks/useCategory"
+import { useBrands, useCreateBrand } from "../../hooks/useBrand"
 
 
 const AdminProducts = () => {
@@ -24,42 +22,28 @@ const AdminProducts = () => {
     const [specs, setSpecs] = useState(0)
     const [selectedBrand, setSelectedBrand] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('')
-    const [brands, dispatchBrand] = useContext(BrandContext)
-    const [category, dispatchCategory] = useContext(CategoryContext)
-    const [products, dispatchProducts] = useContext(ProductContext)
     const notify = useNotificationStore(state => state.notify)
-    const query = useQueryClient()
+    const insertCategory = useCreateCategory()
+    const insertBrand = useCreateBrand()
+    const createProduct = useCreateProduct()
+    
+    //Brand get
+    const {data: brands, isLoading: brandLoading, isError: brandError} = useBrands()
 
-    //Brand Dispatch function
-    const setBrand = (brands) => {
-        dispatchBrand({
-            type: 'SET_BRAND',
-            payload: brands
-        })
-    }
-
-
-    //Category Dispatch Function
-    const setCategory = (categories) => {
-        dispatchCategory({
-            type: 'SET_CATEGORY',
-            payload: categories
-        })
-    }
-
-
-    //Product Dispatch Function
-    const setProducts = (products) => {
-        dispatchProducts({
-            type: "SET_PRODUCTS",
-            payload: products
-        })
-    }
+    //Category get
+    const {data: categories, isLoading: categoriesLoading, isError: categoriesError} = useCategories()
 
     //Ref For Different Function
     const brandToggle = useRef()
     const categoryToggle = useRef()
     const productToggle = useRef()
+
+    if (brandLoading) return <div>Loading...</div>
+    if (categoriesLoading) return <div>Loading...</div>
+
+    if (brandError) return <div>Error</div>
+    if (categoriesError) return <div>Error</div>
+
     
 
     //Set Function for useState
@@ -82,87 +66,60 @@ const AdminProducts = () => {
     const handleStock = (event) => {
         setStock(event.target.value)
     }
-
+    
     const handleBrand = (event) => {
         setSelectedBrand(event.target.value)
     }
-
+    
     const handleCategory = (event) => {
         setSelectedCategory(event.target.value)
     }
-
+    
     const handleSpecs = (event) => {
         setSpecs(event.target.value)
     }
-
-
-     //Query for Brand get
-    const brandsResult = useQuery({
-        queryKey: ['brand'],
-        queryFn: brandService.getAll,
-    })
-
-
-    //Query for Category get
-    const categories = useQuery({
-        queryKey: ['category'],
-        queryFn: categoryService.getAll,
-    })
-
-    //Query for Product Get
-    const product = useQuery({
-        queryKey: ['product'],
-        queryFn: productService.getProductAdmin
-    })
-
+    
     //Function to add Category
     const addCategory = async(newCategory) => {
         categoryToggle.current.toggleVisibility()
-
-        try {
-            const category = await categoryService.create(newCategory)
-            dispatchCategory({
-                type: 'ADD_CATEGORY',
-                payload: category
-            })
-            setName('')
-            setDescription('')
-            setImage(null)
-            notify(`${category.name} has been added`,  'success')
-        }
-        catch(error) {
-            notify(`${category.name} has not been added`, 'error')
-            console.log(error.message)
-        }
+        await insertCategory.mutateAsync(newCategory, {
+            onSuccess: () => {
+                notify(`${newCategory.name} has been added`,  'success')
+            },
+            onError: (error) => {
+                notify(`${newCategory.name} has not been added`, 'error')
+                console.log(error.message)
+            }
+        })
+        setName('')
+        setDescription('')
+        setImage(null)
     }
 
     //Function to add Brand
     const addBrand = async(newBrand) => {
         brandToggle.current.toggleVisibility()
 
-        try {
-            const brand = await brandService.create(newBrand)
-            dispatchBrand({
-                type: 'ADD_BRAND',
-                payload: brand
-            })
-            setName('')
-            setDescription('')
-            setImage('')
-            notify(`${brand.name} has been added`, 'success')
-        }
-        catch (error) {
-            notify(` has not been added`, 'error')
-        }
+        await insertBrand.mutateAsync(newBrand, {
+            onSuccess: () => {
+                notify(`${newBrand.name} has been added`, 'success')
+            },
+            onError: () => {
+                notify(`${newBrand.name} has not been added`, 'error')
+            }
+        })
+        setName('')
+        setDescription('')
+        setImage('')
+
     }
 
     //Function to add Product
-    const createProduct = useCreateProduct()
     const addProduct = async(event, newProduct) => {
         event.preventDefault()
         await createProduct.mutateAsync(newProduct, {
-            onSuccess: (updatedProduct) => {
-                notify(`${updatedProduct.name} has been added`, 'success')
+            onSuccess: () => {
+                notify(`${newProduct.name} has been added`, 'success')
             },
             onError: () => {
                 notify(`Product failed to be added`, 'error')
@@ -171,35 +128,13 @@ const AdminProducts = () => {
         productToggle.current.toggleVisibility()
             
     }
-
-
-
-    //Setting the brand, category and product data to state
-    useEffect(() => {
-        if (brandsResult.data) {
-            setBrand(brandsResult.data)
-        }
-    }, [brandsResult.data])    
-
-    useEffect(() => {
-        if (categories.data) {
-            setCategory(categories.data)
-        }
-    }, [categories.data])
-
-    useEffect(() => {
-        if (product.data) {
-            setProducts(product.data)
-        }
-    }, [product.data])
-
-    
+   
     return (
         <div className = "text-[#090F13] ml-4">
                 <h2 className = "text-xl font-bold ">Admin Product Page</h2>
                 <div className = "flex gap-4 mt-4 text-2xl">
                     <Togglable ref = {productToggle} buttonLabel = "+ Add Product" className = "border-solid border-black border-2 w-48 h-14 bg-blue-900 text-white rounded-2xl hover:cursor-pointer hover:bg-blue-700 transition-all duration-150">
-                        <AdminProductModalForm buttonLabel = "+ Add Product" name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} selectedBrand = {selectedBrand} categories = {category} selectedCategory = {selectedCategory} specs = {specs} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} handleSpecs = {handleSpecs} addItem = {addProduct} onCancel = {() => productToggle.current.toggleVisibility()} />
+                        <AdminProductModalForm buttonLabel = "+ Add Product" name = {name} description = {description} image = {image} price = {price} stock = {stock} brands = {brands} selectedBrand = {selectedBrand} categories = {categories} selectedCategory = {selectedCategory} specs = {specs} handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} handlePrice = {handlePrice} handleStock = {handleStock} handleBrand = {handleBrand} handleCategory = {handleCategory} handleSpecs = {handleSpecs} addItem = {addProduct} onCancel = {() => productToggle.current.toggleVisibility()} />
                     </Togglable>
                     
                     <Togglable ref = {categoryToggle} buttonLabel = "+ Add Category" className = "border-solid border-black border-2 w-48 h-14 bg-green-900 text-white rounded-2xl hover:cursor-pointer hover:bg-green-700 transition-all duration-150">
@@ -225,7 +160,7 @@ const AdminProducts = () => {
                 )}
 
                 {selected === 'Category' && (
-                    <CategoryTable />
+                    <CategoryTable handleName = {handleName} handleDescription = {handleDescription} handleImage = {handleImage} />
                 )}
 
                 {selected === 'Brand' && (
