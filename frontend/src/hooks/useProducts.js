@@ -15,7 +15,7 @@ export function useProduct(productId) {
     return useQuery({
         queryKey: ['product'],
         queryFn: () => productService.getById(productId),
-        enables: !!productId
+        enabled: !!productId
     })
 }
 
