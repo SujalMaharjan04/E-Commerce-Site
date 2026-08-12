@@ -7,7 +7,7 @@ import useNotificationStore from "../store/notification.store";
 export const useLogin = (isAdmin = false) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [user, dispatchUser] = useContext(UserContext)
+    const [, dispatchUser] = useContext(UserContext)
     const notify = useNotificationStore(state => state.notify)
     const navigate = useNavigate()
 
@@ -16,7 +16,6 @@ export const useLogin = (isAdmin = false) => {
         event.preventDefault()
         try {
             if (!username || !password) {
-                notify("Username and password required", "error")
                 return
             }
             const user = isAdmin 
