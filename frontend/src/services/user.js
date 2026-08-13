@@ -1,12 +1,5 @@
 import api from './api'
 
-
-
-let token = null
-const setToken = newToken => {
-    token = `Bearer ${newToken}`
-}
-
 const signUp = async(credentials) => {
 
     const payload = {
@@ -46,4 +39,4 @@ const getUserInfo = async () => {
 }
 
 
-export default {setToken, signUp, getUser, update, getUserInfo}
+export default {signUp, getUser, update, getUserInfo}
