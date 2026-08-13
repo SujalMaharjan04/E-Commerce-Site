@@ -3,17 +3,19 @@ import Logo from '../../assets/image/SMwhite.png'
 import Cart from '../../assets/icons/Shopping cart.svg'
 import Search from '../../assets/icons/Search.svg'
 import User from '../../assets/icons/User.svg'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Togglable from '../common/Togglable'
 import { UserContext } from '../../context/adminContext'
 import AuthPage from './AuthPage'
 import UserCard from '../common/UserCard'
 import { useLogout } from '../../hooks/useLogout'
+import useAuthStore from '../../store/auth.store'
 
 const Navbar = () => {
     const [active, setActive] = useState(false)
     const [view, setView] = useState(false)
-    const [user, dispatchUser] = useContext(UserContext) 
+    const user = useAuthStore(state => state.userInfo)
+    const token = useAuthStore(state => state.token)
     const {handleLogout} = useLogout()
     const toggleSearchBar = () => {
         setView(!view)
@@ -48,7 +50,7 @@ const Navbar = () => {
                     {view ? <input type = "text" name = "search" placeholder = "Search" className = "absolute right-32 z-10 bg-white lg:h-8 lg:w-64 lg:rounded-lg lg:px-4 placeholder-[#090F13] placeholder:font-bold text-[#090F13] lg:2xl" /> : ""}
                     <button onClick={toggleSearchBar}><img src = {Search} alt = "search" className = "h-6 w-auto" /> </button>
                     <Link to = "/cart"><img src = {Cart} alt = "cart" className = "h-6 w-auto" /> </Link>
-                    {user 
+                    {token 
                         ? <div className = "group">
                             <button><img src = {User} alt = "user" className = "hidden md:block md:h-6 md:w-auto" /></button>
                             <UserCard />
@@ -72,7 +74,7 @@ const Navbar = () => {
                         <Link to = "/bestSeller">Best Seller</Link>
                         <Link to = "/products">Products</Link>
                         <Link to = "/contact">Contact</Link>
-                        {user 
+                        {token
                         ? <div>
                                 <p>{user.username} logged in</p>
                                 <button type = "button" onClick = {handleLogout} className = "border-solid border-2 bg-red-500 text-[#090F13] rounded-xl w-32 mt-4 ">Log Out</button>

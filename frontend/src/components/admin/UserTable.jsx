@@ -1,41 +1,31 @@
 import { useContext, useEffect } from 'react'
 import userService from '../../services/user'
-import { UsersContext } from '../../context/adminContext'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import useAuthStore from '../../store/auth.store'
+import { useChangeRole, useUsers } from '../../hooks/useUser'
+import useNotificationStore from '../../store/notification.store'
 
 const UserTable = ({selected}) => {
-    const [users, dispatchUsers] = useContext(UsersContext)
-    const query = useQueryClient()
-
-    //Users Query to get all Users
-    const user = useQuery({
-        queryKey: ['users'],
-        queryFn: userService.getUser
-    })
-
-    useEffect(() => {
-        if (user.data) {
-            dispatchUsers({
-                type: 'SET_USERS',
-                payload: user.data
-            })
-        }
-    }, [user.data])
-
-
-    //Mutation for Users
-    const userToChange = useMutation({
-        mutationFn: ({id, newUsers}) => userService.update(id, newUsers),
-        onSuccess: (
-            query.invalidateQueries(['users'])
-        )
-    })
+    const {data: users, isLoading: userLoading, isError: userError}= useUsers()
+    const userToChange = useChangeRole()
+    const notify = useNotificationStore(state => state.notify)
 
     const update = async(user) => {
+        console.log("User:", user)
+        console.log("Token: ", useAuthStore.getState().token)
         const newRole = user.role === 'Admin' ? 'Customer' : 'Admin'
-        await userToChange.mutateAsync({id: user.id, newUsers: {role: newRole}})
+        await userToChange.mutateAsync({id: user.id, newUsers: {role: newRole}}, {
+            onSuccess: () => {
+                notify("User role changed", "success")
+            },
+            onError: () => {
+                notify("Role Changed failed", "error")
+            }
+        })
     }
 
+    if (userLoading) return <div>Loading....</div>
+    if (userError) return <div>Error</div>
     return (
         <div className = "mt-4">
             <table className = "w-full table-auto border-collapse  border-solid border-2 text-[#090F13]">
@@ -56,7 +46,7 @@ const UserTable = ({selected}) => {
                             <td>{user.name}</td>
                             <td>{user.address.map(add => 
                                 `${add.street}, ${add.zip || ''}, ${add.state}, ${add.city}, ${add.country}`
-                            )}</td>
+                            ).join('; ')}</td>
                             <td>{user.phone}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>

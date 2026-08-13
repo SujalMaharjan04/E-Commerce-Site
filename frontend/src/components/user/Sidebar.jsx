@@ -1,24 +1,14 @@
-import { useContext, useState, useEffect } from "react"
+import { useState } from "react"
 import {BrandContext} from '../../context/adminContext'
-import { useQuery } from "@tanstack/react-query"
-import brandService from '../../services/brand'
+import { useBrands } from "../../hooks/useBrand"
 
 const Sidebar = ({searchFilter, onFilterChange}) => {
-    const [brands, dispatchBrand] = useContext(BrandContext)
+    const {data: brands, isLoading: brandsLoading, isError: brandsError} = useBrands()
     const [active, setActive] = useState(false)
     
+    if (brandsLoading) return <div>Loading...</div>
+    if (brandsError) return <div>Error</div>
 
-    const result = useQuery({
-        queryKey: ['brand'],
-        queryFn: () => brandService.getAll()
-    })
-
-    useEffect(() => {
-        dispatchBrand({
-            type: "SET_BRAND",
-            payload: result.data
-        })
-    }, [result.data])
     return (
         <div className = "relative">
         <div className="relative z-50">

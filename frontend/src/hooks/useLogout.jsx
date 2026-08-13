@@ -1,19 +1,17 @@
-import { useContext } from "react"
 import { UserContext } from "../context/adminContext"
 import { useNavigate } from "react-router-dom"
 import useNotificationStore from "../store/notification.store"
+import useAuthStore from "../store/auth.store"
 
 
 export const useLogout = () => {
-    const [user, dispatchUser] = useContext(UserContext)
+    const logout = useAuthStore(state => state.logout)
+    const user = useAuthStore(state => state.userInfo)
     const notify = useNotificationStore(state => state.notify)
     const navigate = useNavigate()
     const handleLogout = () => {
-        dispatchUser({
-            type: 'CLEAR_USER'
-        })
-
-        window.localStorage.removeItem('loggedApp')
+        logout()
+        console.log(user)
         const redirectPath = user.role === 'Admin' ? '/admin' : '/'
         navigate(redirectPath)
 
