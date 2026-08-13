@@ -14,9 +14,14 @@ const adminLogin = async(credentials) => {
                 return {
                     success: false,
                     type: 'RATE-LIMIT',
-                    message: err.response.message,
-                    retryAfter: err.response.retryAfter
+                    message: err.response.data.message,
+                    retryAfter: err.response.data.retryAfter
                 }
+            }
+            return {
+                success: false,
+                type: "ERROR",
+                message: err.response.data.message || "LOGIN FAILED"
             }
         }
     }
@@ -38,6 +43,11 @@ const userLogin = async(credentials) => {
                     message: err.response.data.message,
                     retryAfter: err.response.data.retryAfter
                 }
+            }
+            return {
+                success: false,
+                type: "ERROR",
+                message: err.response.data.message || "LOGIN FAILED"
             }
         }
     }
