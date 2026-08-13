@@ -6,7 +6,7 @@ import categoryService from "../services/category"
 export function useCategories() {
     return useQuery({
         queryKey: ['categories'],
-        queryFn: categoryService.getAll
+        queryFn: () => categoryService.getAll()
     })
 }
 
