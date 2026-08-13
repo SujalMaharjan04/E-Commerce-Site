@@ -1,13 +1,11 @@
 import React from "react"
 import { useEffect } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useMutation} from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
-import productService from '../../services/product'
 import { useContext, useState } from "react"
 import Location from '../../assets/icons/location_on.svg'
 import { UserContext} from "../../context/adminContext"
 import cartService from '../../services/cart'
-import useUserAddr from '../../hooks/useUserAddr'
 import { CartContext } from "../../context/cartContext"
 import { ReviewContext } from '../../context/reviewContext'
 import reviewService from '../../services/review'
@@ -15,6 +13,8 @@ import Review from "../../components/user/Review"
 import ProductReview from "../../components/user/Product_Reivews"
 import { useProduct } from "../../hooks/useProducts"
 import useNotificationStore from "../../store/notification.store"
+import useAuthStore from "../../store/auth.store"
+import { useUserAddr } from "../../hooks/useUser"
 
 
 const ProductById = () => {
@@ -26,7 +26,7 @@ const ProductById = () => {
     const [selectedColor, setSelectedColor] = useState(false)
     const [selectedRam, setSelectedRam] = useState(false)
     const [selectedStorage, setSelectedStorage] = useState(false)
-    const [user, dispatchUser] = useContext(UserContext)
+    const token = useAuthStore(state => state.token)
     const [cartItem, dispatchCart] = useContext(CartContext)
     const notify = useNotificationStore(state => state.notify)
     const {id} = useParams()
@@ -102,7 +102,7 @@ const ProductById = () => {
 
     const addCartItem = (productId, quantity, selectedSpecs) => {
 
-        if (!user) {
+        if (!token) {
             notify("Log In to Add to Cart", "error")
 
             setQuantity(1)
@@ -228,7 +228,7 @@ const ProductById = () => {
                     <div className = "flex flex-col justify-between items-start gap-4">
                         <div className = "flex justify-center items-center gap-2">
                             <img src = {Location} />
-                            {user ?
+                            {token ?
                                 <p>Delivering to {userAddr.address?.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)}</p>
                                 :<p>Please Log In to order</p>}
                         </div>

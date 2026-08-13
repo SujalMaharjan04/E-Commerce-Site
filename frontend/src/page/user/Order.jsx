@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react"
 import OrderPageCart from "../../components/user/OrderPageCart"
 import { useNavigate, useLocation } from "react-router-dom"
-import useUserAddr from "../../hooks/useUserAddr"
 import { OrderContext } from "../../context/orderContext"
+import { useUserAddr } from "../../hooks/useUser"
 
 const Order = () => {
     const navigate = useNavigate()
