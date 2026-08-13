@@ -5,13 +5,14 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('loggedApp')
+    const stored = sessionStorage.getItem('loggedApp')
     
-    if (token) {
+    if (stored) {
         try {
-            const user = JSON.parse(token)
-            if (user.token) {
-                config.headers.Authorization = `Bearer ${user.token}`
+            const parsed = JSON.parse(stored)
+            const token = parsed?.state.token
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`
         }}
         catch (error) {
             console.log(error.message)
