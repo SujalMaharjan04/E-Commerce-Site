@@ -1,8 +1,7 @@
 import UserLayout from "./layout/UserLayout"
 import AdminLayout from './layout/AdminLayout'
 import AdminLogin from './page/admin/AdminLogin'
-import {Routes, Route, useNavigate, Navigate, useMatch} from "react-router-dom"
-import { useContext, useEffect, useState } from "react"
+import {Routes, Route, Navigate} from "react-router-dom"
 import DashBoard from "./components/admin/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
@@ -15,19 +14,24 @@ import Order from './page/user/Order'
 import Payment from "./page/user/Payment"
 import Product from "./page/user/Product"
 import useNotificationStore from "./store/notification.store"
+import useAuthStore from "./store/auth.store"
 
 
 const App = () => {
-  const [user, dispatchUser] = useContext(UserContext)
+  const user = useAuthStore(state => state.userInfo)
+  const token = useAuthStore(state => state.token)
   const notification = useNotificationStore(state => state.notification)
 
-  useEffect(() => {
-    const loggedAppAdmin = window.localStorage.getItem('loggedApp')
-    if (loggedAppAdmin) {
-      const user = JSON.parse(loggedAppAdmin)
-      dispatchUser({type: 'SET_USER', payload: user})
-    }
-  }, [dispatchUser])
+  //This only works if the userInfo and token are stored on the localStorage but currently the credentials are stored on sessionStorage
+  // useEffect(() => {
+  //   const loggedApp = sessionStorage.getItem("loggedApp")
+  //   if (loggedApp) {
+  //     const user = JSON.parse(loggedApp)
+  //     setUserInfo({id: user.id, username: user.username, role: user.role})
+  //     setToken(user.token)
+  //   }
+  // }, [setUserInfo, setToken])
+  
 
   const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500 z-99";
     const typeStyles = {
@@ -35,15 +39,7 @@ const App = () => {
         error: "bg-red-500",
     };
 
-  // const setUser = (user) => {
-  //   dispatchUser({
-  //     type: 'SET_USER',
-  //     payload: user
-  //   })
-  // }
 
-  
- 
 
   return (
     <div>
@@ -100,7 +96,7 @@ const App = () => {
         <Route path = "/admin" element = {
           <AdminLayout />
         }>
-          {user && user.role === 'Admin'
+          {token && user.role === 'Admin'
           ? <>
             <Route path = "dashboard" element = {<DashBoard />} />
             <Route path = "products" element = {<AdminProducts />}/>
