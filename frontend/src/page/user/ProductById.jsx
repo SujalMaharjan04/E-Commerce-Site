@@ -26,7 +26,7 @@ const ProductById = () => {
     const [selectedColor, setSelectedColor] = useState(false)
     const [selectedRam, setSelectedRam] = useState(false)
     const [selectedStorage, setSelectedStorage] = useState(false)
-    const token = useAuthStore(state => state.token)
+    const isAuthenticated = useAuthStore(state => state.isAuthenticated)
     const [cartItem, dispatchCart] = useContext(CartContext)
     const notify = useNotificationStore(state => state.notify)
     const {id} = useParams()
@@ -102,7 +102,7 @@ const ProductById = () => {
 
     const addCartItem = (productId, quantity, selectedSpecs) => {
 
-        if (!token) {
+        if (!isAuthenticated) {
             notify("Log In to Add to Cart", "error")
 
             setQuantity(1)
@@ -178,7 +178,7 @@ const ProductById = () => {
                     <div className = "flex justify-start items-center gap-4 font-bold">
                         {product.specs.storage.map((s, index) => (
                             <>
-                                <button className = {`bg-gray-500/75 h-10 w-[20%]  rounded-lg  hover:cursor-pointer ${selectedStorage === s ? "border-black border-2": "border-none"}`} onClick = {(e) => {
+                                <button className = {`bg-gray-500/75 h-10 w-[20%]  rounded-lg  hover:cursor-pointer ${selectedStorage === s ? "border-black border-2": "border-none"}`} onClick = {() => {
                                     setSelectedStorage(s)
                                     setStyle(s)
                                     handleAddSpecs('storage', s)}}>{s} </button>
@@ -228,7 +228,7 @@ const ProductById = () => {
                     <div className = "flex flex-col justify-between items-start gap-4">
                         <div className = "flex justify-center items-center gap-2">
                             <img src = {Location} />
-                            {token ?
+                            {isAuthenticated ?
                                 <p>Delivering to {userAddr.address?.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)}</p>
                                 :<p>Please Log In to order</p>}
                         </div>

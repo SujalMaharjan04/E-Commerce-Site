@@ -6,12 +6,11 @@ import useAuthStore from "../store/auth.store"
 
 export const useLogout = () => {
     const logout = useAuthStore(state => state.logout)
-    const user = useAuthStore(state => state.userInfo)
+    const user = useAuthStore(state => state.user)
     const notify = useNotificationStore(state => state.notify)
     const navigate = useNavigate()
-    const handleLogout = () => {
-        logout()
-        console.log(user)
+    const handleLogout = async() => {
+        await logout()
         const redirectPath = user.role === 'Admin' ? '/admin' : '/'
         navigate(redirectPath)
 

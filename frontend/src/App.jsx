@@ -15,22 +15,21 @@ import Payment from "./page/user/Payment"
 import Product from "./page/user/Product"
 import useNotificationStore from "./store/notification.store"
 import useAuthStore from "./store/auth.store"
+import { useEffect } from "react"
 
 
 const App = () => {
-  const user = useAuthStore(state => state.userInfo)
-  const token = useAuthStore(state => state.token)
+  const user = useAuthStore(state => state.user)
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated)
   const notification = useNotificationStore(state => state.notification)
+  const checkAuth = useAuthStore(state => state.checkAuth)
+  const isLoading = useAuthStore(state => state.isLoading)
 
-  //This only works if the userInfo and token are stored on the localStorage but currently the credentials are stored on sessionStorage
-  // useEffect(() => {
-  //   const loggedApp = sessionStorage.getItem("loggedApp")
-  //   if (loggedApp) {
-  //     const user = JSON.parse(loggedApp)
-  //     setUserInfo({id: user.id, username: user.username, role: user.role})
-  //     setToken(user.token)
-  //   }
-  // }, [setUserInfo, setToken])
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
+
+  if (isLoading) return <div>Loading</div>
   
 
   const baseStyle = "fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white font-medium transition-opacity duration-500 z-99";
@@ -67,7 +66,7 @@ const App = () => {
             <Cart />
           } />
 
-          {user 
+          {isAuthenticated 
           ? <>
               <Route path = "/order" element = {
                 <Order />
@@ -96,7 +95,7 @@ const App = () => {
         <Route path = "/admin" element = {
           <AdminLayout />
         }>
-          {token && user.role === 'Admin'
+          {isAuthenticated && user.role === 'Admin'
           ? <>
             <Route path = "dashboard" element = {<DashBoard />} />
             <Route path = "products" element = {<AdminProducts />}/>
