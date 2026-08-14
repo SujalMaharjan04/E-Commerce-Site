@@ -45,7 +45,39 @@ const login = async(req, res) => {
         role: user.role
     }, process.env.SECRET, {expiresIn: '1d'})
 
-    return res.status(200).json({token, username: user.username, id: user.id, role: user.role})
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "development",
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000
+    })
+
+    return res.status(200).json({username: user.username, id: user.id, role: user.role})
 }
 
-module.exports = {signUp, login}
+const getMe = async(req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+
+        if (!user) {
+            return res.status(404).json({error: "User not Found"})
+        }
+
+        return res.status(200).json({user})
+    }
+    catch (err) {
+        return res.status(500).json({error: "Server error"})
+    }
+}
+
+const logout = async(req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'development',
+        sameSite: 'strict'
+    })
+
+    return res.status(200).json({message: 'Logged out'})
+}
+
+module.exports = {signUp, login, getMe, logout}
