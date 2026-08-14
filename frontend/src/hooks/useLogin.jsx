@@ -1,7 +1,7 @@
 import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/adminContext";
-import loginService from '../services/login'
+import authService from '../services/auth'
 import useNotificationStore from "../store/notification.store";
 import useAuthStore from "../store/auth.store";
 
@@ -9,8 +9,7 @@ export const useLogin = (isAdmin = false) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const notify = useNotificationStore(state => state.notify)
-    const setUserInfo = useAuthStore(state => state.setUserInfo)
-    const setToken = useAuthStore(state => state.setToken)
+    const setUser = useAuthStore(state => state.setUser)
     const navigate = useNavigate()
 
 
@@ -21,8 +20,8 @@ export const useLogin = (isAdmin = false) => {
                 return
             }
             const user = isAdmin 
-                ? await loginService.adminLogin({username, password})
-                : await loginService.userLogin({username, password})
+                ? await authService.adminLogin({username, password})
+                : await authService.userLogin({username, password})
 
             if (!user.success && user.type === 'RATE-LIMIT') {
                 console.log(user.message)
@@ -30,12 +29,11 @@ export const useLogin = (isAdmin = false) => {
                 return 
             }
 
-            if (!user || !user.token) {
+            if (!user || !user.id) {
                 notify("Invalid Credentials", "error")
                 return 
             }
-            setUserInfo({id: user.id, role: user.role, username: user.username})
-            setToken(user.token)
+            setUser({id: user.id, role: user.role, username: user.username})
             setUsername("")
             setPassword("")
 

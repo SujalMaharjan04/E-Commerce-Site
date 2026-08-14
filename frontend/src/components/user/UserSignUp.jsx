@@ -1,6 +1,6 @@
 import {  useState } from "react";
 import Input from "../common/Input";
-import userService from '../../services/user'
+import authService from '../../services/auth'
 import useNotificationStore from '../../store/notification.store'
 
 // Review Components
@@ -142,7 +142,7 @@ const UserSignUp = ({onSwitch, onClose}) => {
 
         setIsSubmitting(true)
         try{
-            await userService.signUp(form)
+            await authService.signUp(form)
             setForm({
                 firstName: "",
                 middleName: "",
