@@ -22,13 +22,7 @@ const errorHandler = (err, req, res, next) => {
 }
 
 const tokenExtractor = (req, res, next) => {
-    const authorization = req.get('authorization')
-
-    if (authorization && authorization.includes('Bearer ')) {
-        req.token =  authorization.substring(7)
-    } else {
-        req.token = null
-    }
+    req.token = req.cookies.token || null
     next()
 }
 
