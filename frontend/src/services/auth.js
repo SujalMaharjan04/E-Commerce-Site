@@ -1,10 +1,31 @@
-import axios from 'axios'
+import api from './api'
 
-const API_URL = 'http://localhost:3001/api'
+const signUp = async(credentials) => {
+
+    const payload = {
+        username: credentials.username,
+        name: `${credentials.firstName} ${credentials.middleName ? credentials.middleName + ' ' : ""} ${credentials.lastName}`,
+        password: credentials.password,
+        email: credentials.email,
+        address: [
+            {
+                country: credentials.address.country,
+                city: credentials.address.city,
+                state: credentials.address.state,
+                zip: credentials.address.zip,
+                street: credentials.address.street
+            }
+        ],
+        phone: credentials.phoneNumber
+
+    }
+    const response = await api.post(`/auth/signup`, payload)
+    return response.data
+}
 
 const adminLogin = async(credentials) => {
     try {
-        const response = await axios.post(`${API_URL}/auth/login/admin`, credentials)
+        const response = await api.post(`/auth/login/admin`, credentials)
         return response.data
     }
     catch (err) {
@@ -30,7 +51,7 @@ const adminLogin = async(credentials) => {
 
 const userLogin = async(credentials) => {
     try {
-        const response = await axios.post(`${API_URL}/auth/login/user`, credentials)
+        const response = await api.post(`/auth/login/user`, credentials)
         return response.data
     }
     catch (err) {
@@ -53,6 +74,16 @@ const userLogin = async(credentials) => {
     }
 }
 
+const checkAuth = async() => {
+    const response = await api.get("/auth/me")
+    return response.data
+}
 
-export default {adminLogin, userLogin}
+const logout = async() => {
+    const response= await api.post("/auth/logout")
+    return response.data
+}
+
+
+export default {adminLogin, userLogin, signUp, checkAuth, logout}
 
