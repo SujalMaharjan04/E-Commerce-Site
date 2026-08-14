@@ -17,6 +17,7 @@ const path = require('path')
 const newProduct = require('./seeds/seedProduct')
 const cartRouter = require('./modules/cart/cart.routes')
 const reviewRouter = require('./modules/review/review.routes')
+const cookieParser = require('cookie-parser')
 
 
 
@@ -26,6 +27,7 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }))
+app.use(cookieParser())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 // app.use(session({
 //     name: 'sid',
