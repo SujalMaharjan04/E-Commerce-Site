@@ -1,14 +1,15 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect} from "react"
 import OrderPageCart from "../../components/user/OrderPageCart"
 import { useNavigate, useLocation } from "react-router-dom"
-import { OrderContext } from "../../context/orderContext"
 import { useUserAddr } from "../../hooks/useUser"
+import { useOrderStore } from "../../store/order.store"
 
 const Order = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const [total, setTotal] = useState(0)
-    const [orderForm, dispatchOrderForm] = useContext(OrderContext)
+    const order = useOrderStore(state => state.order)
+    const setCustomerInfo = useOrderStore(state => state.setCustomerInfo)
     const [formData, setFormData] = useState({
         firstName: "",
         lastName:  "",
@@ -19,6 +20,7 @@ const Order = () => {
         comfirmed: false
     })
     const {data, isLoading, isError} = useUserAddr()
+
     const {canProceed} = location.state || {}
     useEffect(() => {
         if (!canProceed) {
@@ -27,17 +29,17 @@ const Order = () => {
     }, [canProceed])
 
     useEffect(() => {
-
-        const isOrderFormEmpty = Object.values(orderForm).some(value => value !== "" && value !== null && value !== undefined)
-
-        if (!isOrderFormEmpty) {
+        //check if any value of the order has empty
+        console.log(order)
+        const hasOrderForm = Object.values(order).some(value => value !== "" && value !== null && value !== undefined)
+        if (hasOrderForm) {
             setFormData({
-                firstName: orderForm.name?.split(' ')[0] || "",
-                lastName: orderForm.name?.split(' ').slice(1).join(' ') || "",
-                phone: orderForm.phone || "",
-                email: orderForm.email || "",
-                address: orderForm.address || "",
-                deliveryMethod: orderForm.deliveryMethod,
+                firstName: order.name?.split(' ')[0] || "",
+                lastName: order.name?.split(' ').slice(1).join(' ') || "",
+                phone: order.phone || "",
+                email: order.email || "",
+                address: order.address || "",
+                deliveryMethod: order.deliveryMethod,
                 comfirmed: false
             })
         } else if (data) {
@@ -53,7 +55,7 @@ const Order = () => {
                 comfirmed: false
             })
         }
-    }, [data, orderForm])
+    }, [data, order])
 
     const handleChange = (e) => {
         const {name,type, checked, value} = e.target
@@ -65,13 +67,8 @@ const Order = () => {
     }
     
     const handleNext = () => {
-        dispatchOrderForm({
-            type: "SET_CUSTOMER_INFO",
-            payload: {
-                ...formData,
-                name: `${formData.firstName} ${formData.lastName}`
-            }
-        })
+
+        setCustomerInfo({...formData, name: `${formData.firstName} ${formData.lastName}`})
 
         navigate('/payment', {
             state: {canProceed: true}
@@ -81,6 +78,10 @@ const Order = () => {
     const getTotal = (subTotal) => {
         setTotal(subTotal)
     }
+
+    if (isLoading) return <div>Loading....</div>
+    if (isError) return <div>Error</div>
+
     return (
         <div className = "text-[#090F13] flex justify-around items-start gap-10">
             <div className = "w-[50%] space-y-4">

@@ -1,21 +1,26 @@
-import { useContext, useState, useEffect } from "react"
-import { OrderContext } from "../../context/orderContext"
+import { useState, useEffect } from "react"
 import Esewa from '../../assets/icons/image 1.svg'
 import Khalti from '../../assets/icons/image 2.svg'
 import { useLocation, useNavigate } from "react-router-dom"
 import paymentService from '../../services/payment'
 import orderService from '../../services/order'
-import { CartContext } from "../../context/cartContext"
+import { useOrderStore } from "../../store/order.store"
+// import { useCartStore } from "../../store/cart.store"
+import { useCarts } from "../../hooks/useCart"
 
 
 
 
 const Payment = () => {
-    const [cartItem,] = useContext(CartContext)
-    const [orderForm, dispatchOrderForm] = useContext(OrderContext)
+    const {data: cartItem, isLoading: cartItemLoading, isError: cartItemError} = useCarts()
+    // const cartItem = useCartStore(state => state.items)
+    const order = useOrderStore(state => state.order)
+    const setPaymentInfo = useOrderStore(state => state.setPaymentInfo)
     const [paymentMethod, setPaymentMethod] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
+
+
     const {canProceed} = location.state || {}
 
     useEffect(() => {
@@ -26,10 +31,7 @@ const Payment = () => {
 
     const handleChange = (e) => {
         setPaymentMethod(e.target.value)
-        dispatchOrderForm({
-            type: "SET_PAYMENT_METHOD",
-            payload: e.target.value
-        })
+        setPaymentInfo(e.target.value)
     }
 
     const submitToEsewa = (url, params) => {
@@ -39,7 +41,6 @@ const Payment = () => {
         form.target = "_blank"
 
         Object.entries(params).forEach(([key, value]) => {
-            console.log(`key = ${key} & value = ${value}`)
             const input = document.createElement('input')
             input.type = 'hidden'
             input.name = key
@@ -55,7 +56,7 @@ const Payment = () => {
 
     const handlePayment = async(e) => {
         e.preventDefault()
-        const orderPlaced = await orderService.addOrder(orderForm)
+        const orderPlaced = await orderService.addOrder(order)
         const arg = {
             orderId: orderPlaced.order.id,
             paymentMethod: orderPlaced.order.paymentMethod
@@ -68,6 +69,8 @@ const Payment = () => {
         }
     }
 
+    if (cartItemLoading) return <div>Loading...</div>
+    if (cartItemError) return <div>Error</div>
     return (
         <div>
             <div className = "flex justify-around items-start gap-10">
@@ -87,17 +90,17 @@ const Payment = () => {
 
                             <form id = "orderForm" onSubmit = {handlePayment}>
                                 <div className = "flex justify-around items-center gap-12">
-                                    <input type = "radio" name = "paymentMethod" value = "Esewa" className="w-5 h-5" checked = {orderForm.paymentMethod === 'Esewa'} onChange = {handleChange} />
+                                    <input type = "radio" name = "paymentMethod" value = "Esewa" className="w-5 h-5" checked = {order.paymentMethod === 'Esewa'} onChange = {handleChange} />
                                     <p className = "font-mono text-2xl">Esewa</p>
                                     <img src = {Esewa} alt = "Esewa Logo" className = "w-10 h-10" />
                                 </div>
                                 <div className = "flex justify-around items-center gap-12" >
-                                    <input type = "radio" name = "paymentMethod" value = "Khalti" className="w-5 h-5" checked = {orderForm.paymentMethod === 'Khalti'} onChange = {handleChange} />
+                                    <input type = "radio" name = "paymentMethod" value = "Khalti" className="w-5 h-5" checked = {order.paymentMethod === 'Khalti'} onChange = {handleChange} />
                                     <p className = "font-mono text-2xl">Khalti</p>
                                     <img src = {Khalti} alt = "Khalti Logo" className = "w-10 h-10" />
                                 </div>
                                 <div className = "flex justify-around items-center gap-2">
-                                    <input type = "radio" name = "paymentMethod" value = "COD" className="w-5 h-5" checked = {orderForm.paymentMethod === 'COD'} onChange = {handleChange} />
+                                    <input type = "radio" name = "paymentMethod" value = "COD" className="w-5 h-5" checked = {order.paymentMethod === 'COD'} onChange = {handleChange} />
                                     <p className = "font-mono text-2xl">Cash On Delivery</p>
                                     <p></p>
                                 </div>
@@ -121,7 +124,7 @@ const Payment = () => {
 
                         <div className = "w-full h-80 bg-[#BFC7E2]">
                             <div className="flex flex-col justify-evenly items-start w-[50%] md:ml-10 text-[#090F13]">
-                                {cartItem.items.map((item, index) => (
+                                {cartItem?.items.map((item, index) => (
                                     <div className="flex justify-center items-center my-4 gap-2" key = {index}>
                                         <p className = "line-clamp-2">{item.product.name.split(":")[0]}, {item.selectedSpecs.colors}</p>
                                         <p className = "font-bold">&times;</p>
@@ -136,7 +139,7 @@ const Payment = () => {
 
                             <div className="flex justify-center items-center gap-60 mt-10 text-[#090F13] font-bold">
                                 <h2>Total: </h2>
-                                <p>Rs {cartItem.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)}</p>
+                                <p>Rs {cartItem?.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)}</p>
                             </div>
                         </div>
 

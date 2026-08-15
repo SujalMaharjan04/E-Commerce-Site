@@ -1,27 +1,30 @@
-import { useContext, useEffect, useState } from "react"
-import {CartContext} from "../../context/cartContext"
+import { useEffect, useState } from "react"
+import { useCarts } from "../../hooks/useCart"
 
 const OrderPageCart = ({getTotal}) => {
-    const [cart, dispatctCart] = useContext(CartContext)
+    const {data: cartItem, isLoading: cartItemLoading, isError: cartItemError} = useCarts()
     const [subTotal, setSubTotal] = useState(0)
 
     useEffect(() => {
-        if (!cart?.items) return
+        if (!cartItem) return
 
-        const total = cart.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+        const total = cartItem.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
 
         setSubTotal(total)
         
-    }, [cart])
+    }, [cartItem])
 
     useEffect(() => {
         getTotal(subTotal)
-    }, [subTotal])
+    }, [subTotal, getTotal])
+
+    if (cartItemLoading) return <div>Loading...</div>
+    if (cartItemError) return <div>Error</div>
     
     return (
         <div>
             <div>
-                {cart.items.map((item, index) => (
+                {cartItem.items.map((item, index) => (
                     <div className = "grid grid-cols-[150px_250px]" key = {index}>
                         <div>
                             <img src = {item.product.image[0]} alt = "Image1" className = "h-30 w-30" />

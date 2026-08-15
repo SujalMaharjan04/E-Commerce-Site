@@ -1,15 +1,16 @@
 import CartItems from '../../components/user/CartItems'
 import CartIcon from '../../assets/icons/image3.svg'
 import { useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
-import { CartContext } from '../../context/cartContext'
-import { OrderContext } from '../../context/orderContext'
 import cartService from '../../services/cart'
+// import { useCartStore } from '../../store/cart.store'
+import { useOrderStore } from '../../store/order.store'
+import { useCarts } from '../../hooks/useCart'
 
 const Cart = () => {
     const navigate = useNavigate()
-    const [cartItem, dispatchCartItem] = useContext(CartContext)
-    const [, dispatchOrderForm] = useContext(OrderContext)
+    const {data: cartItem, isLoading: cartItemLoading, isError: cartItemError} = useCarts()
+    // const cartItem = useCartStore(state => state.items)
+    const setOrderItems = useOrderStore(state => state.setOrderItems)
 
     const handleNext = async () => {
         const normalizedItem = cartItem.items.map(item => ({
@@ -17,17 +18,15 @@ const Cart = () => {
             quantity: item.quantity,
             selectedSpecs: item.selectedSpecs
         }))
-        dispatchOrderForm({
-            type: "SET_CUSTOMER_INFO",
-            payload: {
-                items: normalizedItem
-            }
-        })
+        setOrderItems(normalizedItem)
         await cartService.proceedToOrder()
         navigate('/order', {
             state: {canProceed: true}
         } )
     }
+
+    if (cartItemLoading) return <div>Loading...</div>
+    if (cartItemError) return <div>Error</div>
     return (
         <div className = "text-[#090F13] relative flex justify-around items-start gap-10">
             <div className = "w-[50%] space-y-4 flex flex-col">
@@ -72,10 +71,10 @@ const Cart = () => {
                 </div>
                 
                 <hr className = "w-full border-4 rounded-lg border-white" />
-
+                
                 <div className = "flex justify-between items-center py-2">
                     <h3>Sub-Total</h3>
-                    <h3>Rs 3,99,999</h3>
+                    <h3>{cartItem.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)}</h3>
                 </div>
 
                 <hr className = "w-full border-4 rounded-lg border-white" />

@@ -1,12 +1,9 @@
 import React from "react"
 import { useEffect } from "react"
-import { useQuery, useMutation} from "@tanstack/react-query"
+import { useQuery} from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { useContext, useState } from "react"
 import Location from '../../assets/icons/location_on.svg'
-import { UserContext} from "../../context/adminContext"
-import cartService from '../../services/cart'
-import { CartContext } from "../../context/cartContext"
 import { ReviewContext } from '../../context/reviewContext'
 import reviewService from '../../services/review'
 import Review from "../../components/user/Review"
@@ -15,6 +12,8 @@ import { useProduct } from "../../hooks/useProducts"
 import useNotificationStore from "../../store/notification.store"
 import useAuthStore from "../../store/auth.store"
 import { useUserAddr } from "../../hooks/useUser"
+import { useAddToCart } from "../../hooks/useCart"
+// import { useCartStore } from "../../store/cart.store"
 
 
 const ProductById = () => {
@@ -27,11 +26,12 @@ const ProductById = () => {
     const [selectedRam, setSelectedRam] = useState(false)
     const [selectedStorage, setSelectedStorage] = useState(false)
     const isAuthenticated = useAuthStore(state => state.isAuthenticated)
-    const [cartItem, dispatchCart] = useContext(CartContext)
     const notify = useNotificationStore(state => state.notify)
     const {id} = useParams()
     const userAddrQuery = useUserAddr()
     const [review, dispatchReview] = useContext(ReviewContext)
+    // const setItems = useCartStore(state => state.setItems)
+    const addCart = useAddToCart()
     
     
     const userAddr = userAddrQuery.data
@@ -52,28 +52,6 @@ const ProductById = () => {
     }, [reviewResult.data])
 
     
-
-
-    //Mutation to Add to Cart
-    const addCart = useMutation({
-        mutationFn: ({productId, quantity, selectedSpecs}) => cartService.addToCart( productId, quantity, selectedSpecs),
-        onSuccess: (data) => {
-            dispatchCart({
-                type: "SET_CART",
-                payload: data
-            })
-            notify("Item Added to Cart", "success")
-
-            setQuantity(1)
-            setStyle(null)
-            setSize(null)
-            setSelectedColor(false)
-            setSelectedStorage(false)
-            setSelectedRam(false)
-        }
-    })
-
-
     const {data: product, isLoading, isError} = useProduct(id)
 
 
@@ -111,8 +89,20 @@ const ProductById = () => {
             setSelectedColor(false)
             setSelectedStorage(false)
             setSelectedRam(false)
+            return 
         }
-        addCart.mutateAsync({productId, quantity: Number(quantity), selectedSpecs: selectedSpecs})
+        addCart.mutateAsync({productId, quantity: Number(quantity), selectedSpecs: selectedSpecs}, {
+            onSuccess: () => {
+                notify("Item Added to Cart", "success")
+                // setItems(data)
+                setQuantity(1)
+                setStyle(null)
+                setSize(null)
+                setSelectedColor(false)
+                setSelectedStorage(false)
+                setSelectedRam(false)
+            }
+        })
     }
 
     return (
@@ -165,7 +155,7 @@ const ProductById = () => {
 
                         {product.specs.ram.map((r, index) => (
                             <>
-                                <button key = {index} className = {`bg-gray-500/75 h-10 w-full  rounded-lg  hover:cursor-pointer ${selectedRam === r ? "border-black border-2": "border-none"}`} onClick = {(e) => {
+                                <button key = {index} className = {`bg-gray-500/75 h-10 w-full  rounded-lg  hover:cursor-pointer ${selectedRam === r ? "border-black border-2": "border-none"}`} onClick = {() => {
                                     setSelectedRam(r)
                                     setSize (r)
                                     handleAddSpecs('ram', r)}}>{r} Unified Memory</button>
@@ -178,7 +168,7 @@ const ProductById = () => {
                     <div className = "flex justify-start items-center gap-4 font-bold">
                         {product.specs.storage.map((s, index) => (
                             <>
-                                <button className = {`bg-gray-500/75 h-10 w-[20%]  rounded-lg  hover:cursor-pointer ${selectedStorage === s ? "border-black border-2": "border-none"}`} onClick = {() => {
+                                <button key = {index} className = {`bg-gray-500/75 h-10 w-[20%]  rounded-lg  hover:cursor-pointer ${selectedStorage === s ? "border-black border-2": "border-none"}`} onClick = {() => {
                                     setSelectedStorage(s)
                                     setStyle(s)
                                     handleAddSpecs('storage', s)}}>{s} </button>
