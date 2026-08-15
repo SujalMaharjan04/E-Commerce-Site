@@ -1,15 +1,15 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import reviewService from '../../services/review'
-import {UserContext} from '../../context/adminContext'
 import useNotificationStore from "../../store/notification.store"
+import useAuthStore from "../../store/auth.store"
 
 const Review = () => {
     const [active, setActive] = useState(0)
     const query = useQueryClient()
     const { id } = useParams()
-    const [user, ] = useContext(UserContext)
+    const user = useAuthStore(state => state.user)
     const notify = useNotificationStore(state => state.notify)
     const [review, setReview] = useState({
         rating: 0,
