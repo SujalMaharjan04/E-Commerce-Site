@@ -9,7 +9,7 @@ const getItems = async (req, res) => {
                                     .populate({path: 'items.product', select: 'image name price', populate: {path: 'image', options: {limit: 1} }})
         
         if (!cartItems) {
-            return res.status(404).json({items: []})
+            return res.status(200).json({items: []})
         }
 
         res.status(200).json(cartItems)
@@ -91,13 +91,12 @@ const proceedToOrder = async(req, res) => {
             return res.status(404).json({error: "Cart Is Empty"})
         }
 
-        req.session.canPlaceOrder = true
-
-        res.status(200).json({message: "Proceed To Order"})
+        return res.status(200).json({message: "Proceed To Order"})
     }
 
     catch (e) {
         console.log(e)
+        res.status(500).json({error: e.message})
     }
 }
 
