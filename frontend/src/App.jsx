@@ -5,8 +5,6 @@ import {Routes, Route, Navigate} from "react-router-dom"
 import DashBoard from "./components/admin/DashBoard"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
-import AdminUsers from "./page/admin/AdminUsers"
-import { ProductContext, UserContext} from "./context/adminContext"
 import Home from "./page/user/Home"
 import ProductById from "./page/user/ProductById"
 import Cart from "./page/user/Cart"
