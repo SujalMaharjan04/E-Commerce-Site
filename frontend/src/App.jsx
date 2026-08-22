@@ -3,6 +3,7 @@ import AdminLayout from './layout/AdminLayout'
 import AdminLogin from './page/admin/AdminLogin'
 import {Routes, Route, Navigate} from "react-router-dom"
 import DashBoard from "./components/admin/DashBoard"
+import AdminUsers from "./page/admin/AdminUsers"
 import AdminProducts from './page/admin/AdminProducts'
 import AdminOrders from "./page/admin/AdminOrders"
 import Home from "./page/user/Home"
