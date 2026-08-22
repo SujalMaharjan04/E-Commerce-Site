@@ -12,10 +12,12 @@ const getProductAdmin = async() => {
 
 //Function to Get All Product
 const getAll = async({category, cursor}) => {
-    const params = new URLSearchParams()
-    if (category) params.append("category", category)
-    if (cursor) params.append("cursor", cursor)
-    const response = await api.get(`${baseUrl}?${params}`)
+    const response = await api.get(baseUrl, {
+        params: {
+            category,
+            cursor
+        }
+    })
     return response.data
 } 
 
