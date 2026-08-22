@@ -5,7 +5,7 @@ import productService from "../services/product"
 export function useProducts(category) {
     return useInfiniteQuery({
         queryKey: ['products', category],
-        queryFn:({pageParam = null}) =>  productService.getAll({category, pageParam}),
+        queryFn:({pageParam = null}) =>  productService.getAll({category, cursor: pageParam}),
         getNextPageParam: (lastPage) => lastPage.nextCursor
     })
 }
