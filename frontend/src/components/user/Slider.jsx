@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react"
 import laptop from '../../assets/image/dell_computer.png'
 import product from '../../assets/image/product_banner.png'
-import { useNavigate } from 'react-router-dom'
 
 const Slider = () => {
     const [current, setCurrent] = useState(0)
-    const navigate = useNavigate()
 
     const obj = [
         {

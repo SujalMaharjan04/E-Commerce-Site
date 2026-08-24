@@ -29,14 +29,14 @@ const Togglable = forwardRef((props, ref) => {
 
             {visible && (
                 createPortal(
-                    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-[100]">
+                    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
                         <div
-                            className="bg-white w-[90%] md:w-[60%] lg:w-[40%] max-h-[90vh] overflow-y-auto rounded-2xl p-6 shadow-lg relative"
+                            className="bg-[#0F172A] w-[90%] md:w-[60%] lg:w-[40%] max-h-[90vh] overflow-y-auto rounded-2xl p-6 shadow-lg relative"
                             onClick={(e) => e.stopPropagation()} // prevent close on modal click
                         >
                             {props.children}
                             <button
-                                className="absolute top-2 right-3 text-gray-600 text-xl"
+                                className="absolute top-2 right-3 text-[#F8FAFC] text-xl"
                                 onClick={toggleVisibility}
                             >
                                 ✕

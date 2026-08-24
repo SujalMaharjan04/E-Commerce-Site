@@ -8,7 +8,7 @@ const Input = ({label, value, onChange, type = "text", error, name, showPassword
     return (
         <div>
             <div className = "flex justify-between items-baseline">
-                <span className = "text-sm font-medium text-gray-700">
+                <span className = "text-sm font-medium text-[#F8FAFC]">
                     {label}
                 </span>
                 

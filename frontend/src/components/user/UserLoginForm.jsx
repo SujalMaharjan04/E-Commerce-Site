@@ -6,9 +6,9 @@ const UserLoginForm = ({onSwitch}) => {
     const {username, password, setUsername, setPassword, handleLogin} = useLogin(false)
     const {setTouched, usernameError, passwordError} = useErrorLines(username, password)
     return (
-        <div>
+        <div className = "p-10">
             <h2 className = "font-semibold md:text-2xl text-center">Log In</h2>
-            <form onSubmit={handleLogin} className = "text-[#090F13]">
+            <form onSubmit={handleLogin} className = "text-[#F8FAFC]">
                 <div className = "flex flex-col p-4">
                     <Input 
                         label = "Username"
@@ -36,7 +36,7 @@ const UserLoginForm = ({onSwitch}) => {
                 </div>
             </form>
 
-            <div className = "flex flex-col justify-center items-center">
+            <div className = "flex flex-col justify-center items-center gap-2 mt-4">
                 Don't have a Account?
                 <button type = "button" onClick={onSwitch} className = "hover:underline hover:cursor-pointer text-lg">Sign Up</button>
             </div>

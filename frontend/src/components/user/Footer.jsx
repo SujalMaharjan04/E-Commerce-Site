@@ -6,7 +6,7 @@ import Instagram from "../../assets/icons/Instagram.svg"
 
 const Footer = () => {
     return (
-        <div className = "bg-[#090F13] text-[#EADEDA] text-xs font-bold mt-24 px-4">
+        <div className = "bg-[#0F172A]  text-xs font-bold mt-24 px-4">
             <div className = "lg:flex lg:flex-row lg:justify-center lg:items-center lg:m-2">
                 <div className = "flex flex-col justify-center items-start md:items-center lg:max-w-64 lg:mx-24 my-4">
                         <h2 className = "lg:p-2">Contact</h2>
