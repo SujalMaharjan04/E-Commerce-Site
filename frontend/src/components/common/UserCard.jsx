@@ -1,13 +1,13 @@
-import User from '../../assets/icons/User.svg'
+import { User } from 'lucide-react'
 import { useLogout } from '../../hooks/useLogout'
 
 const UserCard = () => {
   const {handleLogout} = useLogout()
   return (
-    <div className="fixed top-12 right-8 z-30  border-solid border-2  flex-col items-center justify-between h-48 w-48 bg-white hidden group-hover:flex rounded-xl shadow-lg">
+    <div className="fixed top-12 right-8 z-30 flex-col items-center justify-between h-48 w-48 bg-[#1E293B] hidden group-hover:flex rounded-xl shadow-lg">
       <div className="grid grid-cols-2 gap-2 p-4 text-center">
         <div className=" border-solid border-2 rounded-full row-span-2 p-4 flex justify-center items-center">
-          <img src={User} alt="user" className="w-10 h-10" />
+          <User className = "text-slate-950 w-8 h-auto" />
         </div>
         <p className="font-semibold">Name</p>
         <p className="text-gray-600 text-sm">Position</p>

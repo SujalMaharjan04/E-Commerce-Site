@@ -1,6 +1,6 @@
 import Calendar from '../../assets/icons/Calendar.svg'
 import { useEffect, useState } from 'react'
-import User from '../../assets/icons/User.svg'
+import { User } from 'lucide-react'
 import UserCard from '../common/UserCard'
 
 
@@ -23,7 +23,7 @@ const AdminNavBar = () => {
                 <img src = {Calendar} alt = "calendar" className = "h-8 w-auto" />
                 <span>{currentDate}</span>
                 <div className = "group">
-                    <button><img src = {User} alt = "user" className = "  border-solid border-2 rounded-full h-8 w-auto m-4" /></button>
+                    <button><User className = "text-slate-950 w-8 h-auto" /></button>
                     <UserCard/>
                 </div>
             </div>
