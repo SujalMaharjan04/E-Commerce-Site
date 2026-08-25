@@ -5,7 +5,7 @@ const ProductCard = ({product}) => {
     return (
         <div className = "flex flex-col w-full px-4 shadow-xl/50 mb-10 ">
             <div className = "flex justify-center">
-                <img src = {product.image[0]} alt = "laptop" className = "h-60 w-auto" />
+                <img src = {product.image[0]} alt = "laptop" className = "h-60 w-auto" loading = "lazy" />
             </div>
             <div className = "text-[#090F13] mx-4">
                 <p>{product.name}</p>

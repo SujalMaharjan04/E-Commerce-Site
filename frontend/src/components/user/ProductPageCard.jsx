@@ -6,7 +6,7 @@ const ProductPageCard = ({product}) => {
         <div className = "my-2 md:grid md:grid-cols-[auto_1fr] md:min-h-60 md:mb-2 bg-[#BFC7E2] text-[#090F13]">
             <Link to = {`/products/${product.id}`}>
                 <div className = "bg-[#BFC7E2] md:mx-16 md:my-4  md:w-full  md:min-h-32 md:shadow-[-8px_-8px_12px_2px_rgba(0,0,0,0.25),8px_8px_12px_2px_rgba(0,0,0,0.25)] md:flex md:justify-center md:items-center">
-                    <img src = {product.image[0]} alt = "Image 1" className = "md:h-48 md:w-48" />
+                    <img src = {product.image[0]} alt = "Image 1" className = "md:h-48 md:w-48" loading = "lazy" />
                 </div>
             </Link>
 
