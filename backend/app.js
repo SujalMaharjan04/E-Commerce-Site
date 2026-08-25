@@ -24,7 +24,7 @@ const cookieParser = require('cookie-parser')
 const app = express()
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://e-commerce-site-lyart-nine.vercel.app/',
     credentials: true
 }))
 app.use(cookieParser())
