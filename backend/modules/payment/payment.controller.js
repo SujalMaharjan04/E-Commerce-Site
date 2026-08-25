@@ -175,7 +175,7 @@ const verifyPayment = async(req, res, next) => {
 
 const verifyEsewa = async (req, res, next) => {
     try {
-        const FRONTEND_URL = 'http://localhost:5173'
+        const FRONTEND_URL = 'https://e-commerce-site-lyart-nine.vercel.app'
         const {data} = req.query
 
         if (!data) {
