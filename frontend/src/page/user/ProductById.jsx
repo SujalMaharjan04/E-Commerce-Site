@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { useQuery} from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { useContext, useState } from "react"
-import Location from '../../assets/icons/location_on.svg'
+import { LocateIcon } from "lucide-react"
 import { ReviewContext } from '../../context/reviewContext'
 import reviewService from '../../services/review'
 import Review from "../../components/user/Review"
@@ -217,7 +217,7 @@ const ProductById = () => {
                 <div className = "bg-[#BFC7E2] h-56 w-64 rounded-lg p-5 ">
                     <div className = "flex flex-col justify-between items-start gap-4">
                         <div className = "flex justify-center items-center gap-2">
-                            <img src = {Location} />
+                            <LocateIcon className = "text-slate-950 w-auto h-8" />
                             {isAuthenticated ?
                                 <p>Delivering to {userAddr.address?.map(add => `${add.street}, ${add.zip || ''} ${add.state}, ${add.city}, ${add.country}`)}</p>
                                 :<p>Please Log In to order</p>}
