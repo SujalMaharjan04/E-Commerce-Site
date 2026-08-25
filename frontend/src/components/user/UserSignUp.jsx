@@ -217,152 +217,160 @@ const UserSignUp = ({onSwitch, onClose}) => {
             <form onSubmit = {handleSubmit}>
                 {/* Step Panels */}
                 <div className = "space-y-6">
-                    <section style = {{display: `${steps === 0 ? "block" : "none"}`}}>
-                        <h3 className = "text-lg font-medium mb-4">Personal Information:</h3>
-                        <div className = "grid grid-cols-3 gap-4">
-                            <Input 
-                                label = "First Name"
-                                value = {form.firstName}
-                                onChange = {(v) => updateFields("firstName", v)}
-                                error = {errors.firstName}
-                                name = "firstName"
-                            />
-                            <Input 
-                                label = "Middle Name"
-                                value = {form.middleName}
-                                onChange = {(v) => updateFields("middleName", v)}
-                                error = {errors.middleName}
-                                name = "middleName"
-                            />
-                            <Input 
-                                label = "Last Name"
-                                value = {form.lastName}
-                                onChange = {(v) => updateFields("lastName", v)}
-                                error = {errors.lastName}
-                                name = "lastName"
-                            />
-                        </div>
-                        <div className = "mt-4">
-                            <Input 
-                                label = "Email"
-                                value = {form.email}
-                                onChange = {(v) => updateFields("email", v)}
-                                error = {errors.email}
-                                name = "email"
-                                type = "email"
-                            />
-                            <Input 
-                                label = "Phone Number"
-                                value = {form.phoneNumber}
-                                onChange = {(v) => updateFields("phoneNumber", v)}
-                                error = {errors.phoneNumber}
-                                name = "phoneNumber"
-                                type = "tel"
-                            />
-                        </div>
-                        
-                    </section>
-
-                
-                    <section style = {{display: `${steps === 1 ? "block" : "none"}`}}>
-                        <h3 className = "text-lg font-medium mb-4">Address:</h3>
-                        <div className = "space-y-4">
-                            <div className = "grid grid-cols-2 gap-4">
+                    {steps === 0 && (
+                        <section>
+                            <h3 className = "text-lg font-medium mb-4">Personal Information:</h3>
+                            <div className = "grid grid-cols-3 gap-4">
                                 <Input 
-                                    label = "Country"
-                                    value = {form.address.country}
-                                    onChange = {(v) => updateFields("country", v)}
-                                    error = {errors.country}
-                                    name = "country"
+                                    label = "First Name"
+                                    value = {form.firstName}
+                                    onChange = {(v) => updateFields("firstName", v)}
+                                    error = {errors.firstName}
+                                    name = "firstName"
                                 />
                                 <Input 
-                                    label = "City"
-                                    value = {form.address.city}
-                                    onChange = {(v) => updateFields("city", v)}
-                                    error = {errors.city}
-                                    name = "city"
+                                    label = "Middle Name"
+                                    value = {form.middleName}
+                                    onChange = {(v) => updateFields("middleName", v)}
+                                    error = {errors.middleName}
+                                    name = "middleName"
                                 />
                                 <Input 
-                                    label = "State"
-                                    value = {form.address.state}
-                                    onChange = {(v) => updateFields("state", v)}
-                                    error = {errors.state}
-                                    name = "state"
-                                />
-                                <Input 
-                                    label = "ZIP"
-                                    value = {form.address.zip}
-                                    onChange = {(v) => updateFields("zip", v)}
-                                    name = "zip"
-                                    type = "number"
+                                    label = "Last Name"
+                                    value = {form.lastName}
+                                    onChange = {(v) => updateFields("lastName", v)}
+                                    error = {errors.lastName}
+                                    name = "lastName"
                                 />
                             </div>
-                            <div className = "mt-4">
+                            <div className = "mt-4 flex flex-col gap-4">
                                 <Input 
-                                    label = "Street"
-                                    value = {form.address.street}
-                                    onChange = {(v) => updateFields("street", v)}
-                                    error = {errors.street}
-                                    name = "street"
+                                    label = "Email"
+                                    value = {form.email}
+                                    onChange = {(v) => updateFields("email", v)}
+                                    error = {errors.email}
+                                    name = "email"
+                                    type = "email"
+                                />
+                                <Input 
+                                    label = "Phone Number"
+                                    value = {form.phoneNumber}
+                                    onChange = {(v) => updateFields("phoneNumber", v)}
+                                    error = {errors.phoneNumber}
+                                    name = "phoneNumber"
+                                    type = "tel"
                                 />
                             </div>
-                        </div>
-                    </section>
-
-                    <section style = {{display: `${steps === 2 ? "block" : "none"}`}}>
-                        <h3 className = "text-lg font-medium mb-4">Account:</h3>
-                        <div className = "space-y-4">
-                            <div className = "grid grid-cols-1 gap-4">
-                                <Input 
-                                    label = "Username"
-                                    value = {form.username}
-                                    onChange = {(v) => updateFields("username", v)}
-                                    error = {errors.username}
-                                    name = "username"
-                                />
-                                <Input 
-                                    label = "Password"
-                                    value = {form.password}
-                                    onChange = {(v) => updateFields("password", v)}
-                                    error = {errors.password}
-                                    name = "password"
-                                    type = "password"
-                                    showPasswordToggle = {true}
-                                />
-
-                                <Input 
-                                    label = "Repeat Password"
-                                    value = {form.repeatPassword}
-                                    onChange = {(v) => updateFields("repeatPassword", v)}
-                                    error = {errors.repeatPassword}
-                                    name = "repeatPassword"
-                                    type = "password"
-                                    showPasswordToggle = {true}
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    <section style = {{display: `${steps === 3 ? "block" : "none"}`}}>
-                        <h3 className = "text-lg font-medium mb-4">Review & Submit:</h3>
-                            <div className = "grid grid-cols-1 gap-4">
-                                <Review label = "Name" value = {`${form.firstName} ${form.middleName || ""} ${form.lastName}`} />
-                                <Review label = "Email" value = {`${form.email}`} />
-                                <Review label = "Phone Number" value = {`${form.phoneNumber}`} />
-                                <Review label = "Address" value = {`${form.address.country}, ${form.address.city}, ${form.address.state}, ${form.address.zip || ""} ${form.address.street}`} />
-                                <Review label = "Username" value = {`${form.username}`} />
-                                
-                                <div className = "flex items-center gap-4 mt-2">
-                                    <input type = "checkbox" checked = {form.terms} onChange = {(e) => updateFields("terms", e.target.checked)} />
-                                    <span className = "text-xs text-gray-700">I accept the Terms and Condition</span>
-                                </div>
-                                {errors.terms && (
-                                    <span className = "text-xs text-red-600">{errors.terms}</span>
-                                )}
-                            </div>
-
+                            
+                        </section>
+                    )}
                     
-                    </section>
+                    {steps === 1 && (
+                        <section>
+                            <h3 className = "text-lg font-medium mb-4">Address:</h3>
+                            <div className = "space-y-4">
+                                <div className = "grid grid-cols-2 gap-4">
+                                    <Input 
+                                        label = "Country"
+                                        value = {form.address.country}
+                                        onChange = {(v) => updateFields("country", v)}
+                                        error = {errors.country}
+                                        name = "country"
+                                    />
+                                    <Input 
+                                        label = "City"
+                                        value = {form.address.city}
+                                        onChange = {(v) => updateFields("city", v)}
+                                        error = {errors.city}
+                                        name = "city"
+                                    />
+                                    <Input 
+                                        label = "State"
+                                        value = {form.address.state}
+                                        onChange = {(v) => updateFields("state", v)}
+                                        error = {errors.state}
+                                        name = "state"
+                                    />
+                                    <Input 
+                                        label = "ZIP"
+                                        value = {form.address.zip}
+                                        onChange = {(v) => updateFields("zip", v)}
+                                        name = "zip"
+                                        type = "number"
+                                    />
+                                </div>
+                                <div className = "mt-4">
+                                    <Input 
+                                        label = "Street"
+                                        value = {form.address.street}
+                                        onChange = {(v) => updateFields("street", v)}
+                                        error = {errors.street}
+                                        name = "street"
+                                    />
+                                </div>
+                            </div>
+                        </section>
+                    )}
+                    
+                    {steps === 2 && (
+                        <section style = {{display: `${steps === 2 ? "block" : "none"}`}}>
+                            <h3 className = "text-lg font-medium mb-4">Account:</h3>
+                            <div className = "space-y-4">
+                                <div className = "grid grid-cols-1 gap-4">
+                                    <Input 
+                                        label = "Username"
+                                        value = {form.username}
+                                        onChange = {(v) => updateFields("username", v)}
+                                        error = {errors.username}
+                                        name = "username"
+                                    />
+                                    <Input 
+                                        label = "Password"
+                                        value = {form.password}
+                                        onChange = {(v) => updateFields("password", v)}
+                                        error = {errors.password}
+                                        name = "password"
+                                        type = "password"
+                                        showPasswordToggle = {true}
+                                    />
+
+                                    <Input 
+                                        label = "Repeat Password"
+                                        value = {form.repeatPassword}
+                                        onChange = {(v) => updateFields("repeatPassword", v)}
+                                        error = {errors.repeatPassword}
+                                        name = "repeatPassword"
+                                        type = "password"
+                                        showPasswordToggle = {true}
+                                    />
+                                </div>
+                            </div>
+                        </section>
+                    )}
+                    
+                    {steps === 3 && (
+                        <section>
+                            <h3 className = "text-lg font-medium mb-4">Review & Submit:</h3>
+                                <div className = "grid grid-cols-1 gap-4">
+                                    <Review label = "Name" value = {`${form.firstName} ${form.middleName || ""} ${form.lastName}`} />
+                                    <Review label = "Email" value = {`${form.email}`} />
+                                    <Review label = "Phone Number" value = {`${form.phoneNumber}`} />
+                                    <Review label = "Address" value = {`${form.address.country}, ${form.address.city}, ${form.address.state}, ${form.address.zip || ""} ${form.address.street}`} />
+                                    <Review label = "Username" value = {`${form.username}`} />
+                                    
+                                    <div className = "flex items-center gap-4 mt-2">
+                                        <input type = "checkbox" checked = {form.terms} onChange = {(e) => updateFields("terms", e.target.checked)} />
+                                        <span className = "text-xs text-gray-700">I accept the Terms and Condition</span>
+                                    </div>
+                                    {errors.terms && (
+                                        <span className = "text-xs text-red-600">{errors.terms}</span>
+                                    )}
+                                </div>
+
+                        
+                        </section>
+                    )}
+                    
                 </div>
 
                 {/* Buttons */}
@@ -389,7 +397,7 @@ const UserSignUp = ({onSwitch, onClose}) => {
             </form>
             
 
-            <div className = "flex flex-col justify-center items-center">
+            <div className = "flex flex-col justify-center items-center mt-4">
                 Already Have An Account?
                 <button type = "button" onClick={onSwitch} className = "hover:underline hover:cursor-pointer text-lg">Log In</button>
             </div>
