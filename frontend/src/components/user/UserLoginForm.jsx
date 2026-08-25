@@ -32,7 +32,7 @@ const UserLoginForm = ({onSwitch}) => {
                     />
                 </div>
                 <div className = "p-4 flex justify-center">
-                    <button type = "submit" className = "px-4 py-2 rounded-lg bg-green-600 text-white shadow w-[30%] hover:bg-green-700 hover:cursor-pointer">Log In</button>
+                    <button type = "submit" className = "rounded-lg bg-green-600 text-white shadow px-2 py-2 w-[75%] lg:px-4 lg:py-2 lg:w-[30%] hover:bg-green-700 hover:cursor-pointer">Log In</button>
                 </div>
             </form>
 
