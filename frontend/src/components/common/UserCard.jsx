@@ -1,22 +1,37 @@
 import { User } from 'lucide-react'
 import { useLogout } from '../../hooks/useLogout'
+import { UserCog, ShoppingBag, LogOut } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const UserCard = () => {
   const {handleLogout} = useLogout()
   return (
-    <div className="fixed top-12 right-8 z-30 flex-col items-center justify-between h-48 w-48 bg-[#1E293B] hidden group-hover:flex rounded-xl shadow-lg">
-      <div className="grid grid-cols-2 gap-2 p-4 text-center">
-        <div className=" border-solid border-2 rounded-full row-span-2 p-4 flex justify-center items-center">
-          <User className = "text-slate-950 w-8 h-auto" />
+      <div className = "bg-[#1E293B] absolute top-18 right-4 min-w-64 min-h-64 rounded-lg  hidden group-hover:flex flex-col justify-evenly items-center before:bg-[#1E293B] before:absolute before:w-10 before:h-10 before:-top-1 before:right-2 before:rotate-45">
+        <div className = "relative m-4 after:absolute after:w-16 after:h-16 after:border-2 after:rounded-full after:inset-0 after:-translate-x-2 after:-translate-y-2">
+          <User className = "text-slate-100 w-12 h-12 " />
         </div>
-        <p className="font-semibold">Name</p>
-        <p className="text-gray-600 text-sm">Position</p>
-      </div>
 
-      <button onClick={handleLogout} className="w-32 py-1 mb-3  border-solid border-2 border-black bg-red-500 text-white rounded-xl hover:bg-red-600 transition">
-        Log Out
-      </button>
-    </div>
+        <div className = "flex flex-col justify-center items-start gap-2">
+
+          <Link to = "/profile">
+            <div className = "flex justify-center items-center gap-4">
+              <UserCog className = "text-slate-100 w-6 h-6" />
+              <p>View Profile</p>
+            </div>
+          </Link> 
+
+          <Link to = "/your-order">
+            <div className = "flex justify-center items-center gap-4">
+              <ShoppingBag className = "text-slate-100 w-6 h-6" />
+              <p>View Your Order</p>
+            </div>
+          </Link>
+        </div>
+
+        <button type = "button" onClick={handleLogout} className = "bg-linear-to-br from-red-600 to-red-400 rounded-xl p-2 flex justify-center items-center gap-2 hover:cursor-pointer hover:bg-linear-to-br hover:from-red-700 hover:to-red-500" >
+          <LogOut className = "text-slate-100 w-4 h-4" />Log Out
+          </button>
+      </div>
   )
 }
 
