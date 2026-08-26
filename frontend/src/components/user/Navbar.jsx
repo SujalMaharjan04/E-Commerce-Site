@@ -5,9 +5,7 @@ import Togglable from '../common/Togglable'
 import AuthPage from './AuthPage'
 import UserCard from '../common/UserCard'
 import useAuthStore from '../../store/auth.store'
-import { Search } from 'lucide-react'
-import { ShoppingCart } from 'lucide-react'
-import { User } from 'lucide-react'
+import { Search, ShoppingCart, User, LogIn } from 'lucide-react'
 
 const Navbar = () => {
     const [active, setActive] = useState(false)
@@ -86,7 +84,7 @@ const Navbar = () => {
                                     </div>
                                 </Link>
                                 :  <div className = "flex justify-center items-center">
-                                        <Togglable trigger = {<button type = "button" className = "bg-green-600 rounded-lg w-full px-4 py-2 mt-6 shadow hover:bg-green-700 hover:cursor-pointer">Log In</button>}>
+                                        <Togglable trigger = {<button type = "button" className = "bg-linear-to-br from-green-700 to-green-500 rounded-lg w-full px-4 py-2 mt-6 flex justify-center items-center gap-2 shadow hover:bg-linear-to-br hover:from-green-800 hover:to-green-600 hover:cursor-pointer"><LogIn className = "text-slate-100 w-6 h-6"/>Log In</button>}>
                                             <AuthPage />
                                         </Togglable>
                                     </div>

@@ -1,6 +1,7 @@
 import { useLogin } from "../../hooks/useLogin"
 import Input from "../common/Input"
 import { useErrorLines } from "../../hooks/useErrorLines"
+import { LogIn } from "lucide-react"
 
 const UserLoginForm = ({onSwitch}) => {
     const {username, password, setUsername, setPassword, handleLogin} = useLogin(false)
@@ -32,7 +33,9 @@ const UserLoginForm = ({onSwitch}) => {
                     />
                 </div>
                 <div className = "p-4 flex justify-center">
-                    <button type = "submit" className = "rounded-lg bg-green-600 text-white shadow px-2 py-2 w-[75%] lg:px-4 lg:py-2 lg:w-[30%] hover:bg-green-700 hover:cursor-pointer">Log In</button>
+                    <button type = "submit" className = "rounded-lg bg-linear-to-br from-green-700 to-green-500 text-white flex justify-center items-center gap-2 lg:gap-4 shadow px-2 py-2 w-[75%] lg:px-4 lg:py-2 lg:w-[30%] hover:bg-linear-to-br hover:from-green-800 hover:to-green-600 hover:cursor-pointer">
+                        <LogIn className = "text-slate-100 w-6 h-8" />Log In
+                    </button>
                 </div>
             </form>
 
