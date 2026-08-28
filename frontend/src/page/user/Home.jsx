@@ -36,7 +36,9 @@ const Home = () => {
 
     return (
         <div>
-            
+            <div>
+                <Slider />
+            </div>
         </div>
     )
 }

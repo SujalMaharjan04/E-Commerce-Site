@@ -1,25 +1,14 @@
 import { useState, useEffect } from "react"
-import laptop from '../../assets/image/dell_computer.png'
-import product from '../../assets/image/product_banner.png'
+import laptop from "../../assets/image/Dell.png"
+import apple from "../../assets/image/Apple.png"
+import {ChevronLeft, ChevronRight} from "lucide-react"
 
 const Slider = () => {
     const [current, setCurrent] = useState(0)
 
     const obj = [
-        {
-            image: laptop,
-            heading: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ipsa libero cumque laborum quod. Numquam velit labore mollitia temporibus quaerat dolorum similique aspernatur aut laudantium eum necessitatibus, consequatur cumque dolor.",
-            position: "left"
-            
-        },
-        {
-            image: product,
-            heading: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ipsa libero cumque laborum quod. Numquam velit labore mollitia temporibus quaerat dolorum similique aspernatur aut laudantium eum necessitatibus, consequatur cumque dolor.",
-            position: "right"
-            
-        }
+        {image: laptop},
+        {image: apple}
     ]
 
     useEffect(() => {
@@ -30,19 +19,14 @@ const Slider = () => {
     }, [])
 
     return (
-        <div className = "relative h-36 md:h-[500px] w-full overflow-hidden text-[#090F13]">
-            {obj.map((slide, index) => (
-                <div key = {index} className = {`absolute inset-0 md:h-[500px] bg-cover bg-center transition-opacity duration-700 ${index === current ? "opacity-100 z-20" : "opacity-0 z-0"}`} style = {{backgroundImage: `url(${slide.image})`}}>
-                    <div className = {`absolute top-2 md:top-14 ${slide.position === "left" ? "left-2 md:left-20 right-auto" : "right-2 md:right-20 left-auto"} w-[50%] md:w-[500px]`}>
-                        <div className = "text-xs md:text-4xl md:leading-16">{slide.heading}</div>
-                        <div className = "text-xs md:text-xl mt-2 line-clamp-2 md:mt-14">{slide.description}</div>
-                        <div>
-                            <button className = " border-2 border-solid rounded-xl w-[50%] md:w-full bg-[#E09F75] mt-2 md:mt-8 h-8 md:h-12 hover:bg-[#DF8E64]">View More &rarr;</button>
-                        </div>
-                    </div>
-                </div>    
-            ))}
-            
+        <div className = "relative  w-full min-h-96 mt-8">
+            <ChevronLeft className="absolute left-0 lg:top-1/2 top-1/4 text-slate-100 w-8 h-8 hover:cursor-pointer" onClick={()  => setCurrent((prev) => (prev + 1) % obj.length)} />
+            <div className = "relative aspect-1920/540 m-8 h-full overflow-hidden">
+                {obj.map((slide, index) => (
+                    <img key = {index} src = {slide.image} loading = "lazy" className = {`absolute inset-0 object-contain  w-full h-full transition-opacity duration-700 ${index === current ? "opacity-100 z-20" : "opacity-0 z-0"} `} />
+                ))}
+            </div>
+            <ChevronRight className = "absolute right-0 lg:top-1/2 top-1/4 text-slate-100 w-8 h-8 hover:cursor-pointer" onClick = {() => setCurrent((prev) => (prev - 1) % obj.length)} />       
         </div>
     )
 }
