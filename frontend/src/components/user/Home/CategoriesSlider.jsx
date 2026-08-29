@@ -21,12 +21,12 @@ const CategoriesSlider = ({categories}) => {
                 {categories.length > 0
                 ? visibleCategories.map((category) => (
                     <Link to = {`/products?category=${category.id}`}>
-                        <div key = {category.id} className = " bg-[#1E293B] border-2 border-white w-28 h-40 lg:w-96 lg:h-64 flex flex-col justify-center items-center lg:gap-4 transition-transform duration-700 ">
+                        <div key = {category.id} className = " bg-[#1E293B] w-28 h-40 lg:w-96 lg:h-64 flex flex-col justify-center items-center lg:gap-4 transition-transform duration-700 ">
                             <div>
                                 <h1 className = "font-bold text-md lg:text-xl">{category.name}</h1>
                             </div>
 
-                            <div className = "border-2 border-white w-24 h-32 lg:w-64  lg:h-48">
+                            <div className = "w-24 h-32 lg:w-64  lg:h-48">
                                 <img src = {category.img} alt = {`image of ${category.name}`} loading = "lazy" />
                             </div>
                         </div>
