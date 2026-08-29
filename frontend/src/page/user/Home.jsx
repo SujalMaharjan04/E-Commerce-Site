@@ -2,11 +2,13 @@ import { useState } from 'react'
 import Laptop from '../../assets/image/dell_laptop.png'
 import ProductCard from '../../components/user/ProductCard'
 import ReviewCard from '../../components/user/ReviewCard'
-import Slider from '../../components/user/Slider'
+import Slider from '../../components/user/Home/Slider'
 import { CategoryContext, ProductContext } from '../../context/adminContext'
 import { Link } from 'react-router-dom'
 import { useProducts } from '../../hooks/useProducts'
 import { useCategories } from '../../hooks/useCategory'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import CategoriesSlider from '../../components/user/Home/CategoriesSlider'
 
 const Home = () => {
     const [current, setCurrent] = useState(0)
@@ -38,6 +40,14 @@ const Home = () => {
         <div>
             <div>
                 <Slider />
+            </div>
+
+            {/* Shop by Categories */}
+            <div className = "relative lg:w-full lg:min-h-96 mt-8 px-4 flex flex-col justify-center items-center">
+                <div>
+                    <h1 className = "font-bold text-2xl">Shop By Categories</h1>
+                </div>
+                <CategoriesSlider categories = {categories} />
             </div>
         </div>
     )
