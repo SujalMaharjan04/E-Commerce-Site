@@ -45,7 +45,7 @@ const Home = () => {
             {/* Shop by Categories */}
             <div className = "relative lg:w-full lg:min-h-96 mt-8 px-4 flex flex-col justify-center items-center">
                 <div>
-                    <h1 className = "font-bold text-2xl">Shop By Categories</h1>
+                    <h1 className = "font-bold text-lg lg:text-2xl">Shop By Categories</h1>
                 </div>
                 <CategoriesSlider categories = {categories} />
             </div>
