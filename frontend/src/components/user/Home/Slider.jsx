@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import laptop from "../../assets/image/Dell.png"
-import apple from "../../assets/image/Apple.png"
+import laptop from "../../../assets/image/Dell.png"
+import apple from "../../../assets/image/Apple.png"
 import {ChevronLeft, ChevronRight} from "lucide-react"
 
 const Slider = () => {
