@@ -55,7 +55,7 @@ const Product = () => {
 
     return (
         <div className = "md:flex md:flex-row md:justify-evenly ">
-            <div className = "bg-[#BFC7E2] md:min-w-[15%] md:h-fit md:ml-20 md:flex md:flex-col md:justify-evenly md:items-center">
+            <div className = "bg-[#0F172A] md:min-w-[15%] md:h-fit md:ml-20 md:flex md:flex-col md:justify-evenly md:items-center lg:mt-6 lg:p-8 lg:rounded-lg">
                 <Sidebar searchFilter = {searchFilter} onFilterChange = {handleFilter}/>
 
             </div>
