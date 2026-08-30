@@ -1,4 +1,3 @@
-import laptop from '../../assets/image/dell_laptop.png'
 import {Star} from 'lucide-react'
 const ProductCard = ({product}) => {
     const maxStar = 5

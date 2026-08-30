@@ -1,5 +1,4 @@
 import { useState } from "react"
-import {BrandContext} from '../../context/adminContext'
 import { useBrands } from "../../hooks/useBrand"
 
 const Sidebar = ({searchFilter, onFilterChange}) => {
@@ -23,7 +22,7 @@ const Sidebar = ({searchFilter, onFilterChange}) => {
             </div>
             
             <div className={`
-                absolute top-full left-0 w-64 bg-white shadow-xl rounded-lg p-4 z-50
+                absolute top-full left-0 w-64 bg-[#0F172A] shadow-xl rounded-lg p-4 z-50
                 transform transition-all duration-300 ease-in-out origin-top
                 ${active ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"}
                 md:static md:w-full md:bg-transparent md:shadow-none md:p-0 md:opacity-100 md:scale-y-100 md:translate-y-0 md:pointer-events-auto md:z-auto
