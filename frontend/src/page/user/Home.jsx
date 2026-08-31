@@ -6,8 +6,6 @@ const Home = () => {
     
     const {data: categories, isLoading: categoriesLoading, isError: categoriesError} = useCategories()
 
-    if (categoriesLoading) return <div>Loading...</div>
-
     if (categoriesError) return <div>Error</div>
 
     return (

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import Loading from "../../common/Loading"
 
 
-const CategoriesSlider = ({categories, categoriesLoading}) => {
+const CategoriesSlider = ({categories = [], categoriesLoading}) => {
     const ITEMS_PER_VIEW = 3
     const [startIndex, setStartIndex] = useState(0)
 
@@ -19,11 +19,11 @@ const CategoriesSlider = ({categories, categoriesLoading}) => {
         <div className = "relative w-full min-h-80">
             <ChevronLeft className=' absolute top-1/4 lg:top-1/3 text-slate-100 w-4 h-4 lg:w-8 lg:h-8 hover:cursor-pointer' onClick={() => goPrev()} />
             <div className = "flex justify-evenly items-center p-2 lg:p-4">
-                {categoriesLoading ?? (<div><Loading /></div>)}
-                {categories.length > 0
+                {categoriesLoading ? (<div><Loading /></div>) 
+                : categories.length > 0
                 ? visibleCategories.map((category) => (
-                    <Link to = {`/products?category=${category.id}`}>
-                        <div key = {category.id} className = " bg-[#1E293B] w-28 h-40 lg:w-96 lg:h-64 flex flex-col justify-center items-center lg:gap-4 transition-transform duration-700 ">
+                    <Link to = {`/products?category=${category.id}`} key = {category.id}>
+                        <div  className = " bg-[#1E293B] w-28 h-40 lg:w-96 lg:h-64 flex flex-col justify-center items-center lg:gap-4 transition-transform duration-700 ">
                             <div>
                                 <h1 className = "font-bold text-md lg:text-xl">{category.name}</h1>
                             </div>
