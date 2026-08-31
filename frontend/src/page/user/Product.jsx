@@ -54,17 +54,22 @@ const Product = () => {
     
 
     return (
-        <div className = "md:flex md:flex-row md:justify-evenly ">
-            <div className = "bg-[#0F172A] md:min-w-[15%] md:h-fit md:ml-20 md:flex md:flex-col md:justify-evenly md:items-center lg:mt-6 lg:p-8 lg:rounded-lg">
-                <Sidebar searchFilter = {searchFilter} onFilterChange = {handleFilter}/>
+        <>
+            <div className = "flex justify-center items-center m-6">
+                <h1 className = "text-2xl font-bold">Laptop</h1>
+            </div>
+            <div className = "md:flex md:flex-row md:justify-evenly ">
+                <div className = "bg-[#0F172A] md:min-w-[15%] md:h-fit md:ml-20 md:flex md:flex-col md:justify-evenly md:items-center lg:mt-2 lg:p-8 lg:rounded-lg">
+                    <Sidebar searchFilter = {searchFilter} onFilterChange = {handleFilter}/>
 
+                </div>
+                <div className = "md:flex md:flex-col md:flex-1 md:mx-10  ">
+                    {products.map(product => (
+                        <ProductPageCard key = {product.id} product = {product} />
+                    ))}
+                </div>
             </div>
-            <div className = "md:flex md:flex-col md:flex-1 md:mx-10  ">
-                {products.map(product => (
-                    <ProductPageCard key = {product.id} product = {product} />
-                ))}
-            </div>
-        </div>
+        </>
     )
 }
 

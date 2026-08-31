@@ -1,25 +1,32 @@
 import { Link, useNavigate } from "react-router-dom"
+import StarDisplay from "../../components/common/StarDisplay"
 
 const ProductPageCard = ({product}) => {
     const navigate = useNavigate()
+
     return (
-        <div className = "my-2 md:grid md:grid-cols-[auto_1fr] md:min-h-60 md:mb-2 bg-[#0F172A] text-[#F8FAFC]">
-            <Link to = {`/products/${product.id}`}>
-                <div className = "bg-[#0F172A] md:mx-16 md:my-4  md:w-full  md:min-h-32 md:shadow-[-8px_-8px_12px_2px_rgba(0,0,0,0.25),8px_8px_12px_2px_rgba(0,0,0,0.25)] md:flex md:justify-center md:items-center">
-                    <img src = {product.image[0]} alt = "Image 1" className = "md:h-48 md:w-48" />
+        <div className = "bg-[#0F172A] w-full h-[361px] lg:m-2 text-[#F8FAFC] flex justify-start items-center">
+            <Link to = {`/products/${product.id}`} className = "block shrink-0">
+                <div className = "border-2 border-white lg:min-w-[25%] lg:min-h-[85%] lg:p-16 lg:mx-14">
+                    <img src = {product.image[0]} loading = 'lazy' className = "lg:w-48 lg:h-48 object-contain"  />
                 </div>
             </Link>
 
-            <div className = "flex flex-col justify-center items-start ml-2 gap-2  md:ml-20 md:min-h-48">
-                <div>
-                    <Link to = {`/products/${product.id}`}>
-                        <p className = "md:leading-6 md:min-h-12">{product.name}</p>
-                    </Link>
-                    <p>Rs {product.price}</p>
-                </div>
-                <div className = "w-full">
-                    <button type = "button" className = "bg-[#3B82] text-md w-[50%] mb-2 md:w-[20%] md:h-[20%] text-center md:my-14  rounded-lg font-bold md:text-lg hover:cursor-pointer" onClick = {() => navigate(`/products/${product.id}`)}>See Option</button>
-                </div>
+            <div className = "lg:min-w-[50%] lg:flex lg:flex-col lg:justify-start lg:items-start lg:mx-12">
+                <Link to = {`/products/${product.id}`}>
+                    <div className="lg:text-2xl text-justify">
+                        {product.name}
+                    </div>
+                    <div>
+                        <StarDisplay rating = {5} />
+                    </div>
+
+                    <div className="text-xl font-bold">
+                        Rs {product.price}
+                    </div>
+                </Link>
+
+                <button className = "bg-linear-to-br from-[#3B82F6] to-[#4084f1]  rounded-xl lg:p-4 lg:mt-4 lg:text-2xl font-bold hover:cursor-pointer hover:bg-linear-to-br hover:from-[#327df5] hover:to-[#2862be] " onClick = {navigate(`/products/${product.id}`)}>Get More Info</button>
             </div>
         </div>
     )
