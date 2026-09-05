@@ -83,7 +83,7 @@ const App = () => {
                 <h2>Failed</h2>
               } />
             </>
-          : <Route to = "*" element = {<Navigate to = "/invalid" replace/>} />}
+          : <Route path = "*" element = {<Navigate to = "/invalid" replace/>} />}
           
         </Route>
 
