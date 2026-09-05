@@ -58,12 +58,12 @@ const Product = () => {
             <div className = "flex justify-center items-center m-6">
                 <h1 className = "text-2xl font-bold">Laptop</h1>
             </div>
-            <div className = "md:flex md:flex-row md:justify-evenly ">
-                <div className = "bg-[#0F172A] md:min-w-[15%] md:h-fit md:ml-20 md:flex md:flex-col md:justify-evenly md:items-center lg:mt-2 lg:p-8 lg:rounded-lg">
+            <div className = "lg:flex lg:flex-row lg:justify-evenly ">
+                <div className = "bg-[#0F172A] lg:min-w-[15%] lg:h-fit lg:ml-20 lg:flex lg:flex-col lg:justify-evenly lg:items-center lg:mt-2 lg:p-8 lg:rounded-lg">
                     <Sidebar searchFilter = {searchFilter} onFilterChange = {handleFilter}/>
 
                 </div>
-                <div className = "md:flex md:flex-col md:flex-1 md:mx-10  ">
+                <div className = "grid grid-cols-3 gap-1 lg:flex lg:flex-col lg:flex-1 lg:mx-10  ">
                     {products.map(product => (
                         <ProductPageCard key = {product.id} product = {product} />
                     ))}

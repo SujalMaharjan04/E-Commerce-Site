@@ -54,7 +54,7 @@ const ProductById = () => {
     
     const {data: product, isLoading, isError} = useProduct(id)
 
-
+    console.log(product)
     if (isLoading) return <h1>Loading...</h1>
     if (isError) return <h1>Error Fetching Data</h1>
 

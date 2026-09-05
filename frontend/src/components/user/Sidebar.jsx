@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { useBrands } from "../../hooks/useBrand"
+import { Filter } from "lucide-react"
+import { FilterX } from "lucide-react"
 
 const Sidebar = ({searchFilter, onFilterChange}) => {
     const {data: brands, isLoading: brandsLoading, isError: brandsError} = useBrands()
@@ -17,7 +19,7 @@ const Sidebar = ({searchFilter, onFilterChange}) => {
                     onClick={() => setActive(!active)}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition-colors"
                 >
-                    {active ? 'Close Filter' : 'Filter'}
+                    {active ? <FilterX className="text-slate-100 w-4 h-4" /> : <Filter className = "text-slate-100 w-4 h-4" />}
                 </button>
             </div>
             
